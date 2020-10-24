@@ -352,7 +352,7 @@ public:
   void **getPtr(unsigned Idx) const {
     char *PtrsBase =
         static_cast<char *>(StubsMem.base()) + NumStubs * ORCABI::StubSize;
-    return reinterpret_cast<void **>(PtrsBase) + Idx;
+    return reinterpret_cast<void **>(PtrsBase + Idx * ORCABI::PointerSize);
   }
 
 private:

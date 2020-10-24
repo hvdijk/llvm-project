@@ -284,7 +284,7 @@ RTDyldMemoryManager::getSymbolAddressInProcess(const std::string &Name) {
     ++NameStr;
 #endif
 
-  return (uint64_t)sys::DynamicLibrary::SearchForAddressOfSymbol(NameStr);
+  return (uintptr_t)sys::DynamicLibrary::SearchForAddressOfSymbol(NameStr);
 }
 
 void *RTDyldMemoryManager::getPointerToNamedFunction(const std::string &Name,

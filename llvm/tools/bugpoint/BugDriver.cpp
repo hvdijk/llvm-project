@@ -109,7 +109,7 @@ std::unique_ptr<Module> llvm::parseInputFile(StringRef Filename,
     Triple TheTriple(Result->getTargetTriple());
 
     if (TheTriple.getTriple().empty())
-      TheTriple.setTriple(sys::getDefaultTargetTriple());
+      TheTriple.setTriple(Triple::normalize(sys::getDefaultTargetTriple()));
 
     TargetTriple.setTriple(TheTriple.getTriple());
   }

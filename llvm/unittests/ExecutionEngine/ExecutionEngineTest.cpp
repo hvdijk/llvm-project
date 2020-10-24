@@ -140,11 +140,11 @@ TEST_F(ExecutionEngineTest, LookupWithMangledAndDemangledSymbol) {
   // symbol name. This test verifies that getSymbolAddressInProcess strips the
   // leading '_' on Darwin, but not on other platforms.
 #ifdef __APPLE__
-  EXPECT_EQ(reinterpret_cast<uint64_t>(&x),
-            RTDyldMemoryManager::getSymbolAddressInProcess("_x"));
+  EXPECT_EQ(&x, reinterpret_cast<int *>(
+                    RTDyldMemoryManager::getSymbolAddressInProcess("_x")));
 #else
-  EXPECT_EQ(reinterpret_cast<uint64_t>(&_x),
-            RTDyldMemoryManager::getSymbolAddressInProcess("_x"));
+  EXPECT_EQ(&_x, reinterpret_cast<int *>(
+                     RTDyldMemoryManager::getSymbolAddressInProcess("_x")));
 #endif
 }
 

@@ -1546,6 +1546,14 @@ std::string sys::getProcessTriple() {
   std::string TargetTripleString = updateTripleOSVersion(LLVM_HOST_TRIPLE);
   Triple PT(Triple::normalize(TargetTripleString));
 
+#ifdef __x86_64__
+  if (sizeof(void *) == 4) {
+    PT.setArch(Triple::x86_64);
+    PT.setEnvironment(Triple::GNUX32);
+    return PT.str();
+  }
+#endif
+
   if (sizeof(void *) == 8 && PT.isArch32Bit())
     PT = PT.get64BitArchVariant();
   if (sizeof(void *) == 4 && PT.isArch64Bit())

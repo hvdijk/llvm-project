@@ -1372,7 +1372,12 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::sparcv9:        T.setArch(Triple::sparc);   break;
   case Triple::spir64:         T.setArch(Triple::spir);    break;
   case Triple::wasm64:         T.setArch(Triple::wasm32);  break;
-  case Triple::x86_64:         T.setArch(Triple::x86);     break;
+
+  case Triple::x86_64:
+    T.setArch(Triple::x86);
+    if (T.getEnvironment() == Triple::GNUX32)
+      T.setEnvironment(Triple::GNU);
+    break;
   }
   return T;
 }
@@ -1416,8 +1421,12 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::systemz:
   case Triple::ve:
   case Triple::wasm64:
-  case Triple::x86_64:
     // Already 64-bit.
+    break;
+
+  case Triple::x86_64:
+    if (T.getEnvironment() == Triple::GNUX32)
+      T.setEnvironment(Triple::GNU);
     break;
 
   case Triple::aarch64_32:      T.setArch(Triple::aarch64);    break;

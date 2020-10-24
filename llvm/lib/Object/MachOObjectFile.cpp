@@ -2727,7 +2727,7 @@ Triple MachOObjectFile::getArchTriple(uint32_t CPUType, uint32_t CPUSubType,
 }
 
 Triple MachOObjectFile::getHostArch() {
-  return Triple(sys::getDefaultTargetTriple());
+  return Triple(Triple::normalize(sys::getDefaultTargetTriple()));
 }
 
 bool MachOObjectFile::isValidArch(StringRef ArchFlag) {

@@ -151,25 +151,33 @@ static std::string computeDataLayout(const Triple &TT) {
   return Ret;
 }
 
-static Reloc::Model getEffectiveRelocModel(const Triple &TT,
-                                           bool JIT,
+static Reloc::Model getEffectiveRelocModel(const Triple &TT, bool JIT,
                                            Optional<Reloc::Model> RM) {
-  bool is64Bit = TT.getArch() == Triple::x86_64;
+  bool Is64Bit = TT.getArch() == Triple::x86_64;
+  bool IsX32 = Is64Bit && TT.getEnvironment() == Triple::GNUX32;
   if (!RM.hasValue()) {
     // JIT codegen should use static relocations by default, since it's
     // typically executed in process and not relocatable.
+    //
+    // We make an exception for x32 mode. The small code model requires all
+    // code and data to be found within the first 2GiB of address space, but
+    // we cannot achieve that without support from the operating system. The
+    // Linux kernel provides a MAP_32BIT flag for mmap() that would be useful
+    // for this, but it is ignored in x32 programs. Position independent code
+    // avoids relocations directly to external symbols so mostly avoids the
+    // problem.
     if (JIT)
-      return Reloc::Static;
+      return IsX32 ? Reloc::PIC_ : Reloc::Static;
 
     // Darwin defaults to PIC in 64 bit mode and dynamic-no-pic in 32 bit mode.
     // Win64 requires rip-rel addressing, thus we force it to PIC. Otherwise we
     // use static relocation model by default.
     if (TT.isOSDarwin()) {
-      if (is64Bit)
+      if (Is64Bit)
         return Reloc::PIC_;
       return Reloc::DynamicNoPIC;
     }
-    if (TT.isOSWindows() && is64Bit)
+    if (TT.isOSWindows() && Is64Bit)
       return Reloc::PIC_;
     return Reloc::Static;
   }
@@ -179,7 +187,7 @@ static Reloc::Model getEffectiveRelocModel(const Triple &TT,
   // executables but not necessarily a shared library. On X86-32 we just
   // compile in -static mode, in x86-64 we use PIC.
   if (*RM == Reloc::DynamicNoPIC) {
-    if (is64Bit)
+    if (Is64Bit)
       return Reloc::PIC_;
     if (!TT.isOSDarwin())
       return Reloc::Static;
@@ -187,21 +195,24 @@ static Reloc::Model getEffectiveRelocModel(const Triple &TT,
 
   // If we are on Darwin, disallow static relocation model in X86-64 mode, since
   // the Mach-O file format doesn't support it.
-  if (*RM == Reloc::Static && TT.isOSDarwin() && is64Bit)
+  if (*RM == Reloc::Static && TT.isOSDarwin() && Is64Bit)
     return Reloc::PIC_;
 
   return *RM;
 }
 
-static CodeModel::Model getEffectiveX86CodeModel(Optional<CodeModel::Model> CM,
-                                                 bool JIT, bool Is64Bit) {
+static CodeModel::Model
+getEffectiveX86CodeModel(const Triple &TT, bool JIT,
+                         Optional<CodeModel::Model> CM) {
+  bool Is64Bit = TT.getArch() == Triple::x86_64;
+  bool IsX32 = Is64Bit && TT.getEnvironment() == Triple::GNUX32;
   if (CM) {
     if (*CM == CodeModel::Tiny)
       report_fatal_error("Target does not support the tiny CodeModel", false);
     return *CM;
   }
   if (JIT)
-    return Is64Bit ? CodeModel::Large : CodeModel::Small;
+    return Is64Bit && !IsX32 ? CodeModel::Large : CodeModel::Small;
   return CodeModel::Small;
 }
 
@@ -213,11 +224,9 @@ X86TargetMachine::X86TargetMachine(const Target &T, const Triple &TT,
                                    Optional<Reloc::Model> RM,
                                    Optional<CodeModel::Model> CM,
                                    CodeGenOpt::Level OL, bool JIT)
-    : LLVMTargetMachine(
-          T, computeDataLayout(TT), TT, CPU, FS, Options,
-          getEffectiveRelocModel(TT, JIT, RM),
-          getEffectiveX86CodeModel(CM, JIT, TT.getArch() == Triple::x86_64),
-          OL),
+    : LLVMTargetMachine(T, computeDataLayout(TT), TT, CPU, FS, Options,
+                        getEffectiveRelocModel(TT, JIT, RM),
+                        getEffectiveX86CodeModel(TT, JIT, CM), OL),
       TLOF(createTLOF(getTargetTriple())), IsJIT(JIT) {
   // On PS4, the "return address" of a 'noreturn' call must still be within
   // the calling function, and TrapUnreachable is an easy way to get that.

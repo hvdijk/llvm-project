@@ -190,6 +190,26 @@ public:
                                 JITTargetAddress ReentryCtxAddr);
 };
 
+/// X86_64 support for x32 ABI (Linux).
+///
+/// X86_64 x32 supports lazy JITing.
+class OrcX32 : public OrcX86_64_Base {
+public:
+  static constexpr unsigned ResolverCodeSize = 0x6C;
+
+  /// Write the resolver code into the given memory. The user is
+  /// responsible for allocating the memory and setting permissions.
+  ///
+  /// ReentryFnAddr should be the address of a function whose signature matches
+  /// void* (*)(void *TrampolineAddr, void *ReentryCtxAddr). The ReentryCtxAddr
+  /// argument of writeResolverCode will be passed as the second argument to
+  /// the function at ReentryFnAddr.
+  static void writeResolverCode(char *ResolverWorkingMem,
+                                JITTargetAddress ResolverTargetAddress,
+                                JITTargetAddress ReentryFnAddr,
+                                JITTargetAddress ReentryCtxAddr);
+};
+
 /// I386 support.
 ///
 /// I386 supports lazy JITing.

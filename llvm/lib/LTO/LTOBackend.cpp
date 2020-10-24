@@ -461,7 +461,7 @@ Expected<const Target *> initAndLookupTarget(const Config &C, Module &Mod) {
   if (!C.OverrideTriple.empty())
     Mod.setTargetTriple(C.OverrideTriple);
   else if (Mod.getTargetTriple().empty())
-    Mod.setTargetTriple(C.DefaultTriple);
+    Mod.setTargetTriple(Triple::normalize(C.DefaultTriple));
 
   std::string Msg;
   const Target *T = TargetRegistry::lookupTarget(Mod.getTargetTriple(), Msg);

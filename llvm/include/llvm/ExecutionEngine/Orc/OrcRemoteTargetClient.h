@@ -188,7 +188,10 @@ public:
                            sys::Memory::MF_READ))
           return true;
 
-        if (copyAndProtect(ObjAllocs.RWDataAllocs, ObjAllocs.RemoteRWDataAddr,
+        // We may have allocated memory for GOT entries that we ended up not
+        // needing. Do not treat this as an error.
+        if (ObjAllocs.RWDataAllocs.size() &&
+            copyAndProtect(ObjAllocs.RWDataAllocs, ObjAllocs.RemoteRWDataAddr,
                            sys::Memory::MF_READ | sys::Memory::MF_WRITE))
           return true;
       }

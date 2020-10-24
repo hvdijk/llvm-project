@@ -383,7 +383,7 @@ TEST_F(HostTest, AIXVersionDetect) {
               std::tie(HostMajor, HostMinor));
   }
 
-  llvm::Triple TargetTriple(getDefaultTargetTriple());
+  llvm::Triple TargetTriple(Triple::normalize(getDefaultTargetTriple()));
   if (TargetTriple.getOS() != Triple::AIX)
     return;
 

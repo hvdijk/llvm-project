@@ -39,6 +39,19 @@ static bool supportsX86_64(uint64_t Type) {
   }
 }
 
+static bool supportsX86_64_X32(uint64_t Type) {
+  switch (Type) {
+  case ELF::R_X86_64_NONE:
+  case ELF::R_X86_64_DTPOFF32:
+  case ELF::R_X86_64_PC32:
+  case ELF::R_X86_64_32:
+  case ELF::R_X86_64_32S:
+    return true;
+  default:
+    return false;
+  }
+}
+
 static uint64_t resolveX86_64(RelocationRef R, uint64_t S, uint64_t A) {
   switch (R.getType()) {
   case ELF::R_X86_64_NONE:
@@ -643,6 +656,8 @@ getRelocationResolver(const ObjectFile &Obj) {
            "Invalid word size in object file");
 
     switch (Obj.getArch()) {
+    case Triple::x86_64:
+      return {supportsX86_64_X32, resolveX86_64};
     case Triple::x86:
       return {supportsX86, resolveX86};
     case Triple::ppc:

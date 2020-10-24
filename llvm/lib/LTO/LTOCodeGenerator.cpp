@@ -344,7 +344,7 @@ bool LTOCodeGenerator::determineTarget() {
 
   TripleStr = MergedModule->getTargetTriple();
   if (TripleStr.empty()) {
-    TripleStr = sys::getDefaultTargetTriple();
+    TripleStr = Triple::normalize(sys::getDefaultTargetTriple());
     MergedModule->setTargetTriple(TripleStr);
   }
   llvm::Triple Triple(TripleStr);

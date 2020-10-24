@@ -448,7 +448,7 @@ static int compileModule(char **argv, LLVMContext &Context) {
         IRTargetTriple = Triple::normalize(TargetTriple);
       TheTriple = Triple(IRTargetTriple);
       if (TheTriple.getTriple().empty())
-        TheTriple.setTriple(sys::getDefaultTargetTriple());
+        TheTriple.setTriple(Triple::normalize(sys::getDefaultTargetTriple()));
 
       std::string Error;
       TheTarget =
@@ -491,7 +491,7 @@ static int compileModule(char **argv, LLVMContext &Context) {
   } else {
     TheTriple = Triple(Triple::normalize(TargetTriple));
     if (TheTriple.getTriple().empty())
-      TheTriple.setTriple(sys::getDefaultTargetTriple());
+      TheTriple.setTriple(Triple::normalize(sys::getDefaultTargetTriple()));
 
     // Get the target specific parser.
     std::string Error;

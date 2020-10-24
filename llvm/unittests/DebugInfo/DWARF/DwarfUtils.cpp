@@ -35,16 +35,13 @@ Triple llvm::dwarf::utils::getNormalizedDefaultTargetTriple() {
 Triple llvm::dwarf::utils::getDefaultTargetTripleForAddrSize(uint8_t AddrSize) {
   Triple T = getNormalizedDefaultTargetTriple();
 
-  assert((AddrSize == 4 || AddrSize == 8) &&
-         "Only 32-bit/64-bit address size variants are supported");
-
-  // If a 32-bit/64-bit address size was specified, try to convert the triple
-  // if it is for the wrong variant.
-  if (AddrSize == 8 && T.isArch32Bit())
+  if (AddrSize == 8)
     return T.get64BitArchVariant();
-  if (AddrSize == 4 && T.isArch64Bit())
+
+  if (AddrSize == 4)
     return T.get32BitArchVariant();
-  return T;
+
+  llvm_unreachable("Only 32-bit/64-bit address size variants are supported");
 }
 
 bool llvm::dwarf::utils::isConfigurationSupported(Triple &T) {

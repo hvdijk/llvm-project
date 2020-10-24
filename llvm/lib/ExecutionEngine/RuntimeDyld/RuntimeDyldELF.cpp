@@ -1933,7 +1933,8 @@ bool RuntimeDyldELF::relocationNeedsGot(const RelocationRef &R) const {
            RelTy == ELF::R_AARCH64_LD64_GOT_LO12_NC;
 
   if (Arch == Triple::x86_64)
-    return RelTy == ELF::R_X86_64_GOTPCREL ||
+    return RelTy == ELF::R_X86_64_PLT32 ||
+           RelTy == ELF::R_X86_64_GOTPCREL ||
            RelTy == ELF::R_X86_64_GOTPCRELX ||
            RelTy == ELF::R_X86_64_GOT64 ||
            RelTy == ELF::R_X86_64_REX_GOTPCRELX;

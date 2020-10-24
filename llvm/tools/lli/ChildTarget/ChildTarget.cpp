@@ -12,7 +12,11 @@ using namespace llvm::orc;
 using namespace llvm::sys;
 
 #ifdef __x86_64__
+#ifndef __ILP32__
 typedef OrcX86_64_SysV HostOrcArch;
+#else
+typedef OrcX32 HostOrcArch;
+#endif
 #else
 typedef OrcGenericABI HostOrcArch;
 #endif

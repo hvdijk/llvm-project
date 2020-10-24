@@ -201,7 +201,7 @@ LTOModule::makeLTOModule(MemoryBufferRef Buffer, const TargetOptions &options,
 
   std::string TripleStr = M->getTargetTriple();
   if (TripleStr.empty())
-    TripleStr = sys::getDefaultTargetTriple();
+    TripleStr = Triple::normalize(sys::getDefaultTargetTriple());
   llvm::Triple Triple(TripleStr);
 
   // find machine architecture for this module

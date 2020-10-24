@@ -401,6 +401,67 @@ void OrcX86_64_Win32::writeResolverCode(char *ResolverWorkingMem,
          sizeof(uint64_t));
 }
 
+void OrcX32::writeResolverCode(char *ResolverWorkingMem,
+                               JITTargetAddress ResolverTargetAddress,
+                               JITTargetAddress ReentryFnAddr,
+                               JITTargetAddress ReentryCtxAddr) {
+
+  const uint8_t ResolverCode[] = {
+      // resolver_entry:
+      0x55,                               // 0x00: pushq     %rbp
+      0x89, 0xe5,                         // 0x01: movl      %esp, %ebp
+      0x50,                               // 0x03: pushq     %rax
+      0x53,                               // 0x04: pushq     %rbx
+      0x51,                               // 0x05: pushq     %rcx
+      0x52,                               // 0x06: pushq     %rdx
+      0x56,                               // 0x07: pushq     %rsi
+      0x57,                               // 0x08: pushq     %rdi
+      0x41, 0x50,                         // 0x09: pushq     %r8
+      0x41, 0x51,                         // 0x0b: pushq     %r9
+      0x41, 0x52,                         // 0x0d: pushq     %r10
+      0x41, 0x53,                         // 0x0f: pushq     %r11
+      0x41, 0x54,                         // 0x11: pushq     %r12
+      0x41, 0x55,                         // 0x13: pushq     %r13
+      0x41, 0x56,                         // 0x15: pushq     %r14
+      0x41, 0x57,                         // 0x17: pushq     %r15
+      0x81, 0xec, 0x08, 0x02, 0x00, 0x00, // 0x19: subl      $0x208, %esp
+      0x48, 0x0f, 0xae, 0x04, 0x24,       // 0x1f: fxsave64  (%rsp)
+      0xbf, 0x00, 0x00, 0x00, 0x00,       // 0x24: movl      $<cbmgr>, %edi
+      0x8b, 0x75, 0x08,                   // 0x29: movl      8(%rbp), %esi
+      0x83, 0xee, 0x06,                   // 0x2c: subl      $6, %esi
+      0xb8, 0x00, 0x00, 0x00, 0x00,       // 0x2f: movl      $<reentry>, %eax
+      0xff, 0xd0,                         // 0x34: callq     *%rax
+      0x89, 0x45, 0x08,                   // 0x36: movl      %eax, 8(%rbp)
+      0x48, 0x0f, 0xae, 0x0c, 0x24,       // 0x39: fxrstor64 (%rsp)
+      0x81, 0xc4, 0x08, 0x02, 0x00, 0x00, // 0x3e: addl      $0x208, %esp
+      0x41, 0x5f,                         // 0x44: popq      %r15
+      0x41, 0x5e,                         // 0x46: popq      %r14
+      0x41, 0x5d,                         // 0x48: popq      %r13
+      0x41, 0x5c,                         // 0x4a: popq      %r12
+      0x41, 0x5b,                         // 0x4c: popq      %r11
+      0x41, 0x5a,                         // 0x4e: popq      %r10
+      0x41, 0x59,                         // 0x50: popq      %r9
+      0x41, 0x58,                         // 0x52: popq      %r8
+      0x5f,                               // 0x54: popq      %rdi
+      0x5e,                               // 0x55: popq      %rsi
+      0x5a,                               // 0x56: popq      %rdx
+      0x59,                               // 0x57: popq      %rcx
+      0x5b,                               // 0x58: popq      %rbx
+      0x58,                               // 0x59: popq      %rax
+      0x5d,                               // 0x5a: popq      %rbp
+      0xc3,                               // 0x5b: retq
+  };
+
+  const unsigned ReentryFnAddrOffset = 0x30;
+  const unsigned ReentryCtxAddrOffset = 0x25;
+
+  memcpy(ResolverWorkingMem, ResolverCode, sizeof(ResolverCode));
+  memcpy(ResolverWorkingMem + ReentryFnAddrOffset, &ReentryFnAddr,
+         sizeof(uint32_t));
+  memcpy(ResolverWorkingMem + ReentryCtxAddrOffset, &ReentryCtxAddr,
+         sizeof(uint32_t));
+}
+
 void OrcI386::writeResolverCode(char *ResolverWorkingMem,
                                 JITTargetAddress ResolverTargetAddress,
                                 JITTargetAddress ReentryFnAddr,
