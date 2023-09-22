@@ -5154,6 +5154,72 @@ MDNode *llvm::upgradeInstructionLoopAttachment(MDNode &N) {
   return MDTuple::get(T->getContext(), Ops);
 }
 
+static std::pair<std::string, Regex> computeX86DataLayout(const Triple &TT) {
+  std::string Expected;
+  std::string UpgradableRegex;
+
+  auto AppendRegex = [&](StringRef E, StringRef R) {
+    Expected += E;
+    UpgradableRegex += R;
+  };
+
+  auto Append = [&](StringRef S) {
+    Expected += S;
+    UpgradableRegex += S;
+  };
+
+  auto AppendOptional = [&](StringRef S) {
+    Expected += S;
+    UpgradableRegex += ("(" + S + ")?").str();
+  };
+
+  // X86 is little endian
+  Append("e");
+
+  Append(DataLayout::getManglingComponent(TT));
+  // X86 and x32 have 32 bit pointers.
+  if (!TT.isArch64Bit() || TT.isX32() || TT.isOSNaCl())
+    Append("-p:32:32");
+
+  // Address spaces for 32 bit signed, 32 bit unsigned, and 64 bit pointers.
+  AppendOptional("-p270:32:32-p271:32:32-p272:64:64");
+
+  // Some ABIs align 64 bit integers and doubles to 64 bits, others to 32.
+  if (TT.isArch64Bit() || TT.isOSWindows() || TT.isOSNaCl())
+    Append("-i64:64");
+  else if (TT.isOSIAMCU())
+    Append("-i64:32-f64:32");
+  else
+    Append("-f64:32:64");
+
+  // Some ABIs align long double to 128 bits, others to 32.
+  if (TT.isOSNaCl() || TT.isOSIAMCU())
+    ; // No f80
+  else if (TT.isArch64Bit() || TT.isOSDarwin())
+    Append("-f80:128");
+  else if (TT.isWindowsMSVCEnvironment())
+    AppendRegex("-f80:128", "-f80:(32|128)");
+  else
+    Append("-f80:32");
+
+  if (TT.isOSIAMCU())
+    Append("-f128:32");
+
+  // The registers can hold 8, 16, 32 or, in x86-64, 64 bits.
+  if (TT.isArch64Bit())
+    Append("-n8:16:32:64");
+  else
+    Append("-n8:16:32");
+
+  // The stack is aligned to 32 bits on some ABIs and 128 bits on others.
+  if ((!TT.isArch64Bit() && TT.isOSWindows()) || TT.isOSIAMCU())
+    Append("-a:0:32-S32");
+  else
+    Append("-S128");
+
+  return {Expected, Regex(UpgradableRegex)};
+}
+
 std::string llvm::UpgradeDataLayoutString(StringRef DL, StringRef TT) {
   Triple T(TT);
   // The only data layout upgrades needed for pre-GCN are setting the address
@@ -5197,27 +5263,10 @@ std::string llvm::UpgradeDataLayoutString(StringRef DL, StringRef TT) {
     return Res;
   }
 
-  if (!T.isX86())
-    return Res;
-
-  // If the datalayout matches the expected format, add pointer size address
-  // spaces to the datalayout.
-  std::string AddrSpaces = "-p270:32:32-p271:32:32-p272:64:64";
-  if (!DL.contains(AddrSpaces)) {
-    SmallVector<StringRef, 4> Groups;
-    Regex R("(e-m:[a-z](-p:32:32)?)(-[if]64:.*$)");
-    if (R.match(DL, &Groups))
-      Res = (Groups[1] + AddrSpaces + Groups[3]).str();
-  }
-
-  // For 32-bit MSVC targets, raise the alignment of f80 values to 16 bytes.
-  // Raising the alignment is safe because Clang did not produce f80 values in
-  // the MSVC environment before this upgrade was added.
-  if (T.isWindowsMSVCEnvironment() && !T.isArch64Bit()) {
-    StringRef Ref = Res;
-    auto I = Ref.find("-f80:32-");
-    if (I != StringRef::npos)
-      Res = (Ref.take_front(I) + "-f80:128-" + Ref.drop_front(I + 8)).str();
+  if (T.isX86()) {
+    auto [Expected, Upgradable] = computeX86DataLayout(T);
+    if (Upgradable.match(DL))
+      return Expected;
   }
 
   return Res;
