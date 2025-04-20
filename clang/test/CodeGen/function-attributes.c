@@ -43,9 +43,8 @@ void f9(void) { f9_t(); }
 _Noreturn void f9a(void);
 void f9b(void) { f9a(); }
 
-// FIXME: We should be setting nounwind on calls.
 // CHECK: call i32 @f10_t()
-// CHECK: [[NUW_RN:#[0-9]+]]
+// CHECK: [[RN:#[0-9]+]]
 // CHECK: {
 int __attribute__((const)) f10_t(void);
 int f10(void) { return f10_t(); }
@@ -115,5 +114,5 @@ void f20(void) {
 // CHECK: attributes [[SR]] = { nounwind optsize{{.*}} "stackrealign"{{.*}} }
 // CHECK: attributes [[RT]] = { nounwind optsize returns_twice{{.*}} }
 // CHECK: attributes [[NR]] = { noreturn optsize }
-// CHECK: attributes [[NUW_RN]] = { nounwind optsize willreturn memory(none) }
+// CHECK: attributes [[RN]] = { optsize willreturn memory(none) }
 // CHECK: attributes [[RT_CALL]] = { optsize returns_twice }
