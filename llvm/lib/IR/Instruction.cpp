@@ -1196,6 +1196,10 @@ bool Instruction::mayThrow(bool IncludePhaseOneUnwind) const {
 }
 
 bool Instruction::mayHaveSideEffects() const {
+  if (const auto *CB = dyn_cast<CallBase>(this))
+    if (CB->hasFnAttr(Attribute::NoSideEffects))
+      return false;
+
   return mayWriteToMemory() || mayThrow() || !willReturn();
 }
 

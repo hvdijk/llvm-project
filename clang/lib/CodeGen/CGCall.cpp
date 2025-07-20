@@ -2493,21 +2493,21 @@ void CodeGenModule::ConstructAttributeList(StringRef Name,
         FuncAttrs.addAttribute(llvm::Attribute::NoMerge);
     }
 
-    // 'const', 'pure' and 'noalias' attributed functions are also nounwind.
+    // 'const', 'pure' and 'noalias' attributed functions are also nosideeffects.
     if (TargetDecl->hasAttr<ConstAttr>()) {
       FuncAttrs.addMemoryAttr(llvm::MemoryEffects::none());
-      FuncAttrs.addAttribute(llvm::Attribute::NoUnwind);
+      FuncAttrs.addAttribute(llvm::Attribute::NoSideEffects);
       // gcc specifies that 'const' functions have greater restrictions than
       // 'pure' functions, so they also cannot have infinite loops.
       FuncAttrs.addAttribute(llvm::Attribute::WillReturn);
     } else if (TargetDecl->hasAttr<PureAttr>()) {
       FuncAttrs.addMemoryAttr(llvm::MemoryEffects::readOnly());
-      FuncAttrs.addAttribute(llvm::Attribute::NoUnwind);
+      FuncAttrs.addAttribute(llvm::Attribute::NoSideEffects);
       // gcc specifies that 'pure' functions cannot have infinite loops.
       FuncAttrs.addAttribute(llvm::Attribute::WillReturn);
     } else if (TargetDecl->hasAttr<NoAliasAttr>()) {
       FuncAttrs.addMemoryAttr(llvm::MemoryEffects::inaccessibleOrArgMemOnly());
-      FuncAttrs.addAttribute(llvm::Attribute::NoUnwind);
+      FuncAttrs.addAttribute(llvm::Attribute::NoSideEffects);
     }
     if (const auto *RA = TargetDecl->getAttr<RestrictAttr>();
         RA && RA->getDeallocator() == nullptr)

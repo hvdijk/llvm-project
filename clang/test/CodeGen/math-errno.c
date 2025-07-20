@@ -62,5 +62,5 @@ float f3(float x) {
 // NOOPT:  call float @sqrtf(float noundef %0) #[[ATTR4_NOOPT:[0-9]+]]
 
 // CHECK: [[ATTR4_O2]] = { nounwind }
-// FAST: [[ATTR3_FAST]] =  { nounwind willreturn memory(none) }
+// FAST: [[ATTR3_FAST]] =  { nosideeffects nounwind willreturn memory(none) }
 // NOOPT: [[ATTR4_NOOPT]] = { nounwind }

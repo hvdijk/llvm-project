@@ -241,6 +241,9 @@ def SkipProfile : EnumAttr<"skipprofile", IntersectPreserve, [FnAttr]>;
 /// Function doesn't unwind stack.
 def NoUnwind : EnumAttr<"nounwind", IntersectAnd, [FnAttr]>;
 
+/// Function doesn't have side effects.
+def NoSideEffects : EnumAttr<"nosideeffects", IntersectAnd, [FnAttr]>;
+
 /// No SanitizeBounds instrumentation.
 def NoSanitizeBounds : EnumAttr<"nosanitize_bounds", IntersectPreserve, [FnAttr]>;
 
