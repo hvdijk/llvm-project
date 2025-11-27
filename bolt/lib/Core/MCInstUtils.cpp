@@ -40,6 +40,11 @@ MCInstReference MCInstReference::get(const MCInst &Inst,
   llvm_unreachable("Inst is not contained in BF");
 }
 
+MCInstMutableReference MCInstMutableReference::get(MCInst &Inst,
+                                                   BinaryFunction &BF) {
+  return MCInstMutableReference(MCInstReference::get(Inst, BF));
+}
+
 uint64_t MCInstReference::computeAddress(const MCCodeEmitter *Emitter) const {
   assert(!empty() && "Taking instruction address by empty reference");
 
@@ -83,4 +88,24 @@ raw_ostream &MCInstReference::print(raw_ostream &OS) const {
     OS << "BF:" << Ref.BF->getPrintName() << ":" << Ref.It->first;
   OS << ">";
   return OS;
+}
+
+std::optional<MCInstReference> MCInstReference::getSinglePredecessor() const {
+  if (const RefInBB *Ref = tryGetRefInBB()) {
+    if (Ref->Index != 0)
+      return MCInstReference(*Ref->BB, Ref->Index - 1);
+
+    if (Ref->BB->pred_size() != 1)
+      return std::nullopt;
+
+    BinaryBasicBlock &PredBB = **Ref->BB->pred_begin();
+    assert(!PredBB.empty() && "Empty basic blocks are not supported yet");
+    return MCInstReference(PredBB, *PredBB.rbegin());
+  }
+
+  const RefInBF &Ref = getRefInBF();
+  if (Ref.It == Ref.BF->instrs().begin())
+    return std::nullopt;
+
+  return MCInstReference(*Ref.BF, std::prev(Ref.It));
 }
