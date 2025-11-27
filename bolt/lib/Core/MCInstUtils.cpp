@@ -74,3 +74,20 @@ raw_ostream &MCInstReference::print(raw_ostream &OS) const {
   OS << ">";
   return OS;
 }
+
+std::optional<MCInstReference> MCInstReference::getSinglePredecessor() const {
+  if (const auto *BB = getBasicBlock()) {
+    if (&getMCInst() != &BB->front())
+      return MCInstReference(*BB, (&getMCInst())[-1]);
+
+    if (BB->pred_size() != 1)
+      return std::nullopt;
+
+    BinaryBasicBlock &PredBB = **BB->pred_begin();
+    assert(!PredBB.empty() && "Empty basic blocks are not supported yet");
+    return MCInstReference(
+        BinaryFunction::instr_const_iterator(PredBB, *std::prev(PredBB.end())));
+  }
+
+  return std::nullopt;
+}

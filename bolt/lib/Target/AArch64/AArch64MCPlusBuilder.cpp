@@ -429,16 +429,86 @@ public:
 
   std::optional<MCPhysReg>
   getMaterializedAddressRegForPtrAuth(MCInstReference Point) const override {
+    using namespace LowLevelInstMatcherDSL;
+
+    struct ImmOrGOTRelocValue {
+      int64_t Value;
+      bool IsGOTReloc;
+
+      bool operator==(ImmOrGOTRelocValue Other) const {
+        return Value == Other.Value && IsGOTReloc == Other.IsGOTReloc;
+      }
+    };
+
+    struct ImmOrGOTReloc : OpMatcher<ImmOrGOTRelocValue> {
+      using Value = ImmOrGOTRelocValue;
+
+      ImmOrGOTReloc() : OpMatcher<Value>(std::nullopt) {}
+
+      bool matches(const MCOperand &Op) const {
+        if (Op.isImm())
+          return matchValue(Value{Op.getImm(), false});
+        if (!Op.isExpr())
+          return false;
+        auto *SpecifierExpr = dyn_cast<MCSpecifierExpr>(Op.getExpr());
+        if (!SpecifierExpr)
+          return false;
+        auto *BinaryExpr = dyn_cast<MCBinaryExpr>(SpecifierExpr->getSubExpr());
+        if (!BinaryExpr || BinaryExpr->getOpcode() != MCBinaryExpr::Add)
+          return false;
+        auto *SymbolRefExpr = dyn_cast<MCSymbolRefExpr>(BinaryExpr->getLHS());
+        if (!SymbolRefExpr ||
+            SymbolRefExpr->getSymbol().getName() != "__BOLT_got_zero")
+          return false;
+        auto *ConstantExpr = dyn_cast<MCConstantExpr>(BinaryExpr->getRHS());
+        if (!ConstantExpr)
+          return false;
+        return matchValue(Value{ConstantExpr->getValue(), true});
+      }
+    };
+
     const MCInst &Inst = Point;
-    switch (Inst.getOpcode()) {
-    case AArch64::ADR:
-    case AArch64::ADRP:
+    Reg DstReg;
+    Reg SrcReg;
+    ImmOrGOTReloc Imm;
+    if (matchInst(Inst, AArch64::ADR, DstReg) ||
+        matchInst(Inst, AArch64::ADRP, DstReg)) {
       // These instructions produce an address value based on the information
       // encoded into the instruction itself (which should reside in a read-only
       // code memory) and the value of PC register (that is, the location of
       // this instruction), so the produced value is not attacker-controlled.
-      return Inst.getOperand(0).getReg();
-    default:
+      return DstReg.get();
+    } else if (matchInst(Inst, AArch64::LDRXui, DstReg, SrcReg, Imm)) {
+      // This instruction loads a value from memory. If the address is constant
+      // and refers to read-only memory, the produced value is not
+      // attacker-controlled.
+      // At the moment this only handles loads from the GOT.
+      auto PrevPoint = Point.getSinglePredecessor();
+      if (!PrevPoint)
+        return std::nullopt;
+      const MCInst &PrevInst = *PrevPoint;
+      ImmOrGOTReloc AdrpImm;
+      if (!matchInst(PrevInst, AArch64::ADRP, SrcReg, AdrpImm))
+        return std::nullopt;
+      auto *BF = Point.getFunction();
+      auto &BC = BF->getBinaryContext();
+      int64_t TargetAddress;
+      if (AdrpImm.get().IsGOTReloc && Imm.get().IsGOTReloc) {
+        // If we have relocations, they contain an absolute address.
+        TargetAddress = AdrpImm.get().Value + Imm.get().Value;
+      } else if (!AdrpImm.get().IsGOTReloc && !Imm.get().IsGOTReloc) {
+        // If we don't have relocations, the ADRP operand is PC-relative, and
+        // both instruction operands have implicit trailing zeroes.
+        TargetAddress = (PrevPoint->computeAddress() & ~0xfff) +
+                        (AdrpImm.get().Value << 12) + (Imm.get().Value << 3);
+      } else {
+        return std::nullopt;
+      }
+      auto Section = BC.getSectionForAddress(TargetAddress);
+      if (!Section || (Section->isWritable() && !Section->isRelro()))
+        return std::nullopt;
+      return DstReg.get();
+    } else {
       return std::nullopt;
     }
   }
