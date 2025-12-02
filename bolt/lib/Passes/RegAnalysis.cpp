@@ -203,6 +203,9 @@ BitVector RegAnalysis::getFunctionUsedRegsList(const BinaryFunction *Func) {
 
   for (const BinaryBasicBlock &BB : *Func) {
     for (const MCInst &Inst : BB) {
+      const MCInstrDesc &Desc = BC.MII->get(Inst.getOpcode());
+      if (Desc.hasUnmodeledSideEffects() && !Desc.isReturn())
+        beConservative(UsedRegs);
       getInstUsedRegsList(Inst, UsedRegs, /*GetClobbers*/ false);
       if (UsedRegs.all())
         return UsedRegs;
@@ -222,6 +225,9 @@ BitVector RegAnalysis::getFunctionClobberList(const BinaryFunction *Func) {
 
   for (const BinaryBasicBlock &BB : *Func) {
     for (const MCInst &Inst : BB) {
+      const MCInstrDesc &Desc = BC.MII->get(Inst.getOpcode());
+      if (Desc.hasUnmodeledSideEffects() && !Desc.isReturn())
+        beConservative(RegsKilled);
       getInstClobberList(Inst, RegsKilled);
       if (RegsKilled.all())
         return RegsKilled;

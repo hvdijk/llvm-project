@@ -182,6 +182,7 @@ f_detect_clobbered_x30_passed_to_other:
         .globl  f_tail_called
         .type   f_tail_called,@function
 f_tail_called:
+        svc   #0
         ret
         .size f_tail_called, .-f_tail_called
 
@@ -968,6 +969,6 @@ f_autib171615:
         .globl  g
         .type   g,@function
 g:
-        nop
+        svc   #0
         ret
         .size g, .-g

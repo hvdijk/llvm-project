@@ -10,13 +10,20 @@
         .globl  callee
         .type   callee,@function
 callee:
+        svc     #0
         ret
         .size callee, .-callee
 
-        .globl  good_direct_call
-        .type   good_direct_call,@function
-good_direct_call:
-// CHECK-NOT: good_direct_call
+        .globl  empty
+        .type   empty,@function
+empty:
+        ret
+        .size empty, .-empty
+
+        .globl  good_direct_call_callee
+        .type   good_direct_call_callee,@function
+good_direct_call_callee:
+// CHECK-NOT: good_direct_call_callee
         paciasp
         stp     x29, x30, [sp, #-16]!
         mov     x29, sp
@@ -26,7 +33,17 @@ good_direct_call:
         ldp     x29, x30, [sp], #16
         autiasp
         ret
-        .size good_direct_call, .-good_direct_call
+        .size good_direct_call_callee, .-good_direct_call_callee
+
+        .globl  good_direct_call_empty
+        .type   good_direct_call_empty,@function
+good_direct_call_empty:
+// CHECK-NOT: good_direct_call_empty
+        mov     x0, x30
+        bl      empty
+        mov     x30, x0
+        ret
+        .size good_direct_call_empty, .-good_direct_call_empty
 
         .globl  good_indirect_call_arg
         .type   good_indirect_call_arg,@function

@@ -6,6 +6,7 @@
         .globl  raise_error
         .type   raise_error,@function
 raise_error:
+        svc   #0
         ret
         .size raise_error, .-raise_error
 

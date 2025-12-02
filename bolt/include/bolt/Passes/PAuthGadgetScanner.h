@@ -157,6 +157,7 @@ struct FunctionAnalysisResult {
 /// A helper class storing per-function context to be instantiated by Analysis.
 class FunctionAnalysisContext {
   BinaryContext &BC;
+  const std::map<const BinaryFunction *, BitVector> &FCL;
   BinaryFunction &BF;
   MCPlusBuilder::AllocatorIdTy AllocatorId;
   FunctionAnalysisResult Result;
@@ -174,10 +175,11 @@ class FunctionAnalysisContext {
   void handleSimpleReports(SmallVector<PartialReport<MCPhysReg>> &Reports);
 
 public:
-  FunctionAnalysisContext(BinaryFunction &BF,
-                          MCPlusBuilder::AllocatorIdTy AllocatorId,
-                          bool PacRetGadgetsOnly)
-      : BC(BF.getBinaryContext()), BF(BF), AllocatorId(AllocatorId),
+  FunctionAnalysisContext(
+      BinaryFunction &BF,
+      const std::map<const BinaryFunction *, BitVector> &FCL,
+      MCPlusBuilder::AllocatorIdTy AllocatorId, bool PacRetGadgetsOnly)
+      : BC(BF.getBinaryContext()), FCL(FCL), BF(BF), AllocatorId(AllocatorId),
         PacRetGadgetsOnly(PacRetGadgetsOnly) {}
 
   void run();
@@ -190,6 +192,7 @@ class Analysis : public BinaryFunctionPass {
   bool PacRetGadgetsOnly;
 
   void runOnFunction(BinaryFunction &Function,
+                     const std::map<const BinaryFunction *, BitVector> &FCL,
                      MCPlusBuilder::AllocatorIdTy AllocatorId);
 
   std::map<const BinaryFunction *, FunctionAnalysisResult> AnalysisResults;
