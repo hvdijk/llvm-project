@@ -6901,11 +6901,11 @@ bool llvm::rewriteAArch64FrameIndex(MachineInstr &MI, unsigned FrameRegIdx,
 void AArch64InstrInfo::insertNoop(MachineBasicBlock &MBB,
                                   MachineBasicBlock::iterator MI) const {
   DebugLoc DL;
-  BuildMI(MBB, MI, DL, get(AArch64::HINT)).addImm(0);
+  BuildMI(MBB, MI, DL, get(AArch64::NOP));
 }
 
 MCInst AArch64InstrInfo::getNop() const {
-  return MCInstBuilder(AArch64::HINT).addImm(0);
+  return MCInstBuilder(AArch64::NOP);
 }
 
 // AArch64 supports MachineCombiner.
