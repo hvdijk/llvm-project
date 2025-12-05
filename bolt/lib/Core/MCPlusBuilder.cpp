@@ -450,6 +450,10 @@ void MCPlusBuilder::getClobberedRegs(const MCInst &Inst,
     return;
 
   const MCInstrDesc &InstInfo = Info->get(Inst.getOpcode());
+  if (InstInfo.hasUnmodeledSideEffects()) {
+    Regs.set();
+    return;
+  }
 
   for (MCPhysReg ImplicitDef : InstInfo.implicit_defs())
     Regs |= getAliases(ImplicitDef, /*OnlySmaller=*/false);
@@ -465,6 +469,10 @@ void MCPlusBuilder::getTouchedRegs(const MCInst &Inst, BitVector &Regs) const {
     return;
 
   const MCInstrDesc &InstInfo = Info->get(Inst.getOpcode());
+  if (InstInfo.hasUnmodeledSideEffects()) {
+    Regs.set();
+    return;
+  }
 
   for (MCPhysReg ImplicitDef : InstInfo.implicit_defs())
     Regs |= getAliases(ImplicitDef, /*OnlySmaller=*/false);
@@ -483,6 +491,10 @@ void MCPlusBuilder::getWrittenRegs(const MCInst &Inst, BitVector &Regs) const {
     return;
 
   const MCInstrDesc &InstInfo = Info->get(Inst.getOpcode());
+  if (InstInfo.hasUnmodeledSideEffects()) {
+    Regs.set();
+    return;
+  }
 
   for (MCPhysReg ImplicitDef : InstInfo.implicit_defs())
     Regs |= getAliases(ImplicitDef, /*OnlySmaller=*/true);
@@ -498,6 +510,10 @@ void MCPlusBuilder::getUsedRegs(const MCInst &Inst, BitVector &Regs) const {
     return;
 
   const MCInstrDesc &InstInfo = Info->get(Inst.getOpcode());
+  if (InstInfo.hasUnmodeledSideEffects()) {
+    Regs.set();
+    return;
+  }
 
   for (MCPhysReg ImplicitUse : InstInfo.implicit_uses())
     Regs |= getAliases(ImplicitUse, /*OnlySmaller=*/true);
@@ -530,6 +546,10 @@ void MCPlusBuilder::getSrcRegs(const MCInst &Inst, BitVector &Regs) const {
     getRepRegs(Regs);
 
   const MCInstrDesc &InstInfo = Info->get(Inst.getOpcode());
+  if (InstInfo.hasUnmodeledSideEffects()) {
+    Regs.set();
+    return;
+  }
 
   for (MCPhysReg ImplicitUse : InstInfo.implicit_uses())
     Regs |= getAliases(ImplicitUse, /*OnlySmaller=*/true);
