@@ -2573,10 +2573,10 @@ drps
 # CHECK-NEXT:  2      1     0.25                        bl	#134217724
 # CHECK-NEXT:  1      1     0.25                        br	x20
 # CHECK-NEXT:  2      1     0.25                        blr	xzr
-# CHECK-NEXT:  1      1     0.25                  U     ret	x10
-# CHECK-NEXT:  1      1     0.25                  U     ret
-# CHECK-NEXT:  1      1     0.25                  U     eret
-# CHECK-NEXT:  1      1     0.25                  U     drps
+# CHECK-NEXT:  1      1     0.25                        ret	x10
+# CHECK-NEXT:  1      1     0.25                        ret
+# CHECK-NEXT:  1      1     0.25                        eret
+# CHECK-NEXT:  1      1     0.25                        drps
 
 # CHECK:      Resources:
 # CHECK-NEXT: [0.0] - OlympusUnitB
