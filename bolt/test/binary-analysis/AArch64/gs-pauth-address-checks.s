@@ -6,6 +6,7 @@
         .globl  raise_error
         .type   raise_error,@function
 raise_error:
+        brk     0xffff
         ret
         .size raise_error, .-raise_error
 

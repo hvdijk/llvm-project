@@ -20,6 +20,7 @@ sym:
         .globl  callee
         .type   callee,@function
 callee:
+        brk     0xffff
         ret
         .size callee, .-callee
 

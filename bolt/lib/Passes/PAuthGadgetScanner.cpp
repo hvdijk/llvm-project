@@ -80,8 +80,10 @@
 //===----------------------------------------------------------------------===//
 
 #include "bolt/Passes/PAuthGadgetScanner.h"
+#include "bolt/Core/BinaryFunctionCallGraph.h"
 #include "bolt/Core/ParallelUtilities.h"
 #include "bolt/Passes/DataflowAnalysis.h"
+#include "bolt/Passes/RegAnalysis.h"
 #include "bolt/Utils/CommandLineOpts.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/SmallSet.h"
@@ -316,21 +318,25 @@ void SrcStatePrinter::print(raw_ostream &OS, const SrcState &S) const {
 /// version for functions without reconstructed CFG.
 class SrcSafetyAnalysis {
 public:
-  SrcSafetyAnalysis(BinaryFunction &BF, ArrayRef<MCPhysReg> RegsToTrack)
-      : BC(BF.getBinaryContext()), NumRegs(BC.MRI->getNumRegs()),
-        RegsToTrack(RegsToTrack) {}
+  SrcSafetyAnalysis(BinaryFunction &BF,
+                    const std::map<const BinaryFunction *, BitVector> &FCL,
+                    ArrayRef<MCPhysReg> RegsToTrackInstsFor)
+      : BC(BF.getBinaryContext()), FCL(FCL), NumRegs(BC.MRI->getNumRegs()),
+        RegsToTrack(RegsToTrackInstsFor) {}
 
   virtual ~SrcSafetyAnalysis() {}
 
   static std::shared_ptr<SrcSafetyAnalysis>
-  create(BinaryFunction &BF, MCPlusBuilder::AllocatorIdTy AllocId,
-         ArrayRef<MCPhysReg> RegsToTrack);
+  create(BinaryFunction &BF,
+         const std::map<const BinaryFunction *, BitVector> &FCL,
+         MCPlusBuilder::AllocatorIdTy AllocId, ArrayRef<MCPhysReg> RegsToTrack);
 
   virtual void run() = 0;
   virtual const SrcState &getStateBefore(const MCInst &Inst) const = 0;
 
 protected:
   BinaryContext &BC;
+  const std::map<const BinaryFunction *, BitVector> &FCL;
   const unsigned NumRegs;
 
   /// The set of registers for which the dataflow analysis must compute the set
@@ -393,15 +399,22 @@ protected:
 
   BitVector getClobberedRegs(const MCInst &Point) const {
     BitVector Clobbered(NumRegs);
+    BC.MIB->getClobberedRegs(Point, Clobbered);
+
     // Assume a call can clobber all registers, including callee-saved
-    // registers. There's a good chance that callee-saved registers will be
+    // registers, unless we have determined that the callee does not write to
+    // the register at all. Callee-saved registers that are written to may be
     // saved on the stack at some point during execution of the callee.
     // Therefore they should also be considered as potentially modified by an
     // attacker/written to.
-    if (BC.MIB->isCall(Point))
-      Clobbered.set();
-    else
-      BC.MIB->getClobberedRegs(Point, Clobbered);
+    if (BC.MIB->isCall(Point)) {
+      if (BinaryFunction *Callee =
+              BC.getFunctionForSymbol(BC.MIB->getTargetSymbol(Point))) {
+        Clobbered |= FCL.at(Callee);
+      } else {
+        Clobbered.set();
+      }
+    }
     return Clobbered;
   }
 
@@ -622,10 +635,11 @@ class DataflowSrcSafetyAnalysis
   SrcState PessimisticState;
 
 public:
-  DataflowSrcSafetyAnalysis(BinaryFunction &BF,
-                            MCPlusBuilder::AllocatorIdTy AllocId,
-                            ArrayRef<MCPhysReg> RegsToTrack)
-      : SrcSafetyAnalysis(BF, RegsToTrack), DFParent(BF, AllocId) {}
+  DataflowSrcSafetyAnalysis(
+      BinaryFunction &BF,
+      const std::map<const BinaryFunction *, BitVector> &FCL,
+      MCPlusBuilder::AllocatorIdTy AllocId, ArrayRef<MCPhysReg> RegsToTrack)
+      : SrcSafetyAnalysis(BF, FCL, RegsToTrack), DFParent(BF, AllocId) {}
 
   const SrcState &getStateBefore(const MCInst &Inst) const override {
     return DFParent::getStateBefore(Inst).get();
@@ -779,10 +793,11 @@ class CFGUnawareSrcSafetyAnalysis : public SrcSafetyAnalysis,
   BinaryFunction &BF;
 
 public:
-  CFGUnawareSrcSafetyAnalysis(BinaryFunction &BF,
-                              MCPlusBuilder::AllocatorIdTy AllocId,
-                              ArrayRef<MCPhysReg> RegsToTrack)
-      : SrcSafetyAnalysis(BF, RegsToTrack),
+  CFGUnawareSrcSafetyAnalysis(
+      BinaryFunction &BF,
+      const std::map<const BinaryFunction *, BitVector> &FCL,
+      MCPlusBuilder::AllocatorIdTy AllocId, ArrayRef<MCPhysReg> RegsToTrack)
+      : SrcSafetyAnalysis(BF, FCL, RegsToTrack),
         CFGUnawareAnalysis(BF, AllocId, "CFGUnawareSrcSafetyAnalysis"), BF(BF) {
   }
 
@@ -820,14 +835,13 @@ public:
   }
 };
 
-std::shared_ptr<SrcSafetyAnalysis>
-SrcSafetyAnalysis::create(BinaryFunction &BF,
-                          MCPlusBuilder::AllocatorIdTy AllocId,
-                          ArrayRef<MCPhysReg> RegsToTrack) {
+std::shared_ptr<SrcSafetyAnalysis> SrcSafetyAnalysis::create(
+    BinaryFunction &BF, const std::map<const BinaryFunction *, BitVector> &FCL,
+    MCPlusBuilder::AllocatorIdTy AllocId, ArrayRef<MCPhysReg> RegsToTrack) {
   if (BF.isSimple())
-    return std::make_shared<DataflowSrcSafetyAnalysis>(BF, AllocId,
+    return std::make_shared<DataflowSrcSafetyAnalysis>(BF, FCL, AllocId,
                                                        RegsToTrack);
-  return std::make_shared<CFGUnawareSrcSafetyAnalysis>(BF, AllocId,
+  return std::make_shared<CFGUnawareSrcSafetyAnalysis>(BF, FCL, AllocId,
                                                        RegsToTrack);
 }
 
@@ -1539,7 +1553,7 @@ collectRegsToTrack(ArrayRef<PartialReport<MCPhysReg>> Reports) {
 
 void FunctionAnalysisContext::findUnsafeUses(
     SmallVector<PartialReport<MCPhysReg>> &Reports) {
-  auto Analysis = SrcSafetyAnalysis::create(BF, AllocatorId, {});
+  auto Analysis = SrcSafetyAnalysis::create(BF, FCL, AllocatorId, {});
   LLVM_DEBUG(dbgs() << "Running src register safety analysis...\n");
   Analysis->run();
   LLVM_DEBUG({
@@ -1625,7 +1639,7 @@ void FunctionAnalysisContext::augmentUnsafeUseReports(
     ArrayRef<PartialReport<MCPhysReg>> Reports) {
   SmallVector<MCPhysReg> RegsToTrack = collectRegsToTrack(Reports);
   // Re-compute the analysis with register tracking.
-  auto Analysis = SrcSafetyAnalysis::create(BF, AllocatorId, RegsToTrack);
+  auto Analysis = SrcSafetyAnalysis::create(BF, FCL, AllocatorId, RegsToTrack);
   LLVM_DEBUG(dbgs() << "\nRunning detailed src register safety analysis...\n");
   Analysis->run();
   LLVM_DEBUG({
@@ -1729,9 +1743,10 @@ void FunctionAnalysisContext::run() {
     augmentUnsafeDefReports(UnsafeDefs);
 }
 
-void Analysis::runOnFunction(BinaryFunction &BF,
-                             MCPlusBuilder::AllocatorIdTy AllocatorId) {
-  FunctionAnalysisContext FA(BF, AllocatorId, PacRetGadgetsOnly);
+void Analysis::runOnFunction(
+    BinaryFunction &BF, const std::map<const BinaryFunction *, BitVector> &FCL,
+    MCPlusBuilder::AllocatorIdTy AllocatorId) {
+  FunctionAnalysisContext FA(BF, FCL, AllocatorId, PacRetGadgetsOnly);
   FA.run();
 
   const FunctionAnalysisResult &FAR = FA.getResult();
@@ -1840,9 +1855,19 @@ void GenericDiagnostic::generateReport(raw_ostream &OS,
 }
 
 Error Analysis::runOnFunctions(BinaryContext &BC) {
+  BinaryFunctionCallGraph CG = buildCallGraph(BC);
+  RegAnalysis RA(BC, &BC.getBinaryFunctions(), &CG);
+
+  std::map<const BinaryFunction *, BitVector> FunctionClobberLists;
+
+  for (BinaryFunction *BF : BC.getAllBinaryFunctions()) {
+    // Pre-compute these as we cannot compute them in parallel.
+    FunctionClobberLists.insert({BF, RA.getFunctionClobberList(BF)});
+  }
+
   ParallelUtilities::WorkFuncWithAllocTy WorkFun =
       [&](BinaryFunction &BF, MCPlusBuilder::AllocatorIdTy AllocatorId) {
-        runOnFunction(BF, AllocatorId);
+        runOnFunction(BF, FunctionClobberLists, AllocatorId);
       };
 
   ParallelUtilities::PredicateTy SkipFunc = [&](const BinaryFunction &BF) {

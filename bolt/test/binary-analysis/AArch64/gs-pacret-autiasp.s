@@ -968,6 +968,6 @@ f_autib171615:
         .globl  g
         .type   g,@function
 g:
-        nop
+        brk     0xffff
         ret
         .size g, .-g
