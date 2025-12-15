@@ -2220,7 +2220,10 @@ class AuthReturn<bits<3> op, bits<1> M, string asm>
   let Inst{9-0} = 0b1111111111;
 }
 
-let mayLoad = 1 in
+// LDRAA/LDRAB instructions. Beware that mayLoad = 1 covers not just the memory
+// being read from, it also covers the system register holding the
+// authentication key. Hence, no MachineMemOperands should be used.
+let mayLoad = 1, hasSideEffects = 0 in
 class BaseAuthLoad<bit M, bit W, dag oops, dag iops, string asm,
                    string operands, string cstr>
   : I<oops, iops, asm, operands, cstr, []>, Sched<[]> {
