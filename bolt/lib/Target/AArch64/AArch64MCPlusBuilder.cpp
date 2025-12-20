@@ -1562,19 +1562,15 @@ public:
     return Uses;
   }
 
-  IndirectBranchType
-  analyzeIndirectBranch(MCInst &Instruction, InstructionIterator Begin,
-                        InstructionIterator End, const unsigned PtrSize,
-                        MCInst *&MemLocInstrOut, unsigned &BaseRegNumOut,
-                        unsigned &IndexRegNumOut, int64_t &DispValueOut,
-                        const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
-                        MCInst *&FixedEntryLoadInstr) const override {
+  IndirectBranchType analyzeIndirectBranch(
+      const BinaryFunction &BF, MCInst &Instruction, unsigned Size,
+      unsigned Offset, InstructionIterator Begin, InstructionIterator End,
+      const unsigned PtrSize, MCInst *&MemLocInstrOut, uint64_t &ArrayStartOut,
+      MCInst *&FixedEntryLoadInstr) const override {
     MemLocInstrOut = nullptr;
-    BaseRegNumOut = AArch64::NoRegister;
-    IndexRegNumOut = AArch64::NoRegister;
-    DispValueOut = 0;
-    DispExprOut = nullptr;
     FixedEntryLoadInstr = nullptr;
+
+    const auto &BC = BF.getBinaryContext();
 
     // An instruction referencing memory used by jump instruction (directly or
     // via register). This location could be an array of function pointers
@@ -1592,11 +1588,31 @@ public:
                                        DispValue, ScaleValue, PCRelBase))
       return IndirectBranchType::UNKNOWN;
 
+    uint64_t PCRelAddr = 0;
+    const MCSymbol *Sym = BC.MIB->getTargetSymbol(*PCRelBase, 1);
+    assert(Sym && "Symbol extraction failed");
+    ErrorOr<uint64_t> SymValueOrError = BC.getSymbolValue(*Sym);
+    if (SymValueOrError) {
+      PCRelAddr = *SymValueOrError;
+    } else {
+      PCRelAddr = BF.getAddress() + BF.getLabelOffset(Sym);
+    }
+
+    uint64_t InstrAddr = BF.getAddress() + BF.getInstructionOffset(*PCRelBase);
+
+    // We do this to avoid spurious references to code locations outside this
+    // function (for example, if the indirect jump lives in the last basic
+    // block of the function, it will create a reference to the next function).
+    // This replaces a symbol reference with an immediate.
+    BC.MIB->replaceMemOperandDisp(*PCRelBase,
+                                  MCOperand::createImm(PCRelAddr - InstrAddr));
+
     MemLocInstrOut = MemLocInstr;
-    DispValueOut = DispValue;
-    DispExprOut = DispExpr;
-    PCRelBaseOut = PCRelBase;
-    return IndirectBranchType::POSSIBLE_PIC_JUMP_TABLE;
+    ArrayStartOut = 0;
+
+    // FIXME: Disable full jump table processing for AArch64 until we have a
+    // proper way of determining the jump table limits.
+    return IndirectBranchType::UNKNOWN;
   }
 
   ///  Matches PLT entry pattern and returns the associated GOT entry address.

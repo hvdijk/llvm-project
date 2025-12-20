@@ -982,6 +982,16 @@ public:
   /// Create a global symbol without registering an address.
   MCSymbol *getOrCreateUndefinedGlobalSymbol(StringRef Name);
 
+  /// Resolves an expression to an address.
+  uint64_t getExprValue(const MCExpr *Expr) const {
+    const MCSymbol *TargetSym;
+    uint64_t TargetOffset;
+    std::tie(TargetSym, TargetOffset) = MIB->getTargetSymbolInfo(Expr);
+    ErrorOr<uint64_t> SymValueOrError = getSymbolValue(*TargetSym);
+    assert(SymValueOrError && "Global symbol needs a value");
+    return *SymValueOrError + TargetOffset;
+  };
+
   /// Register a symbol with \p Name at a given \p Address using \p Size,
   /// \p Alignment, and \p Flags. See llvm::SymbolRef::Flags for the definition
   /// of \p Flags.

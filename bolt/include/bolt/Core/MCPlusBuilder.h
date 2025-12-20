@@ -1423,12 +1423,8 @@ public:
   /// Return jump table addressed by this instruction.
   uint64_t getJumpTable(const MCInst &Inst) const;
 
-  /// Return index register for instruction that uses a jump table.
-  uint16_t getJumpTableIndexReg(const MCInst &Inst) const;
-
   /// Set jump table addressed by this instruction.
-  bool setJumpTable(MCInst &Inst, uint64_t Value, uint16_t IndexReg,
-                    AllocatorIdTy AllocId = 0);
+  bool setJumpTable(MCInst &Inst, uint64_t Value, AllocatorIdTy AllocId = 0);
 
   /// Disassociate instruction with a jump table.
   bool unsetJumpTable(MCInst &Inst) const;
@@ -1758,10 +1754,10 @@ public:
   /// is the instruction that loads up the indirect function pointer.  It may
   /// or may not be same as \p Instruction.
   virtual IndirectBranchType analyzeIndirectBranch(
-      MCInst &Instruction, InstructionIterator Begin, InstructionIterator End,
-      const unsigned PtrSize, MCInst *&MemLocInstr, unsigned &BaseRegNum,
-      unsigned &IndexRegNum, int64_t &DispValue, const MCExpr *&DispExpr,
-      MCInst *&PCRelBaseOut, MCInst *&FixedEntryLoadInst) const {
+      const BinaryFunction &BF, MCInst &Instruction, unsigned Size,
+      unsigned Offset, InstructionIterator Begin, InstructionIterator End,
+      const unsigned PtrSize, MCInst *&MemLocInstr, uint64_t &ArrayStart,
+      MCInst *&FixedEntryLoadInst) const {
     llvm_unreachable("not implemented");
     return IndirectBranchType::UNKNOWN;
   }

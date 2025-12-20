@@ -176,16 +176,11 @@ public:
   }
 
   IndirectBranchType analyzeIndirectBranch(
-      MCInst &Instruction, InstructionIterator Begin, InstructionIterator End,
-      const unsigned PtrSize, MCInst *&MemLocInstr, unsigned &BaseRegNum,
-      unsigned &IndexRegNum, int64_t &DispValue, const MCExpr *&DispExpr,
-      MCInst *&PCRelBaseOut, MCInst *&FixedEntryLoadInst) const override {
+      const BinaryFunction &BF, MCInst &Instruction, unsigned Size,
+      unsigned Offset, InstructionIterator Begin, InstructionIterator End,
+      const unsigned PtrSize, MCInst *&MemLocInstr, uint64_t &ArrayStart,
+      MCInst *&FixedEntryLoadInst) const override {
     MemLocInstr = nullptr;
-    BaseRegNum = 0;
-    IndexRegNum = 0;
-    DispValue = 0;
-    DispExpr = nullptr;
-    PCRelBaseOut = nullptr;
     FixedEntryLoadInst = nullptr;
 
     // Check for the following long tail call sequence:

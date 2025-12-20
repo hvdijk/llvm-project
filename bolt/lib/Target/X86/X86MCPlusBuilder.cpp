@@ -2002,13 +2002,11 @@ public:
                            SecondInstr, nullptr);
   }
 
-  IndirectBranchType
-  analyzeIndirectBranch(MCInst &Instruction, InstructionIterator Begin,
-                        InstructionIterator End, const unsigned PtrSize,
-                        MCInst *&MemLocInstrOut, unsigned &BaseRegNumOut,
-                        unsigned &IndexRegNumOut, int64_t &DispValueOut,
-                        const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
-                        MCInst *&FixedEntryLoadInst) const override {
+  IndirectBranchType analyzeIndirectBranch(
+      const BinaryFunction &BF, MCInst &Instruction, unsigned Size,
+      unsigned Offset, InstructionIterator Begin, InstructionIterator End,
+      const unsigned PtrSize, MCInst *&MemLocInstrOut, uint64_t &ArrayStartOut,
+      MCInst *&FixedEntryLoadInst) const override {
     // Try to find a (base) memory location from where the address for
     // the indirect branch is loaded. For X86-64 the memory will be specified
     // in the following format:
@@ -2031,12 +2029,10 @@ public:
     // We handle PIC-style jump tables separately.
     //
     MemLocInstrOut = nullptr;
-    BaseRegNumOut = X86::NoRegister;
-    IndexRegNumOut = X86::NoRegister;
-    DispValueOut = 0;
-    DispExprOut = nullptr;
+    ArrayStartOut = 0;
     FixedEntryLoadInst = nullptr;
 
+    const auto &BC = BF.getBinaryContext();
     std::reverse_iterator<InstructionIterator> II(End);
     std::reverse_iterator<InstructionIterator> IE(Begin);
 
@@ -2093,13 +2089,19 @@ public:
     if (!MO)
       return IndirectBranchType::UNKNOWN;
 
-    BaseRegNumOut = MO->BaseRegNum;
-    IndexRegNumOut = MO->IndexRegNum;
-    DispValueOut = MO->DispImm;
-    DispExprOut = MO->DispExpr;
+    // RIP-relative addressing should be converted to symbol form by now
+    // in processed instructions (but not in jump).
+    uint64_t ArrayStart = MO->DispImm;
+    if (MO->DispExpr)
+      ArrayStart += BC.getExprValue(MO->DispExpr);
+    else if (MO->BaseRegNum == RIPRegister)
+      ArrayStart += BF.getAddress() + Offset + Size;
+    else if (MO->BaseRegNum != X86::NoRegister)
+      return IndirectBranchType::UNKNOWN;
 
-    if ((MO->BaseRegNum != X86::NoRegister && MO->BaseRegNum != RIPRegister) ||
-        MO->SegRegNum != X86::NoRegister)
+    ArrayStartOut = ArrayStart;
+
+    if (MO->SegRegNum != X86::NoRegister)
       return IndirectBranchType::UNKNOWN;
 
     if (MemLocInstr == &Instruction &&

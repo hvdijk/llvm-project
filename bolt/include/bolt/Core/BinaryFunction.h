@@ -1026,6 +1026,26 @@ public:
     return Instructions.begin()->first;
   }
 
+  /// Return offset for the specified instruction. The instruction must be part
+  /// of the function.
+  uint64_t getInstructionOffset(const MCInst &Inst) const {
+    for (auto &I : Instructions) {
+      if (&I.second == &Inst)
+        return I.first;
+    }
+    llvm_unreachable("Instruction not found in function");
+  }
+
+  /// Return offset for the specified symbol. The symbol must be a label in the
+  /// function.
+  uint64_t getLabelOffset(const MCSymbol *Label) const {
+    for (auto &L : Labels) {
+      if (L.second == Label)
+        return L.first;
+    }
+    llvm_unreachable("Label not found in function");
+  }
+
   /// Return jump table that covers a given \p Address in memory.
   JumpTable *getJumpTableContainingAddress(uint64_t Address) {
     auto JTI = JumpTables.upper_bound(Address);
