@@ -10,22 +10,26 @@
   .type _foo, %function
 _foo:
   ldr w8, [sp]
-  adr x10, _jmptbl
+.Lfoo_anchor:
+  adr x10, .Lfoo_anchor
   ldrsw x9, [x10, x9, lsl #2]
+  adr x10, _foo_jmptbl
   add x10, x10, x9
   br x10
 # CHECK-LABEL: _foo
 # CHECK: br x10
 # CHECK-SAME: # UNKNOWN CONTROL FLOW
+.Lfoo_jt0:
   mov x0, 0
   ret
+.Lfoo_jt1:
   mov x0, 1
   ret
 
   .balign 4
-_jmptbl:
-  .long -16
-  .long -8
+_foo_jmptbl:
+  .long .Lfoo_jt0-.Lfoo_anchor
+  .long .Lfoo_jt1-.Lfoo_anchor
 
   .global _bar
   .type _bar, %function
@@ -48,8 +52,10 @@ _L2:
   .type _goo, %function
 _goo:
   ldr w8, [sp]
-  adr x10, _jmptbl2
+.Lgoo_anchor:
+  adr x10, .Lgoo_anchor
   ldrsw x9, [x10, x9, lsl #2]
+  adr x10, _goo_jmptbl
   add x10, x10, x9
   str x30, [sp, #-0x10]!
   bl _bar
@@ -60,15 +66,17 @@ _goo:
 # CHECK-LABEL: _goo
 # CHECK: br x10
 # CHECK-SAME: # UNKNOWN CONTROL FLOW
+.Lgoo_jt0:
   mov x0, 0
   ret
+.Lgoo_jt1:
   mov x0, 1
   ret
 
   .balign 4
 _jmptbl2:
-  .long -16
-  .long -8
+  .long .Lgoo_jt0-.Lgoo_anchor
+  .long .Lgoo_jt1-.Lgoo_anchor
 
   .global _faz
   .type _faz, %function

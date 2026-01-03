@@ -823,7 +823,7 @@ std::shared_ptr<SrcSafetyAnalysis>
 SrcSafetyAnalysis::create(BinaryFunction &BF,
                           MCPlusBuilder::AllocatorIdTy AllocId,
                           ArrayRef<MCPhysReg> RegsToTrack) {
-  if (BF.hasCFG())
+  if (BF.isSimple())
     return std::make_shared<DataflowSrcSafetyAnalysis>(BF, AllocId,
                                                        RegsToTrack);
   return std::make_shared<CFGUnawareSrcSafetyAnalysis>(BF, AllocId,
@@ -1314,7 +1314,7 @@ std::shared_ptr<DstSafetyAnalysis>
 DstSafetyAnalysis::create(BinaryFunction &BF,
                           MCPlusBuilder::AllocatorIdTy AllocId,
                           ArrayRef<MCPhysReg> RegsToTrack) {
-  if (BF.hasCFG())
+  if (BF.isSimple())
     return std::make_shared<DataflowDstSafetyAnalysis>(BF, AllocId,
                                                        RegsToTrack);
   return std::make_shared<CFGUnawareDstSafetyAnalysis>(BF, AllocId,
@@ -1398,7 +1398,7 @@ static bool shouldAnalyzeTailCallInst(const BinaryContext &BC,
   bool IsUnknownControlFlow =
       BC.MIB->isIndirectBranch(Inst) && !BC.MIB->getJumpTable(Inst);
 
-  if (BF.hasCFG() && IsUnknownControlFlow)
+  if (BF.isSimple() && IsUnknownControlFlow)
     return true;
 
   return false;
@@ -1547,7 +1547,7 @@ void FunctionAnalysisContext::findUnsafeUses(
   });
 
   bool UnreachableBBReported = false;
-  if (BF.hasCFG()) {
+  if (BF.isSimple()) {
     // Warn on basic blocks being unreachable according to BOLT (at most once
     // per BinaryFunction), as this likely means the CFG reconstructed by BOLT
     // is imprecise. A basic block can be

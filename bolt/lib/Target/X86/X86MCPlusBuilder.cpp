@@ -1869,7 +1869,8 @@ public:
   /// (POSSIBLE_PIC_FIXED_BRANCH case).
   template <typename Itr>
   std::tuple<IndirectBranchType, MCInst *, MCInst *>
-  analyzePICJumpTable(Itr II, Itr IE, MCPhysReg R1, MCPhysReg R2) const {
+  analyzePICJumpTable(const BinaryFunction &BF, Itr II, Itr IE, MCPhysReg R1,
+                      MCPhysReg R2) const {
     // Analyze PIC-style jump table code template:
     //
     //    lea PIC_JUMP_TABLE(%rip), {%r1|%r2}     <- MemLocInstr
@@ -1990,7 +1991,10 @@ public:
     }
 
     if (!SecondInstr)
-      return std::make_tuple(IndirectBranchType::UNKNOWN, nullptr, nullptr);
+      return std::make_tuple(BF.hasInternalLabelReference()
+                                 ? IndirectBranchType::UNKNOWN
+                                 : IndirectBranchType::POSSIBLE_TAIL_CALL,
+                             nullptr, nullptr);
 
     if (MatchingState == MATCH_FIXED_BRANCH) {
       LLVM_DEBUG(dbgs() << "checking potential fixed indirect branch\n");
@@ -2002,13 +2006,12 @@ public:
                            SecondInstr, nullptr);
   }
 
-  IndirectBranchType
-  analyzeIndirectBranch(MCInst &Instruction, InstructionIterator Begin,
-                        InstructionIterator End, const unsigned PtrSize,
-                        MCInst *&MemLocInstrOut, unsigned &BaseRegNumOut,
-                        unsigned &IndexRegNumOut, int64_t &DispValueOut,
-                        const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
-                        MCInst *&FixedEntryLoadInst) const override {
+  IndirectBranchType analyzeIndirectBranch(
+      const BinaryFunction &BF, MCInst &Instruction, InstructionIterator Begin,
+      InstructionIterator End, const unsigned PtrSize, MCInst *&MemLocInstrOut,
+      unsigned &BaseRegNumOut, unsigned &IndexRegNumOut, int64_t &DispValueOut,
+      const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
+      MCInst *&FixedEntryLoadInst) const override {
     // Try to find a (base) memory location from where the address for
     // the indirect branch is loaded. For X86-64 the memory will be specified
     // in the following format:
@@ -2040,7 +2043,9 @@ public:
     std::reverse_iterator<InstructionIterator> II(End);
     std::reverse_iterator<InstructionIterator> IE(Begin);
 
-    IndirectBranchType Type = IndirectBranchType::UNKNOWN;
+    IndirectBranchType Type = BF.hasInternalLabelReference()
+                                  ? IndirectBranchType::UNKNOWN
+                                  : IndirectBranchType::POSSIBLE_TAIL_CALL;
 
     // An instruction referencing memory used by jump instruction (directly or
     // via register). This location could be an array of function pointers
@@ -2067,12 +2072,12 @@ public:
         if (isADD64rr(PrevInstr)) {
           unsigned R2 = PrevInstr.getOperand(2).getReg();
           if (R1 == R2)
-            return IndirectBranchType::UNKNOWN;
+            return Type;
           std::tie(Type, MemLocInstr, FixedEntryLoadInst) =
-              analyzePICJumpTable(PrevII, IE, R1, R2);
+              analyzePICJumpTable(BF, PrevII, IE, R1, R2);
           break;
         }
-        return IndirectBranchType::UNKNOWN;
+        return Type;
       }
       if (!MemLocInstr) {
         // No definition seen for the register in this function so far. Could be

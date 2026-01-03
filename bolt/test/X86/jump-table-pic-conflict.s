@@ -40,9 +40,9 @@ _start:
   mov     0x8(%rbp), %rdi
   cmpq    $3, %rdi
   ja      .L5
-  jmp     .L6
-## Unreachable code, here to mark this function as non-simple
-## (containing unknown control flow) with a stray indirect jmp
+## Code here to mark this function as non-simple
+## (containing unknown control flow) with an indirect jmp
+  leaq    .L6(%rip), %rax
   jmp     *%rax
 .L6:
   decq    %rdi

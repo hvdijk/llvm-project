@@ -1565,6 +1565,9 @@ public:
   /// Return true if the function has instruction(s) with unknown control flow.
   bool hasUnknownControlFlow() const { return HasUnknownControlFlow; }
 
+  /// Return true if the function has any internal label reference.
+  bool hasInternalLabelReference() const { return HasInternalLabelReference; }
+
   /// Return true if the function body is non-contiguous.
   bool isSplit() const { return isSimple() && getLayout().isSplit(); }
 

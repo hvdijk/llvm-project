@@ -501,8 +501,7 @@ BinaryContext::handleAddressRef(uint64_t Address, BinaryFunction &BF,
                        << '\n';
         }
         BF.HasInternalLabelReference = true;
-        return std::make_pair(
-            BF.addEntryPointAtOffset(Address - BF.getAddress()), 0);
+        return std::make_pair(BF.getOrCreateLocalLabel(Address), 0);
       }
     } else {
       addInterproceduralReference(&BF, Address);
