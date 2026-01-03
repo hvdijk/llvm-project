@@ -540,7 +540,7 @@ good_sign_auted_checked_ldr_nocfg:
         .type   bad_sign_authed_unchecked_nocfg,@function
 bad_sign_authed_unchecked_nocfg:
 // FPAC-NOT: bad_sign_authed_unchecked_nocfg
-// NOFPAC-LABEL: GS-PAUTH: signing oracle found in function bad_sign_authed_unchecked_nocfg, at address
+// NOFPAC-LABEL: GS-PAUTH: signing oracle found in function bad_sign_authed_unchecked_nocfg, basic block {{[^,]+}}, at address
 // NOFPAC-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // NOFPAC-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         adr     x3, 1f
@@ -554,7 +554,7 @@ bad_sign_authed_unchecked_nocfg:
         .globl  bad_sign_checked_not_auted_nocfg
         .type   bad_sign_checked_not_auted_nocfg,@function
 bad_sign_checked_not_auted_nocfg:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_sign_checked_not_auted_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_sign_checked_not_auted_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // CHECK-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         adr     x3, 1f
@@ -568,7 +568,7 @@ bad_sign_checked_not_auted_nocfg:
         .globl  bad_sign_plain_arg_nocfg
         .type   bad_sign_plain_arg_nocfg,@function
 bad_sign_plain_arg_nocfg:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_sign_plain_arg_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_sign_plain_arg_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // CHECK-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         adr     x3, 1f
@@ -581,7 +581,7 @@ bad_sign_plain_arg_nocfg:
         .globl  bad_sign_plain_mem_nocfg
         .type   bad_sign_plain_mem_nocfg,@function
 bad_sign_plain_mem_nocfg:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_sign_plain_mem_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_sign_plain_mem_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x0, [x1]
@@ -596,7 +596,7 @@ bad_sign_plain_mem_nocfg:
         .globl  bad_clobber_between_addr_mat_and_use_nocfg
         .type   bad_clobber_between_addr_mat_and_use_nocfg,@function
 bad_clobber_between_addr_mat_and_use_nocfg:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_clobber_between_addr_mat_and_use_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_clobber_between_addr_mat_and_use_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mov     w0, w4
@@ -612,7 +612,7 @@ bad_clobber_between_addr_mat_and_use_nocfg:
         .globl  bad_clobber_between_auted_and_checked_nocfg
         .type   bad_clobber_between_auted_and_checked_nocfg,@function
 bad_clobber_between_auted_and_checked_nocfg:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_clobber_between_auted_and_checked_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_clobber_between_auted_and_checked_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mov     w0, w4
@@ -629,7 +629,7 @@ bad_clobber_between_auted_and_checked_nocfg:
         .globl  bad_clobber_between_checked_and_used_nocfg
         .type   bad_clobber_between_checked_and_used_nocfg,@function
 bad_clobber_between_checked_and_used_nocfg:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_clobber_between_checked_and_used_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_clobber_between_checked_and_used_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mov     w0, w4
@@ -647,7 +647,7 @@ bad_clobber_between_checked_and_used_nocfg:
         .type   bad_transition_check_then_auth_nocfg,@function
 bad_transition_check_then_auth_nocfg:
 // FPAC-NOT: bad_transition_check_then_auth_nocfg
-// NOFPAC-LABEL: GS-PAUTH: signing oracle found in function bad_transition_check_then_auth_nocfg, at address
+// NOFPAC-LABEL: GS-PAUTH: signing oracle found in function bad_transition_check_then_auth_nocfg, basic block {{[^,]+}}, at address
 // NOFPAC-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // NOFPAC-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         adr     x3, 1f
@@ -663,7 +663,7 @@ bad_transition_check_then_auth_nocfg:
         .type   bad_transition_auth_then_auth_nocfg,@function
 bad_transition_auth_then_auth_nocfg:
 // FPAC-NOT: bad_transition_auth_then_auth_nocfg
-// NOFPAC-LABEL: GS-PAUTH: signing oracle found in function bad_transition_auth_then_auth_nocfg, at address
+// NOFPAC-LABEL: GS-PAUTH: signing oracle found in function bad_transition_auth_then_auth_nocfg, basic block {{[^,]+}}, at address
 // NOFPAC-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // NOFPAC-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         adr     x3, 1f
@@ -678,7 +678,7 @@ bad_transition_auth_then_auth_nocfg:
         .globl  bad_transition_check_then_check_nocfg
         .type   bad_transition_check_then_check_nocfg,@function
 bad_transition_check_then_check_nocfg:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_transition_check_then_check_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function bad_transition_check_then_check_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:     pacda   x0, x1
 // CHECK-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         adr     x3, 1f
@@ -861,7 +861,7 @@ inst_pacia171615:
         .globl  inst_paciasppc
         .type   inst_paciasppc,@function
 inst_paciasppc:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_paciasppc, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_paciasppc, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      paciasppc
         mov     x30, x0
 1:
@@ -933,7 +933,7 @@ inst_pacib171615:
         .globl  inst_pacibsppc
         .type   inst_pacibsppc,@function
 inst_pacibsppc:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_pacibsppc, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_pacibsppc, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      pacibsppc
         mov     x30, x0
 1:
@@ -945,7 +945,7 @@ inst_pacibsppc:
         .globl  inst_pacnbiasppc
         .type   inst_pacnbiasppc,@function
 inst_pacnbiasppc:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_pacnbiasppc, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_pacnbiasppc, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      pacnbiasppc
         mov     x30, x0
 1:
@@ -957,7 +957,7 @@ inst_pacnbiasppc:
         .globl  inst_pacnbibsppc
         .type   inst_pacnbibsppc,@function
 inst_pacnbibsppc:
-// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_pacnbibsppc, at address
+// CHECK-LABEL: GS-PAUTH: signing oracle found in function inst_pacnbibsppc, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      pacnbibsppc
         mov     x30, x0
 1:

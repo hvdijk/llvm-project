@@ -1766,10 +1766,11 @@ public:
   /// is the instruction that loads up the indirect function pointer.  It may
   /// or may not be same as \p Instruction.
   virtual IndirectBranchType analyzeIndirectBranch(
-      MCInst &Instruction, InstructionIterator Begin, InstructionIterator End,
-      const unsigned PtrSize, MCInst *&MemLocInstr, unsigned &BaseRegNum,
-      unsigned &IndexRegNum, int64_t &DispValue, const MCExpr *&DispExpr,
-      MCInst *&PCRelBaseOut, MCInst *&FixedEntryLoadInst) const {
+      const BinaryFunction &BF, MCInst &Instruction, InstructionIterator Begin,
+      InstructionIterator End, const unsigned PtrSize, MCInst *&MemLocInstr,
+      unsigned &BaseRegNum, unsigned &IndexRegNum, int64_t &DispValue,
+      const MCExpr *&DispExpr, MCInst *&PCRelBaseOut,
+      MCInst *&FixedEntryLoadInst) const {
     llvm_unreachable("not implemented");
     return IndirectBranchType::UNKNOWN;
   }

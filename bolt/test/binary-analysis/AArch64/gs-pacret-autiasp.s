@@ -260,7 +260,7 @@ lr_untouched_nocfg:
         .globl  lr_clobbered_nocfg
         .type   lr_clobbered_nocfg,@function
 lr_clobbered_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected ret found in function lr_clobbered_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected ret found in function lr_clobbered_nocfg, basic block {{[0-9a-zA-Z.]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      ret
 // CHECK-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         adr     x2, 1f

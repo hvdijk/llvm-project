@@ -546,7 +546,7 @@ good_indirect_call_mem_v83_nocfg:
         .globl  bad_indirect_call_arg_nocfg
         .type   bad_indirect_call_arg_nocfg,@function
 bad_indirect_call_arg_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_arg_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_arg_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x0
 // CHECK-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         paciasp
@@ -566,7 +566,7 @@ bad_indirect_call_arg_nocfg:
         .globl  obscure_indirect_call_arg_nocfg
         .type   obscure_indirect_call_arg_nocfg,@function
 obscure_indirect_call_arg_nocfg:
-// CHECK-NOCFG-LABEL: GS-PAUTH: non-protected call found in function obscure_indirect_call_arg_nocfg, at address
+// CHECK-NOCFG-LABEL: GS-PAUTH: non-protected call found in function obscure_indirect_call_arg_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NOCFG-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x0
 // CHECK-NOCFG-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         paciasp
@@ -637,7 +637,7 @@ lr_is_never_unsafe_before_first_inst_nocfg:
         .globl  bad_indirect_call_mem_nocfg
         .type   bad_indirect_call_mem_nocfg,@function
 bad_indirect_call_mem_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_mem_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_mem_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x16, [x0]
@@ -659,7 +659,7 @@ bad_indirect_call_mem_nocfg:
         .globl  bad_indirect_call_arg_clobber_nocfg
         .type   bad_indirect_call_arg_clobber_nocfg,@function
 bad_indirect_call_arg_clobber_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_arg_clobber_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_arg_clobber_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x0
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mov     w0, w2
@@ -682,7 +682,7 @@ bad_indirect_call_arg_clobber_nocfg:
         .globl  bad_indirect_call_mem_clobber_nocfg
         .type   bad_indirect_call_mem_clobber_nocfg,@function
 bad_indirect_call_mem_clobber_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_mem_clobber_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_mem_clobber_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mov     w16, w2
@@ -728,7 +728,7 @@ good_indirect_call_mem_chain_of_auts_nocfg:
         .globl  bad_indirect_call_mem_chain_of_auts_nocfg
         .type   bad_indirect_call_mem_chain_of_auts_nocfg,@function
 bad_indirect_call_mem_chain_of_auts_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_mem_chain_of_auts_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_call_mem_chain_of_auts_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x16, [x16]
@@ -894,7 +894,7 @@ good_indirect_tailcall_mem_v83_nocfg:
         .globl  bad_indirect_tailcall_mem_nocfg
         .type   bad_indirect_tailcall_mem_nocfg,@function
 bad_indirect_tailcall_mem_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_tailcall_mem_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_tailcall_mem_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         br      x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x16, [x0]
@@ -908,7 +908,7 @@ bad_indirect_tailcall_mem_nocfg:
         .globl  bad_indirect_tailcall_mem_clobber_nocfg
         .type   bad_indirect_tailcall_mem_clobber_nocfg,@function
 bad_indirect_tailcall_mem_clobber_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_tailcall_mem_clobber_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_tailcall_mem_clobber_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         br      x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mov     w16, w2
@@ -924,7 +924,7 @@ bad_indirect_tailcall_mem_clobber_nocfg:
         .globl  bad_indirect_tailcall_mem_chain_of_auts_nocfg
         .type   bad_indirect_tailcall_mem_chain_of_auts_nocfg,@function
 bad_indirect_tailcall_mem_chain_of_auts_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_tailcall_mem_chain_of_auts_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function bad_indirect_tailcall_mem_chain_of_auts_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         br      x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x16, [x16]
@@ -941,7 +941,7 @@ bad_indirect_tailcall_mem_chain_of_auts_nocfg:
         .globl  state_is_reset_at_branch_destination_nocfg
         .type   state_is_reset_at_branch_destination_nocfg,@function
 state_is_reset_at_branch_destination_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function state_is_reset_at_branch_destination_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function state_is_reset_at_branch_destination_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr      x0
 // CHECK-NEXT:  The 0 instructions that write to the affected registers after any authentication are:
         paciasp
@@ -1119,27 +1119,27 @@ indirect_call_invalidates_safety:
         .globl  direct_call_invalidates_safety_nocfg
         .type   direct_call_invalidates_safety_nocfg,@function
 direct_call_invalidates_safety_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x2
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x8
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x10
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x18
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function direct_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x20
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee
@@ -1188,38 +1188,38 @@ direct_call_invalidates_safety_nocfg:
         .globl  indirect_call_invalidates_safety_nocfg
         .type   indirect_call_invalidates_safety_nocfg,@function
 indirect_call_invalidates_safety_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x2
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      blr     x2
 // Check that only one error is reported per pair of BLRs.
 // CHECK-NOT:   The instruction is     {{[0-9a-f]+}}:      blr     x2
 
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x8
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      blr     x8
 // CHECK-NOT:   The instruction is     {{[0-9a-f]+}}:      blr     x8
 
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x10
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      blr     x10
 // CHECK-NOT:   The instruction is     {{[0-9a-f]+}}:      blr     x10
 
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      blr     x16
 // CHECK-NOT:   The instruction is     {{[0-9a-f]+}}:      blr     x16
 
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x18
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      blr     x18
 // CHECK-NOT:   The instruction is     {{[0-9a-f]+}}:      blr     x18
 
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function indirect_call_invalidates_safety_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x20
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      blr     x20
@@ -1299,7 +1299,7 @@ blraa_no_mark_safe:
         .globl  blraa_no_mark_safe_nocfg
         .type   blraa_no_mark_safe_nocfg,@function
 blraa_no_mark_safe_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function blraa_no_mark_safe_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function blraa_no_mark_safe_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      blr     x0
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      blraa   x0, x1
@@ -1373,11 +1373,11 @@ last_insts_writing_to_reg:
         .globl  last_insts_writing_to_reg_nocfg
         .type   last_insts_writing_to_reg_nocfg,@function
 last_insts_writing_to_reg_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function last_insts_writing_to_reg_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function last_insts_writing_to_reg_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x16
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x16, [x0]
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function last_insts_writing_to_reg_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function last_insts_writing_to_reg_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         blr     x17
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x17, [x1]
@@ -1418,8 +1418,8 @@ printed_instrs_dataflow:
         .globl  printed_instrs_nocfg
         .type   printed_instrs_nocfg,@function
 printed_instrs_nocfg:
-// CHECK-LABEL: GS-PAUTH: non-protected call found in function printed_instrs_nocfg, at address
-// CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         br      x0 # UNKNOWN CONTROL FLOW # Offset: 12{{ *$}}
+// CHECK-LABEL: GS-PAUTH: non-protected call found in function printed_instrs_nocfg, basic block {{[^,]+}}, at address
+// CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:         br      x0 # UNKNOWN CONTROL FLOW
 // CHECK-NEXT:  The 1 instructions that write to the affected registers after any authentication are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      ldr     x0, [x0]{{ *$}}
         adr     x2, 1f

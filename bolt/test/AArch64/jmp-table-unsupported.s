@@ -89,7 +89,9 @@ SECTIONS {
 # RUN:    -o %t/jt_fixed_branch.bolt -v 3 2>&1 | FileCheck \
 # RUN:   --check-prefix=JT-BOLT-FIXED-BR %s
 
-# JT-BOLT-FIXED-BR: failed to match indirect branch
+# As we know there are no references to the function's internal labels,
+# we know the branch to x0 must be a tail call.
+# JT-BOLT-FIXED-BR-NOT: failed to match indirect branch
 
 ## Prepare binary (6)
 # RUN: %clang %cflags -no-pie %t/jt_type_normal.c \

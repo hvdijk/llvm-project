@@ -566,7 +566,7 @@ good_load_same_reg_nocfg:
         .globl  bad_unchecked_nocfg
         .type   bad_unchecked_nocfg,@function
 bad_unchecked_nocfg:
-// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unchecked_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unchecked_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      autia   x0, x1
 // CHECK-NEXT:  The 0 instructions that leak the affected registers are:
         adr     x2, 1f
@@ -580,10 +580,10 @@ bad_unchecked_nocfg:
         .globl  bad_leaked_to_subroutine_nocfg
         .type   bad_leaked_to_subroutine_nocfg,@function
 bad_leaked_to_subroutine_nocfg:
-// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_leaked_to_subroutine_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_leaked_to_subroutine_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      autia   x0, x1
 // CHECK-NEXT:  The 1 instructions that leak the affected registers are:
-// CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee # Offset: 24
+// CHECK-NEXT:  1.     {{[0-9a-f]+}}:      bl      callee
         paciasp
         stp     x29, x30, [sp, #-16]!
         mov     x29, sp
@@ -603,7 +603,7 @@ bad_leaked_to_subroutine_nocfg:
         .globl  bad_unknown_usage_read_nocfg
         .type   bad_unknown_usage_read_nocfg,@function
 bad_unknown_usage_read_nocfg:
-// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unknown_usage_read_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unknown_usage_read_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      autia   x0, x1
 // CHECK-NEXT:  The 1 instructions that leak the affected registers are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mul     x3, x0, x1
@@ -620,7 +620,7 @@ bad_unknown_usage_read_nocfg:
         .globl  bad_unknown_usage_subreg_read_nocfg
         .type   bad_unknown_usage_subreg_read_nocfg,@function
 bad_unknown_usage_subreg_read_nocfg:
-// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unknown_usage_subreg_read_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unknown_usage_subreg_read_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      autia   x0, x1
 // CHECK-NEXT:  The 1 instructions that leak the affected registers are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      mul     w3, w0, w1
@@ -637,7 +637,7 @@ bad_unknown_usage_subreg_read_nocfg:
         .globl  bad_unknown_usage_update_nocfg
         .type   bad_unknown_usage_update_nocfg,@function
 bad_unknown_usage_update_nocfg:
-// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unknown_usage_update_nocfg, at address
+// CHECK-LABEL: GS-PAUTH: authentication oracle found in function bad_unknown_usage_update_nocfg, basic block {{[^,]+}}, at address
 // CHECK-NEXT:  The instruction is     {{[0-9a-f]+}}:      autia   x0, x1
 // CHECK-NEXT:  The 1 instructions that leak the affected registers are:
 // CHECK-NEXT:  1.     {{[0-9a-f]+}}:      movk    x0, #0x2a, lsl #16

@@ -10,22 +10,25 @@
   .type _foo, %function
 _foo:
   ldr w8, [sp]
-  adr x10, _jmptbl
+.Lanchor:
+  adr x10, .Lanchor
   ldrsw x9, [x10, x9, lsl #2]
   add x10, x10, x9
   br x10
 # CHECK-LABEL: _foo
 # CHECK: br x10
 # CHECK-SAME: # UNKNOWN CONTROL FLOW
+.Ljt0:
   mov x0, 0
   ret
+.Ljt1:
   mov x0, 1
   ret
 
   .balign 4
 _jmptbl:
-  .long -16
-  .long -8
+  .long .Ljt0-.Lanchor
+  .long .Ljt1-.Lanchor
 
   .global _bar
   .type _bar, %function

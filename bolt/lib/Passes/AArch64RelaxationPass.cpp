@@ -86,7 +86,7 @@ void AArch64RelaxationPass::runOnFunction(BinaryFunction &BF) {
         It = BB.eraseInstruction(std::prev(It));
       } else if (std::next(It) != BB.end() && BC.MIB->isNoop(*std::next(It))) {
         BB.eraseInstruction(std::next(It));
-      } else if (!BF.isSimple()) {
+      } else if (!BF.isSimple() || BF.hasInternalLabelReference()) {
         // If the function is not simple, it may contain a jump table undetected
         // by us. This jump table may use an offset from the branch instruction
         // to land in the desired place. If we add new instructions, we

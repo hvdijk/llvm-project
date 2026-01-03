@@ -14,7 +14,9 @@
   .type _start, %function
 _start:
   .cfi_startproc
+  adr x2, 1f
   br x2
+1:
   ldr x0, _foo
   ret
   .cfi_endproc
@@ -83,7 +85,9 @@ _start:
   .type _start, %function
 _start:
   .cfi_startproc
+  adr x2, 1f
   br x2
+1:
   ldr x0, _foo
   nop
   ret

@@ -3135,6 +3135,7 @@ void RewriteInstance::handleRelocation(const SectionRef &RelocatedSection,
               ReferencedBF->addEntryPointAtOffset(RefFunctionOffset);
         } else {
           ReferencedSymbol = ReferencedBF->getOrCreateLocalLabel(Address);
+          ReferencedBF->HasInternalLabelReference = true;
 
           // If ContainingBF != nullptr, it equals ReferencedBF (see
           // if-condition above) so we're handling a relocation from a function

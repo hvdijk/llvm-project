@@ -24,19 +24,9 @@ static_assert(BasicBlockStorageIsVector::value);
 
 MCInstReference MCInstReference::get(const MCInst &Inst,
                                      const BinaryFunction &BF) {
-  if (BF.hasCFG()) {
-    for (BinaryBasicBlock &BB : BF) {
-      for (MCInst &MI : BB)
-        if (&MI == &Inst)
-          return MCInstReference(BB, Inst);
-    }
-    llvm_unreachable("Inst is not contained in BF");
-  }
-
-  for (auto I = BF.instrs().begin(), E = BF.instrs().end(); I != E; ++I) {
-    if (&I->second == &Inst)
-      return MCInstReference(BF, I);
-  }
+  for (auto It = BF.instr_begin(), End = BF.instr_end(); It != End; ++It)
+    if (&*It == &Inst)
+      return MCInstReference(It);
   llvm_unreachable("Inst is not contained in BF");
 }
 
@@ -44,10 +34,10 @@ uint64_t MCInstReference::computeAddress(const MCCodeEmitter *Emitter) const {
   assert(!empty() && "Taking instruction address by empty reference");
 
   const BinaryContext &BC = getFunction()->getBinaryContext();
-  if (auto *Ref = tryGetRefInBB()) {
+  if (hasCFG()) {
     const uint64_t AddressOfBB =
-        getFunction()->getAddress() + Ref->BB->getOffset();
-    const MCInst *FirstInstInBB = &*Ref->BB->begin();
+        getFunction()->getAddress() + getBasicBlock()->getOffset();
+    const MCInst *FirstInstInBB = &*getBasicBlock()->begin();
     const MCInst *ThisInst = &getMCInst();
 
     // Usage of plain 'const MCInst *' as iterators assumes the instructions
@@ -58,29 +48,27 @@ uint64_t MCInstReference::computeAddress(const MCCodeEmitter *Emitter) const {
     return AddressOfBB + OffsetInBB;
   }
 
-  auto &Ref = getRefInBF();
-  const uint64_t OffsetInBF = Ref.It->first;
+  const uint64_t OffsetInBF = It.getOffset();
 
   return getFunction()->getAddress() + OffsetInBF;
 }
 
 raw_ostream &MCInstReference::print(raw_ostream &OS) const {
-  if (const RefInBB *Ref = tryGetRefInBB()) {
+  if (empty()) {
+    OS << "MCInstEmptyRef";
+    return OS;
+  }
+
+  if (hasCFG()) {
     OS << "MCInstBBRef<";
-    if (Ref->BB == nullptr)
-      OS << "BB:(null)";
-    else
-      OS << "BB:" << Ref->BB->getName() << ":" << Ref->Index;
+    OS << "BB:" << getBasicBlock()->getName() << ":"
+       << (&*It - &getBasicBlock()->front());
     OS << ">";
     return OS;
   }
 
-  const RefInBF &Ref = getRefInBF();
   OS << "MCInstBFRef<";
-  if (Ref.BF == nullptr)
-    OS << "BF:(null)";
-  else
-    OS << "BF:" << Ref.BF->getPrintName() << ":" << Ref.It->first;
+  OS << "BF:" << getFunction()->getPrintName() << ":" << It.getOffset();
   OS << ">";
   return OS;
 }

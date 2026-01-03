@@ -33,10 +33,7 @@
 // Check that BOLT registers extra entry points for dynamic relocations.
 # CHECK-ENTRIES: Binary Function "main" after building cfg {
 # CHECK-ENTRIES:  IsMultiEntry: 1
-# CHECK-ENTRIES: .Ltmp0 {{.*}}
-# CHECK-ENTRIES-NEXT: Secondary Entry Point: {{.*}}
-# CHECK-ENTRIES: .Ltmp1 {{.*}}
-# CHECK-ENTRIES-NEXT: Secondary Entry Point: {{.*}}
+# CHECK-ENTRIES:  BB Layout : .LBB00, .Ltmp0, .Ltmp1
 
 .globl  main
 .p2align        2

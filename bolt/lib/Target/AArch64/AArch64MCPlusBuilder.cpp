@@ -1562,13 +1562,12 @@ public:
     return Uses;
   }
 
-  IndirectBranchType
-  analyzeIndirectBranch(MCInst &Instruction, InstructionIterator Begin,
-                        InstructionIterator End, const unsigned PtrSize,
-                        MCInst *&MemLocInstrOut, unsigned &BaseRegNumOut,
-                        unsigned &IndexRegNumOut, int64_t &DispValueOut,
-                        const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
-                        MCInst *&FixedEntryLoadInstr) const override {
+  IndirectBranchType analyzeIndirectBranch(
+      const BinaryFunction &BF, MCInst &Instruction, InstructionIterator Begin,
+      InstructionIterator End, const unsigned PtrSize, MCInst *&MemLocInstrOut,
+      unsigned &BaseRegNumOut, unsigned &IndexRegNumOut, int64_t &DispValueOut,
+      const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
+      MCInst *&FixedEntryLoadInstr) const override {
     MemLocInstrOut = nullptr;
     BaseRegNumOut = AArch64::NoRegister;
     IndexRegNumOut = AArch64::NoRegister;
@@ -1590,7 +1589,9 @@ public:
     MCInst *PCRelBase;
     if (!analyzeIndirectBranchFragment(Instruction, UDChain, DispExpr,
                                        DispValue, ScaleValue, PCRelBase))
-      return IndirectBranchType::UNKNOWN;
+      return BF.hasInternalLabelReference()
+                 ? IndirectBranchType::UNKNOWN
+                 : IndirectBranchType::POSSIBLE_TAIL_CALL;
 
     MemLocInstrOut = MemLocInstr;
     DispValueOut = DispValue;
@@ -1804,6 +1805,9 @@ public:
   }
 
   bool convertJmpToTailCall(MCInst &Inst) override {
+    if (isTailCall(Inst))
+      return false;
+
     setTailCall(Inst);
     return true;
   }

@@ -845,10 +845,13 @@ BinaryFunction::processIndirectBranch(MCInst &Instruction, unsigned Size,
   }
 
   IndirectBranchType BranchType = BC.MIB->analyzeIndirectBranch(
-      Instruction, Begin, Instructions.end(), PtrSize, MemLocInstr, BaseRegNum,
-      IndexRegNum, DispValue, DispExpr, PCRelBaseInstr, FixedEntryLoadInstr);
+      *this, Instruction, Begin, Instructions.end(), PtrSize, MemLocInstr,
+      BaseRegNum, IndexRegNum, DispValue, DispExpr, PCRelBaseInstr,
+      FixedEntryLoadInstr);
 
-  if (BranchType == IndirectBranchType::UNKNOWN && !MemLocInstr)
+  if ((BranchType == IndirectBranchType::UNKNOWN ||
+       BranchType == IndirectBranchType::POSSIBLE_TAIL_CALL) &&
+      !MemLocInstr)
     return BranchType;
 
   if (MemLocInstr != &Instruction)
@@ -2164,7 +2167,7 @@ bool BinaryFunction::postProcessIndirectBranches(
         MCInst *PCRelBaseInstr;
         MCInst *FixedEntryLoadInstr;
         IndirectBranchType Type = BC.MIB->analyzeIndirectBranch(
-            Instr, BB.begin(), II, PtrSize, MemLocInstr, BaseRegNum,
+            *this, Instr, BB.begin(), II, PtrSize, MemLocInstr, BaseRegNum,
             IndexRegNum, DispValue, DispExpr, PCRelBaseInstr,
             FixedEntryLoadInstr);
         if (Type != IndirectBranchType::UNKNOWN || MemLocInstr != nullptr)
@@ -2221,9 +2224,6 @@ bool BinaryFunction::postProcessIndirectBranches(
     }
   }
 
-  if (HasInternalLabelReference)
-    return false;
-
   // If there's only one jump table, and one indirect jump, and no other
   // references, then we should be able to derive the jump table even if we
   // fail to match the pattern.
@@ -2238,7 +2238,7 @@ bool BinaryFunction::postProcessIndirectBranches(
     LastIndirectJumpBB->updateJumpTableSuccessors();
   }
 
-  if (HasUnknownControlFlow && !BC.HasRelocations)
+  if (HasUnknownControlFlow && HasInternalLabelReference && !BC.HasRelocations)
     return false;
 
   return true;
@@ -3850,7 +3850,7 @@ MCSymbol *BinaryFunction::getSymbolForEntryID(uint64_t EntryID) {
     return nullptr;
 
   uint64_t NumEntries = 1;
-  if (hasCFG()) {
+  if (isSimple() && hasCFG()) {
     for (BinaryBasicBlock *BB : BasicBlocks) {
       MCSymbol *EntrySymbol = getSecondaryEntryPointSymbol(*BB);
       if (!EntrySymbol)

@@ -827,8 +827,10 @@ public:
   }
 
   // Iterators by pointer.
-  BasicBlockListType::iterator pbegin()  { return BasicBlocks.begin(); }
-  BasicBlockListType::iterator pend()    { return BasicBlocks.end(); }
+  BasicBlockListType::iterator       pbegin()       { return BasicBlocks.begin(); }
+  BasicBlockListType::const_iterator pbegin() const { return BasicBlocks.begin(); }
+  BasicBlockListType::iterator       pend()         { return BasicBlocks.end(); }
+  BasicBlockListType::const_iterator pend()   const { return BasicBlocks.end(); }
 
   cfi_iterator        cie_begin()       { return CIEFrameInstructions.begin(); }
   const_cfi_iterator  cie_begin() const { return CIEFrameInstructions.begin(); }
@@ -843,14 +845,195 @@ public:
     return iterator_range<const_cfi_iterator>(cie_begin(), cie_end());
   }
 
-  /// Iterate over instructions (only if CFG is unavailable or not built yet).
-  iterator_range<InstrMapType::iterator> instrs() {
-    assert(!hasCFG() && "Iterate over basic blocks instead");
-    return make_range(Instructions.begin(), Instructions.end());
+  struct instr_iterator {
+  public:
+    instr_iterator() : BF{nullptr} {}
+    instr_iterator(BinaryFunction &bf, InstrMapType::const_iterator i)
+        : BF{&bf}, BFI{i} {}
+    instr_iterator(BinaryFunction &bf, BasicBlockListType::const_iterator bb)
+        : BF{&bf} {
+      setBB(bb);
+    }
+    instr_iterator(BinaryFunction &bf, BasicBlockListType::const_iterator bb,
+                   InstructionListType::const_iterator i)
+        : BF{&bf}, BBI{bb, i} {}
+
+    using value_type = MCInst;
+    using pointer = MCInst *;
+    using reference = MCInst &;
+    using difference_type = std::ptrdiff_t;
+    using iterator_category = std::bidirectional_iterator_tag;
+
+    MCInst &operator*() const {
+      return const_cast<MCInst &>(BF->hasCFG() ? *BBI.I : BFI->second);
+    }
+
+    instr_iterator &operator++() {
+      if (BF->hasCFG()) {
+        if (++BBI.I == (*BBI.BB)->end())
+          setBB(std::next(BBI.BB));
+      } else {
+        ++BFI;
+      }
+      return *this;
+    }
+
+    instr_iterator operator++(int) {
+      instr_iterator result = *this;
+      ++*this;
+      return result;
+    }
+
+    instr_iterator &operator--() {
+      if (BF->hasCFG()) {
+        if (BBI.I == InstructionListType::iterator{} ||
+            BBI.I == (*BBI.BB)->begin()) {
+          do {
+            --BBI.BB;
+          } while ((*BBI.BB)->empty());
+          BBI.I = (*BBI.BB)->end();
+        }
+        --BBI.I;
+      } else {
+        --BFI;
+      }
+      return *this;
+    }
+
+    instr_iterator operator--(int) {
+      instr_iterator result = *this;
+      --*this;
+      return result;
+    }
+
+    friend bool operator==(instr_iterator a, instr_iterator b) {
+      return a.BF == b.BF &&
+             (a.BF == nullptr ||
+              (a.BF->hasCFG() ? a.BBI.BB == b.BBI.BB && a.BBI.I == b.BBI.I
+                              : a.BFI == b.BFI));
+    }
+
+    friend bool operator!=(instr_iterator a, instr_iterator b) {
+      return !(a == b);
+    }
+
+    BinaryFunction *getFunction() const { return BF; }
+
+    BinaryBasicBlock *getBasicBlock() const {
+      return BF && BF->hasCFG() ? *BBI.BB : nullptr;
+    }
+
+    uint32_t getOffset() const {
+      assert(!BF->hasCFG());
+      return BFI->first;
+    }
+
+  private:
+    void setBB(BasicBlockListType::const_iterator bb) {
+      for (;;) {
+        if (bb == BF->pend()) {
+          BBI = {bb, {}};
+          return;
+        }
+        if (!(*bb)->empty()) {
+          BBI = {bb, (*bb)->begin()};
+          return;
+        }
+        ++bb;
+      }
+    }
+
+    BinaryFunction *BF;
+    union {
+      InstrMapType::const_iterator BFI;
+      struct {
+        BasicBlockListType::const_iterator BB;
+        InstructionListType::const_iterator I;
+      } BBI;
+    };
+  };
+
+  struct instr_const_iterator {
+  public:
+    instr_const_iterator() : Impl() {}
+    instr_const_iterator(const BinaryFunction &bf,
+                         InstrMapType::const_iterator i)
+        : Impl(const_cast<BinaryFunction &>(bf), i) {}
+    instr_const_iterator(const BinaryFunction &bf,
+                         BasicBlockListType::const_iterator bb)
+        : Impl(const_cast<BinaryFunction &>(bf), bb) {}
+    instr_const_iterator(const BinaryFunction &bf,
+                         BasicBlockListType::const_iterator bb,
+                         InstructionListType::const_iterator i)
+        : Impl(const_cast<BinaryFunction &>(bf), bb, i) {}
+    instr_const_iterator(instr_iterator it) : Impl(it) {}
+
+    const MCInst &operator*() const { return *Impl; }
+
+    instr_const_iterator &operator++() {
+      ++Impl;
+      return *this;
+    }
+
+    instr_const_iterator operator++(int) {
+      instr_const_iterator result = *this;
+      ++Impl;
+      return result;
+    }
+
+    instr_const_iterator &operator--() {
+      --Impl;
+      return *this;
+    }
+
+    instr_const_iterator operator--(int) {
+      instr_const_iterator result = *this;
+      --Impl;
+      return result;
+    }
+
+    friend bool operator==(instr_const_iterator a, instr_const_iterator b) {
+      return a.Impl == b.Impl;
+    }
+
+    friend bool operator!=(instr_const_iterator a, instr_const_iterator b) {
+      return a.Impl != b.Impl;
+    }
+
+    const BinaryFunction *getFunction() const { return Impl.getFunction(); }
+
+    const BinaryBasicBlock *getBasicBlock() const {
+      return Impl.getBasicBlock();
+    }
+
+    uint32_t getOffset() const { return Impl.getOffset(); }
+
+  private:
+    instr_iterator Impl;
+  };
+
+  /// Iterate over instructions.
+  iterator_range<instr_iterator> instrs() {
+    return make_range(instr_begin(), instr_end());
   }
-  iterator_range<InstrMapType::const_iterator> instrs() const {
-    assert(!hasCFG() && "Iterate over basic blocks instead");
-    return make_range(Instructions.begin(), Instructions.end());
+  iterator_range<instr_const_iterator> instrs() const {
+    return make_range(instr_begin(), instr_end());
+  }
+  instr_iterator instr_begin() {
+    if (hasCFG())
+      return instr_iterator(*this, pbegin());
+    return instr_iterator(*this, Instructions.begin());
+  }
+  instr_iterator instr_end() {
+    if (hasCFG())
+      return instr_iterator(*this, pend());
+    return instr_iterator(*this, Instructions.end());
+  }
+  instr_const_iterator instr_begin() const {
+    return const_cast<BinaryFunction *>(this)->instr_begin();
+  }
+  instr_const_iterator instr_end() const {
+    return const_cast<BinaryFunction *>(this)->instr_end();
   }
 
   /// Returns whether there are any labels at Offset.
@@ -1400,6 +1583,9 @@ public:
 
   /// Return true if the function has instruction(s) with unknown control flow.
   bool hasUnknownControlFlow() const { return HasUnknownControlFlow; }
+
+  /// Return true if the function has any internal label reference.
+  bool hasInternalLabelReference() const { return HasInternalLabelReference; }
 
   /// Return true if the function body is non-contiguous.
   bool isSplit() const { return isSimple() && getLayout().isSplit(); }
