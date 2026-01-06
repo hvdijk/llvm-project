@@ -207,7 +207,7 @@ protected:
 
   /// Returns the out set of an instruction given its in set.
   /// If backwards, computes the in set given its out set.
-  StateTy computeNext(const MCInst &Point, const StateTy &Cur) {
+  StateTy computeNext(MCInstReference Point, const StateTy &Cur) {
     llvm_unreachable("Unimplemented method");
     return StateTy();
   }
@@ -390,8 +390,11 @@ public:
       else
         LAST = &*BB->begin();
 
-      auto doNext = [&](MCInst &Inst, const BinaryBasicBlock &BB) {
-        StateTy CurState = derived().computeNext(Inst, *PrevState);
+      auto doNext = [&](BinaryBasicBlock::iterator It,
+                        const BinaryBasicBlock &BB) {
+        MCInstReference Point(BinaryFunction::instr_const_iterator(*BB.getFunction(), BB, *It));
+        MCInst &Inst = *It;
+        StateTy CurState = derived().computeNext(Point, *PrevState);
 
         if (Backward && BC.MIB->isInvoke(Inst)) {
           BinaryBasicBlock *LBB = Func.getLandingPadBBFor(BB, Inst);
@@ -416,11 +419,11 @@ public:
       };
 
       if (!Backward)
-        for (MCInst &Inst : *BB)
-          doNext(Inst, *BB);
+        for (auto It = BB->begin(), E = BB->end(); It != E; ++It)
+          doNext(It, *BB);
       else
-        for (MCInst &Inst : llvm::reverse(*BB))
-          doNext(Inst, *BB);
+        for (auto It = BB->end(), E = BB->begin(); It != E;)
+          doNext(--It, *BB);
 
       if (Changed) {
         if (!Backward) {

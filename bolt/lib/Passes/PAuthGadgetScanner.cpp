@@ -435,7 +435,7 @@ protected:
 
   // Returns all registers that can be treated as if they are written by an
   // authentication instruction.
-  SmallVector<MCPhysReg> getRegsMadeSafeToDeref(const MCInst &Point,
+  SmallVector<MCPhysReg> getRegsMadeSafeToDeref(MCInstReference Point,
                                                 const SrcState &Cur) const {
     SmallVector<MCPhysReg> Regs;
 
@@ -481,7 +481,7 @@ protected:
   }
 
   // Returns all registers made trusted by this instruction.
-  SmallVector<MCPhysReg> getRegsMadeTrusted(const MCInst &Point,
+  SmallVector<MCPhysReg> getRegsMadeTrusted(MCInstReference Point,
                                             const SrcState &Cur) const {
     assert(!AuthTrapsOnFailure && "Use getRegsMadeSafeToDeref instead");
     SmallVector<MCPhysReg> Regs;
@@ -513,14 +513,15 @@ protected:
     return Regs;
   }
 
-  SrcState computeNext(const MCInst &Point, const SrcState &Cur) {
-    if (BC.MIB->isCFI(Point))
+  SrcState computeNext(MCInstReference Point, const SrcState &Cur) {
+    const MCInst &Inst = Point;
+    if (BC.MIB->isCFI(Inst))
       return Cur;
 
     SrcStatePrinter P(BC);
     LLVM_DEBUG({
       dbgs() << "  SrcSafetyAnalysis::ComputeNext(";
-      BC.InstPrinter->printInst(&Point, 0, "", *BC.STI, dbgs());
+      BC.InstPrinter->printInst(&Inst, 0, "", *BC.STI, dbgs());
       dbgs() << ", ";
       P.print(dbgs(), Cur);
       dbgs() << ")\n";
@@ -558,7 +559,7 @@ protected:
     // need to track that for:
     for (MCPhysReg Reg : RegsToTrack.getRegisters())
       if (Clobbered[Reg])
-        lastWritingInsts(Next, Reg) = {&Point};
+        lastWritingInsts(Next, Reg) = {&Inst};
 
     // After accounting for clobbered registers in general, override the state
     // according to authentication and other *special cases* of clobbering.
@@ -810,7 +811,7 @@ public:
       setState(Inst, S);
 
       // Compute the state after this instruction executes.
-      S = computeNext(Inst, S);
+      S = computeNext(Point, S);
     }
   }
 
