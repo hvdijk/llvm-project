@@ -170,6 +170,54 @@ public:
     return isLoadFromStack(Inst);
   }
 
+  bool isSafeIndirectBranch(MCInstReference Point) const override {
+    using namespace LowLevelInstMatcherDSL;
+
+    auto StepBack = [&]() -> bool {
+      if (auto PrevPoint = Point.getSinglePredecessor()) {
+        Point = *PrevPoint;
+        return true;
+      }
+      return false;
+    };
+
+    auto MatchInst = [&](auto &&...A) -> bool {
+      return matchInst(Point, std::forward<decltype(A)>(A)...);
+    };
+
+    auto MatchPrevInst = [&](auto &&...A) -> bool {
+      return StepBack() && MatchInst(std::forward<decltype(A)>(A)...);
+    };
+
+    const auto *JT = Point.getFunction()->getJumpTable(Point);
+    if (!JT)
+      return false;
+
+    Reg BranchReg, Add2Reg1, Add2Reg2, LdrswReg1, LdrswReg2;
+    Imm CmpImm;
+    if (!MatchInst(AArch64::BR, BranchReg) ||
+        !MatchPrevInst(AArch64::ADDXrs, BranchReg, Add2Reg1, Add2Reg2) ||
+        !MatchPrevInst(AArch64::ADR, Add2Reg1) ||
+        !MatchPrevInst(AArch64::LDRSWroX, Add2Reg2, LdrswReg1, LdrswReg2,
+                       Imm(0), Imm(1)) ||
+        /* Linker relaxation may have turned ADRP+ADDXri into NOP+ADR.
+         * ADRP/ADR address operands were already checked during jump table
+         * analysis. */
+        !(MatchPrevInst(AArch64::ADDXri, LdrswReg1, LdrswReg1)
+              ? MatchPrevInst(AArch64::ADRP, LdrswReg1)
+              : MatchInst(AArch64::ADR, LdrswReg1) &&
+                    MatchPrevInst(AArch64::NOP)) ||
+        !MatchPrevInst(AArch64::CSELXr, LdrswReg2, LdrswReg2, Reg(AArch64::XZR),
+                       Imm(9)) ||
+        !MatchPrevInst(AArch64::SUBSXri, Reg(AArch64::XZR), LdrswReg2,
+                       CmpImm) ||
+        uint64_t(CmpImm.get()) > JT->getSize()) {
+      return false;
+    }
+
+    return true;
+  }
+
   // We look for instruction that saves LR to or restores LR from stack.
   //
   // If we ever see an LR save to stack, we assume this block is not an
@@ -1425,10 +1473,10 @@ public:
   /// Return true on successful jump table instruction sequence match, false
   /// otherwise.
   bool analyzeIndirectBranchFragment(
-      const MCInst &Inst,
+      const BinaryFunction &BF, const MCInst &Inst, unsigned Offset,
       DenseMap<const MCInst *, SmallVector<MCInst *, 4>> &UDChain,
-      const MCExpr *&JumpTable, int64_t &Offset, int64_t &ScaleValue,
-      MCInst *&PCRelBase) const {
+      uint64_t &JTLength, const MCExpr *&DispExpr, int64_t &DispValue,
+      int64_t &ScaleValue, MCInst *&PCRelBase, MCInst *&MemLocInstr) const {
     // The only kind of indirect branches we match is jump table, thus ignore
     // authenticating branch instructions early.
     if (isBRA(Inst))
@@ -1437,7 +1485,12 @@ public:
     // Expect AArch64 BR
     assert(Inst.getOpcode() == AArch64::BR && "Unexpected opcode");
 
-    JumpTable = nullptr;
+    JTLength = 0;
+    DispExpr = nullptr;
+    DispValue = 0;
+    ScaleValue = 0;
+    PCRelBase = nullptr;
+    MemLocInstr = nullptr;
 
     // Match the indirect branch pattern for aarch64
     SmallVector<MCInst *, 4> &UsesRoot = UDChain[&Inst];
@@ -1452,19 +1505,19 @@ public:
       // according to a jump table entry. Fail.
       return false;
     }
-    if (DefAdd->getOpcode() == AArch64::ADDXri) {
+    switch (DefAdd->getOpcode()) {
+    case AArch64::ADDXri:
       // This can happen when there is no offset, but a direct jump that was
       // transformed into an indirect one  (indirect tail call) :
       //   ADRP   x2, Perl_re_compiler
       //   ADD    x2, x2, :lo12:Perl_re_compiler
       //   BR     x2
       return false;
-    }
-    if (DefAdd->getOpcode() == AArch64::ADDXrs) {
-      // Covers the less common pattern where JT entries are relative to
-      // the JT itself (like x86). Seems less efficient since we can't
-      // assume the JT is aligned at 4B boundary and thus drop 2 bits from
-      // JT values.
+
+    case AArch64::ADDXrs: {
+      // Covers the pattern where JT entries are relative to the JT itself (like
+      // x86) or any other anchor point (with jump table hardening).
+      //
       // cde264:
       //    adrp    x12, #21544960  ; 216a000
       //    add     x12, x12, #1696 ; 216a6a0  (JT object in .rodata)
@@ -1473,103 +1526,219 @@ public:
       //    br      x8
       // cde278:
       //
+      // or
+      //
+      //    cmp     x16, #0x8
+      //    csel    x16, x16, xzr, ls
+      //    adrp    x17, #21544960  ; 216a000
+      //    add     x17, x17, #1696 ; 216a000 (JT object in .rodata)
+      //    ldrsw   x16, [x17, x16, lsl #2]
+      // anchor:
+      //    adr     x17, anchor
+      //  * add     x16, x17, x16
+      //    br      x16
+      //
       // Parsed as ADDXrs reg:x8 reg:x8 reg:x12 imm:0
-      return false;
-    }
-    if (DefAdd->getOpcode() != AArch64::ADDXrx)
-      return false;
 
-    // Validate ADD operands
-    int64_t OperandExtension = DefAdd->getOperand(3).getImm();
-    unsigned ShiftVal = AArch64_AM::getArithShiftValue(OperandExtension);
-    AArch64_AM::ShiftExtendType ExtendType =
-        AArch64_AM::getArithExtendType(OperandExtension);
-    if (ShiftVal != 2) {
-      // TODO: Handle the pattern where ShiftVal != 2.
-      // The following code sequence below has no shift amount,
-      // the range could be 0 to 4.
-      // The pattern comes from libc, it occurs when the binary is static.
-      //   adr     x6, 0x219fb0 <sigall_set+0x88>
-      //   add     x6, x6, x14, lsl #2
-      //   ldr     w7, [x6]
-      //   add     x6, x6, w7, sxtw => no shift amount
-      //   br      x6
-      LLVM_DEBUG(dbgs() << "BOLT-DEBUG: "
-                           "failed to match indirect branch: ShiftVAL != 2\n");
-      return false;
-    }
+      // Validate ADD operands
+      int64_t OperandExtension = DefAdd->getOperand(3).getImm();
+      unsigned ShiftVal = AArch64_AM::getArithShiftValue(OperandExtension);
+      if (ShiftVal != 0) {
+        LLVM_DEBUG(
+            dbgs() << "BOLT-DEBUG: "
+                      "failed to match indirect branch: ShiftVAL != 0\n");
+        return false;
+      }
 
-    if (ExtendType == AArch64_AM::SXTB)
-      ScaleValue = 1LL;
-    else if (ExtendType == AArch64_AM::SXTH)
-      ScaleValue = 2LL;
-    else if (ExtendType == AArch64_AM::SXTW)
-      ScaleValue = 4LL;
-    else
-      return false;
+      // Match an ADR to load base address to be used when addressing JT targets
+      SmallVector<MCInst *, 4> &UsesAdd = UDChain[DefAdd];
+      if (UsesAdd.size() <= 1 || UsesAdd[1] == nullptr ||
+          UsesAdd[2] == nullptr) {
+        // This happens when we don't have enough context about this jump table
+        // because the jumping code sequence was split in multiple basic blocks.
+        // This was observed in the wild in HHVM code (dispatchImpl).
+        return false;
+      }
+      MCInst *DefBaseAddr = UsesAdd[1];
+      if (DefBaseAddr->getOpcode() != AArch64::ADR)
+        return false;
 
-    // Match an ADR to load base address to be used when addressing JT targets
-    SmallVector<MCInst *, 4> &UsesAdd = UDChain[DefAdd];
-    if (UsesAdd.size() <= 1 || UsesAdd[1] == nullptr || UsesAdd[2] == nullptr) {
-      // This happens when we don't have enough context about this jump table
-      // because the jumping code sequence was split in multiple basic blocks.
-      // This was observed in the wild in HHVM code (dispatchImpl).
-      return false;
-    }
-    MCInst *DefBaseAddr = UsesAdd[1];
-    if (DefBaseAddr->getOpcode() != AArch64::ADR)
-      return false;
+      PCRelBase = DefBaseAddr;
+      // Match LOAD to load the jump table (relative) target
+      const MCInst *DefLoad = UsesAdd[2];
+      if (!mayLoad(*DefLoad) || DefLoad->getOpcode() != AArch64::LDRSWroX ||
+          DefLoad->getOperand(3).getImm() != 0 ||
+          DefLoad->getOperand(4).getImm() != 1)
+        return false;
 
-    PCRelBase = DefBaseAddr;
-    // Match LOAD to load the jump table (relative) target
-    const MCInst *DefLoad = UsesAdd[2];
-    if (!mayLoad(*DefLoad) || (ScaleValue == 1LL && !isLDRB(*DefLoad)) ||
-        (ScaleValue == 2LL && !isLDRH(*DefLoad)))
-      return false;
+      ScaleValue = 4ULL;
 
-    // Match ADD that calculates the JumpTable Base Address (not the offset)
-    SmallVector<MCInst *, 4> &UsesLoad = UDChain[DefLoad];
-    const MCInst *DefJTBaseAdd = UsesLoad[1];
-    MCPhysReg From, To;
-    if (DefJTBaseAdd == nullptr || isLoadFromStack(*DefJTBaseAdd) ||
-        isRegToRegMove(*DefJTBaseAdd, From, To)) {
-      // Sometimes base address may have been defined in another basic block
-      // (hoisted). Return with no jump table info.
+      // Match ADD that calculates the JumpTable Base Address (not the offset)
+      SmallVector<MCInst *, 4> &UsesLoad = UDChain[DefLoad];
+
+      MCInst *DefIndex = UsesLoad[2];
+      if (DefIndex && DefIndex->getOpcode() == AArch64::CSELXr &&
+          DefIndex->getOperand(2).getReg() == AArch64::XZR &&
+          DefIndex->getOperand(3).getImm() == 9 /* less or same */) {
+        SmallVector<MCInst *, 4> &UsesIndex = UDChain[DefIndex];
+        // TODO: This is dodgy. We are looking for the instruction that defines
+        // the flags, which is not represented in UDChain, but the CSEL happens
+        // to use XZR, and the CMP happens to be encoded as a write to XZR, so
+        // we get the information that way. It is okay for this to be inaccurate
+        // in edge cases as we will do a proper validation in
+        // isSafeIndirectBranch().
+        MCInst *DefIndexSel = UsesIndex[2];
+        if (DefIndexSel && DefIndexSel->getOpcode() == AArch64::SUBSXri &&
+            DefIndexSel->getOperand(1).getReg() ==
+                DefIndex->getOperand(1).getReg()) {
+          JTLength = DefIndexSel->getOperand(2).getImm() + 1;
+        }
+      }
+
+      MCInst *DefJTBaseAdd = UsesLoad[1];
+
+      MCPhysReg From, To;
+      if (DefJTBaseAdd == nullptr || isLoadFromStack(*DefJTBaseAdd) ||
+          isRegToRegMove(*DefJTBaseAdd, From, To)) {
+        // Sometimes base address may have been defined in another basic block
+        // (hoisted). Return with no jump table info.
+        return true;
+      }
+
+      if (DefJTBaseAdd->getOpcode() == AArch64::ADR) {
+        if (DefJTBaseAdd->getOperand(1).isExpr()) {
+          DispExpr = DefJTBaseAdd->getOperand(1).getExpr();
+          MemLocInstr = DefJTBaseAdd;
+        }
+        return true;
+      }
+
+      if (DefJTBaseAdd->getOpcode() != AArch64::ADDXri) {
+        LLVM_DEBUG(dbgs() << "BOLT-DEBUG: failed to match jump table base "
+                             "address pattern! (1)\n");
+        return false;
+      }
+
+      if (DefJTBaseAdd->getOperand(2).isImm())
+        DispValue = DefJTBaseAdd->getOperand(2).getImm();
+      SmallVector<MCInst *, 4> &UsesJTBaseAdd = UDChain[DefJTBaseAdd];
+      MCInst *DefJTBasePage = UsesJTBaseAdd[1];
+      if (DefJTBasePage == nullptr || isLoadFromStack(*DefJTBasePage)) {
+        return true;
+      }
+      if (DefJTBasePage->getOpcode() != AArch64::ADRP)
+        return false;
+
+      if (DefJTBasePage->getOperand(1).isExpr()) {
+        DispExpr = DefJTBasePage->getOperand(1).getExpr();
+        MemLocInstr = DefJTBasePage;
+      } else {
+        DispValue += ((BF.getAddress() + Offset) & ~0xFFFULL) +
+                     (DefJTBasePage->getOperand(1).getImm() << 12);
+      }
       return true;
     }
 
-    if (DefJTBaseAdd->getOpcode() == AArch64::ADR) {
-      // TODO: Handle the pattern where there is no adrp/add pair.
-      // It also occurs when the binary is static.
-      //  adr     x13, 0x215a18 <_nl_value_type_LC_COLLATE+0x50>
-      //  ldrh    w13, [x13, w12, uxtw #1]
-      //  adr     x12, 0x247b30 <__gettextparse+0x5b0>
-      //  add     x13, x12, w13, sxth #2
-      //  br      x13
-      LLVM_DEBUG(dbgs() << "BOLT-DEBUG: failed to match indirect branch: "
-                           "nop/adr instead of adrp/add\n");
-      return false;
-    }
+    case AArch64::ADDXrx: {
+      // Validate ADD operands
+      int64_t OperandExtension = DefAdd->getOperand(3).getImm();
+      unsigned ShiftVal = AArch64_AM::getArithShiftValue(OperandExtension);
+      AArch64_AM::ShiftExtendType ExtendType =
+          AArch64_AM::getArithExtendType(OperandExtension);
+      if (ShiftVal != 2) {
+        // TODO: Handle the pattern where ShiftVal != 2.
+        // The following code sequence below has no shift amount,
+        // the range could be 0 to 4.
+        // The pattern comes from libc, it occurs when the binary is static.
+        //   adr     x6, 0x219fb0 <sigall_set+0x88>
+        //   add     x6, x6, x14, lsl #2
+        //   ldr     w7, [x6]
+        //   add     x6, x6, w7, sxtw => no shift amount
+        //   br      x6
+        LLVM_DEBUG(
+            dbgs() << "BOLT-DEBUG: "
+                      "failed to match indirect branch: ShiftVAL != 2\n");
+        return false;
+      }
 
-    if (DefJTBaseAdd->getOpcode() != AArch64::ADDXri) {
-      LLVM_DEBUG(dbgs() << "BOLT-DEBUG: failed to match jump table base "
-                           "address pattern! (1)\n");
-      return false;
-    }
+      if (ExtendType == AArch64_AM::SXTB)
+        ScaleValue = 1LL;
+      else if (ExtendType == AArch64_AM::SXTH)
+        ScaleValue = 2LL;
+      else if (ExtendType == AArch64_AM::SXTW)
+        ScaleValue = 4LL;
+      else
+        return false;
 
-    if (DefJTBaseAdd->getOperand(2).isImm())
-      Offset = DefJTBaseAdd->getOperand(2).getImm();
-    SmallVector<MCInst *, 4> &UsesJTBaseAdd = UDChain[DefJTBaseAdd];
-    const MCInst *DefJTBasePage = UsesJTBaseAdd[1];
-    if (DefJTBasePage == nullptr || isLoadFromStack(*DefJTBasePage)) {
+      // Match an ADR to load base address to be used when addressing JT targets
+      SmallVector<MCInst *, 4> &UsesAdd = UDChain[DefAdd];
+      if (UsesAdd.size() <= 1 || UsesAdd[1] == nullptr ||
+          UsesAdd[2] == nullptr) {
+        // This happens when we don't have enough context about this jump table
+        // because the jumping code sequence was split in multiple basic blocks.
+        // This was observed in the wild in HHVM code (dispatchImpl).
+        return false;
+      }
+      MCInst *DefBaseAddr = UsesAdd[1];
+      if (DefBaseAddr->getOpcode() != AArch64::ADR)
+        return false;
+
+      PCRelBase = DefBaseAddr;
+      // Match LOAD to load the jump table (relative) target
+      const MCInst *DefLoad = UsesAdd[2];
+      if (!mayLoad(*DefLoad) || !((ScaleValue == 1LL && isLDRB(*DefLoad)) ||
+                                  (ScaleValue == 2LL && isLDRH(*DefLoad)) ||
+                                  (ScaleValue == 4LL && isLDRW(*DefLoad))))
+        return false;
+
+      // Match ADD that calculates the JumpTable Base Address (not the offset)
+      SmallVector<MCInst *, 4> &UsesLoad = UDChain[DefLoad];
+      const MCInst *DefJTBaseAdd = UsesLoad[1];
+      MCPhysReg From, To;
+      if (DefJTBaseAdd == nullptr || isLoadFromStack(*DefJTBaseAdd) ||
+          isRegToRegMove(*DefJTBaseAdd, From, To)) {
+        // Sometimes base address may have been defined in another basic block
+        // (hoisted). Return with no jump table info.
+        return true;
+      }
+
+      if (DefJTBaseAdd->getOpcode() == AArch64::ADR) {
+        // TODO: Handle the pattern where there is no adrp/add pair.
+        // It also occurs when the binary is static.
+        //  adr     x13, 0x215a18 <_nl_value_type_LC_COLLATE+0x50>
+        //  ldrh    w13, [x13, w12, uxtw #1]
+        //  adr     x12, 0x247b30 <__gettextparse+0x5b0>
+        //  add     x13, x12, w13, sxth #2
+        //  br      x13
+        LLVM_DEBUG(dbgs() << "BOLT-DEBUG: failed to match indirect branch: "
+                             "nop/adr instead of adrp/add\n");
+        return false;
+      }
+
+      if (DefJTBaseAdd->getOpcode() != AArch64::ADDXri) {
+        LLVM_DEBUG(dbgs() << "BOLT-DEBUG: failed to match jump table base "
+                             "address pattern! (1)\n");
+        return false;
+      }
+
+      if (DefJTBaseAdd->getOperand(2).isImm())
+        DispValue = DefJTBaseAdd->getOperand(2).getImm();
+      SmallVector<MCInst *, 4> &UsesJTBaseAdd = UDChain[DefJTBaseAdd];
+      const MCInst *DefJTBasePage = UsesJTBaseAdd[1];
+      if (DefJTBasePage == nullptr || isLoadFromStack(*DefJTBasePage)) {
+        return true;
+      }
+      if (DefJTBasePage->getOpcode() != AArch64::ADRP)
+        return false;
+
+      if (DefJTBasePage->getOperand(1).isExpr())
+        DispExpr = DefJTBasePage->getOperand(1).getExpr();
       return true;
     }
-    if (DefJTBasePage->getOpcode() != AArch64::ADRP)
-      return false;
 
-    if (DefJTBasePage->getOperand(1).isExpr())
-      JumpTable = DefJTBasePage->getOperand(1).getExpr();
-    return true;
+    default:
+      return false;
+    }
   }
 
   DenseMap<const MCInst *, SmallVector<MCInst *, 4>>
@@ -1634,40 +1803,47 @@ public:
   }
 
   IndirectBranchType analyzeIndirectBranch(
-      const BinaryFunction &BF, MCInst &Instruction, InstructionIterator Begin,
-      InstructionIterator End, const unsigned PtrSize, MCInst *&MemLocInstrOut,
-      unsigned &BaseRegNumOut, unsigned &IndexRegNumOut, int64_t &DispValueOut,
-      const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
+      const BinaryFunction &BF, MCInst &Instruction, unsigned Size,
+      unsigned Offset, InstructionIterator Begin, InstructionIterator End,
+      const unsigned PtrSize, MCInst *&MemLocInstrOut, unsigned &IndexRegNumOut,
+      uint64_t &ArrayStartOut, uint64_t &ArrayEndOut, uint64_t &AnchorOut,
       MCInst *&FixedEntryLoadInstr) const override {
     MemLocInstrOut = nullptr;
-    BaseRegNumOut = AArch64::NoRegister;
-    IndexRegNumOut = AArch64::NoRegister;
-    DispValueOut = 0;
-    DispExprOut = nullptr;
     FixedEntryLoadInstr = nullptr;
 
     // An instruction referencing memory used by jump instruction (directly or
     // via register). This location could be an array of function pointers
     // in case of indirect tail call, or a jump table.
-    MCInst *MemLocInstr = nullptr;
+    MCInst *MemLocInstr;
 
     // Analyze the memory location.
+    uint64_t JTLength;
     int64_t ScaleValue, DispValue;
     const MCExpr *DispExpr;
 
     DenseMap<const MCInst *, SmallVector<llvm::MCInst *, 4>> UDChain =
         computeLocalUDChain(&Instruction, Begin, End);
     MCInst *PCRelBase;
-    if (!analyzeIndirectBranchFragment(Instruction, UDChain, DispExpr,
-                                       DispValue, ScaleValue, PCRelBase))
+    if (!analyzeIndirectBranchFragment(BF, Instruction, Offset, UDChain,
+                                       JTLength, DispExpr, DispValue,
+                                       ScaleValue, PCRelBase, MemLocInstr))
       return BF.hasInternalLabelReference()
                  ? IndirectBranchType::UNKNOWN
                  : IndirectBranchType::POSSIBLE_TAIL_CALL;
 
+    uint64_t PCRelAddr = BF.getExprValue(PCRelBase->getOperand(1).getExpr());
+
     MemLocInstrOut = MemLocInstr;
-    DispValueOut = DispValue;
-    DispExprOut = DispExpr;
-    PCRelBaseOut = PCRelBase;
+
+    uint64_t ArrayStart = DispValue;
+    if (DispExpr)
+      ArrayStart += BF.getExprValue(DispExpr);
+
+    ArrayStartOut = ArrayStart;
+    if (JTLength && ScaleValue)
+      ArrayEndOut = ArrayStart + JTLength * ScaleValue;
+    AnchorOut = PCRelAddr;
+
     return IndirectBranchType::POSSIBLE_PIC_JUMP_TABLE;
   }
 

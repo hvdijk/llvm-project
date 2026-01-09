@@ -590,8 +590,9 @@ public:
   /// May create an embedded jump table and return its label as the second
   /// element of the pair.
   const MCSymbol *getOrCreateJumpTable(BinaryFunction &Function,
-                                       uint64_t Address,
-                                       JumpTable::JumpTableType Type);
+                                       uint64_t Address, uint64_t Size,
+                                       JumpTable::JumpTableType Type,
+                                       uint64_t Anchor);
 
   /// Analyze a possible jump table of type \p Type at a given \p Address.
   /// \p BF is a function referencing the jump table.
@@ -605,7 +606,7 @@ public:
   /// could be partially populated if the jump table detection fails.
   bool analyzeJumpTable(const uint64_t Address,
                         const JumpTable::JumpTableType Type,
-                        const BinaryFunction &BF,
+                        const uint64_t Anchor, const BinaryFunction &BF,
                         const uint64_t NextJTAddress = 0,
                         JumpTable::AddressesType *EntriesAsAddress = nullptr,
                         bool *HasEntryInFragment = nullptr) const;

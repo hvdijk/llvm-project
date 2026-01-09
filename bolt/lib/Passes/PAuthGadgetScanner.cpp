@@ -1472,6 +1472,9 @@ shouldReportCallGadget(const BinaryContext &BC, const MCInstReference &Inst,
   if (!BC.MIB->isIndirectCall(Inst) && !BC.MIB->isIndirectBranch(Inst))
     return std::nullopt;
 
+  if (BC.MIB->isSafeIndirectBranch(Inst))
+    return std::nullopt;
+
   bool IsAuthenticated = false;
   MCPhysReg DestReg =
       BC.MIB->getRegUsedAsIndirectBranchDest(Inst, IsAuthenticated);

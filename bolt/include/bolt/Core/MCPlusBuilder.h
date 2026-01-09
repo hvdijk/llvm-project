@@ -454,6 +454,10 @@ public:
     return Analysis->isIndirectBranch(Inst);
   }
 
+  virtual bool isSafeIndirectBranch(MCInstReference Point) const {
+    return false;
+  }
+
   /// Returns true if the instruction unconditionally transfers the control to
   /// another program point, interrupting sequential code execution, e.g. by a
   /// call, return, or unconditional jump. This explicitly leaves out
@@ -1538,6 +1542,9 @@ public:
   /// Return MCSymbol/offset extracted from a target expression
   virtual std::pair<const MCSymbol *, uint64_t>
   getTargetSymbolInfo(const MCExpr *Expr) const {
+    if (auto *SpecExpr = dyn_cast<MCSpecifierExpr>(Expr)) {
+      Expr = SpecExpr->getSubExpr();
+    }
     if (auto *SymExpr = dyn_cast<MCSymbolRefExpr>(Expr)) {
       return std::make_pair(&SymExpr->getSymbol(), 0);
     } else if (auto *BinExpr = dyn_cast<MCBinaryExpr>(Expr)) {
@@ -1767,10 +1774,10 @@ public:
   /// is the instruction that loads up the indirect function pointer.  It may
   /// or may not be same as \p Instruction.
   virtual IndirectBranchType analyzeIndirectBranch(
-      const BinaryFunction &BF, MCInst &Instruction, InstructionIterator Begin,
-      InstructionIterator End, const unsigned PtrSize, MCInst *&MemLocInstr,
-      unsigned &BaseRegNum, unsigned &IndexRegNum, int64_t &DispValue,
-      const MCExpr *&DispExpr, MCInst *&PCRelBaseOut,
+      const BinaryFunction &BF, MCInst &Instruction, unsigned Size,
+      unsigned Offset, InstructionIterator Begin, InstructionIterator End,
+      const unsigned PtrSize, MCInst *&MemLocInstr, unsigned &IndexRegNum,
+      uint64_t &ArrayStart, uint64_t &ArrayEnd, uint64_t &Anchor,
       MCInst *&FixedEntryLoadInst) const {
     llvm_unreachable("not implemented");
     return IndirectBranchType::UNKNOWN;

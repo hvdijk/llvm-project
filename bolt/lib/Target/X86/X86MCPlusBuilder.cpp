@@ -2007,10 +2007,10 @@ public:
   }
 
   IndirectBranchType analyzeIndirectBranch(
-      const BinaryFunction &BF, MCInst &Instruction, InstructionIterator Begin,
-      InstructionIterator End, const unsigned PtrSize, MCInst *&MemLocInstrOut,
-      unsigned &BaseRegNumOut, unsigned &IndexRegNumOut, int64_t &DispValueOut,
-      const MCExpr *&DispExprOut, MCInst *&PCRelBaseOut,
+      const BinaryFunction &BF, MCInst &Instruction, unsigned Size,
+      unsigned Offset, InstructionIterator Begin, InstructionIterator End,
+      const unsigned PtrSize, MCInst *&MemLocInstrOut, unsigned &IndexRegNumOut,
+      uint64_t &ArrayStartOut, uint64_t &ArrayEndOut, uint64_t &AnchorOut,
       MCInst *&FixedEntryLoadInst) const override {
     // Try to find a (base) memory location from where the address for
     // the indirect branch is loaded. For X86-64 the memory will be specified
@@ -2034,10 +2034,10 @@ public:
     // We handle PIC-style jump tables separately.
     //
     MemLocInstrOut = nullptr;
-    BaseRegNumOut = X86::NoRegister;
     IndexRegNumOut = X86::NoRegister;
-    DispValueOut = 0;
-    DispExprOut = nullptr;
+    ArrayStartOut = 0;
+    ArrayEndOut = 0;
+    AnchorOut = 0;
     FixedEntryLoadInst = nullptr;
 
     std::reverse_iterator<InstructionIterator> II(End);
@@ -2098,13 +2098,21 @@ public:
     if (!MO)
       return IndirectBranchType::UNKNOWN;
 
-    BaseRegNumOut = MO->BaseRegNum;
     IndexRegNumOut = MO->IndexRegNum;
-    DispValueOut = MO->DispImm;
-    DispExprOut = MO->DispExpr;
 
-    if ((MO->BaseRegNum != X86::NoRegister && MO->BaseRegNum != RIPRegister) ||
-        MO->SegRegNum != X86::NoRegister)
+    // RIP-relative addressing should be converted to symbol form by now
+    // in processed instructions (but not in jump).
+    uint64_t ArrayStart = MO->DispImm;
+    if (MO->DispExpr)
+      ArrayStart += BF.getExprValue(MO->DispExpr);
+    else if (MO->BaseRegNum == RIPRegister)
+      ArrayStart += BF.getAddress() + Offset + Size;
+    else if (MO->BaseRegNum != X86::NoRegister)
+      return IndirectBranchType::UNKNOWN;
+
+    ArrayStartOut = ArrayStart;
+
+    if (MO->SegRegNum != X86::NoRegister)
       return IndirectBranchType::UNKNOWN;
 
     if (MemLocInstr == &Instruction &&
@@ -2117,8 +2125,10 @@ public:
     case IndirectBranchType::POSSIBLE_PIC_JUMP_TABLE:
       if (MO->ScaleImm != 1 || MO->BaseRegNum != RIPRegister)
         return IndirectBranchType::UNKNOWN;
+      AnchorOut = ArrayStart;
       break;
     case IndirectBranchType::POSSIBLE_PIC_FIXED_BRANCH:
+      AnchorOut = ArrayStart;
       break;
     default:
       if (MO->ScaleImm != PtrSize)

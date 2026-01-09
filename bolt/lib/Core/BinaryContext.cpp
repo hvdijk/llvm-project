@@ -514,7 +514,7 @@ BinaryContext::handleAddressRef(uint64_t Address, BinaryFunction &BF,
     const MemoryContentsType MemType = analyzeMemoryAt(Address, BF);
     if (MemType == MemoryContentsType::POSSIBLE_PIC_JUMP_TABLE && IsPCRel) {
       const MCSymbol *Symbol =
-          getOrCreateJumpTable(BF, Address, JumpTable::JTT_PIC);
+          getOrCreateJumpTable(BF, Address, 0, JumpTable::JTT_PIC, Address);
 
       return std::make_pair(Symbol, 0);
     }
@@ -595,10 +595,10 @@ MemoryContentsType BinaryContext::analyzeMemoryAt(uint64_t Address,
 
   // Start with checking for PIC jump table. We expect non-PIC jump tables
   // to have high 32 bits set to 0.
-  if (analyzeJumpTable(Address, JumpTable::JTT_PIC, BF))
+  if (analyzeJumpTable(Address, JumpTable::JTT_PIC, Address, BF))
     return MemoryContentsType::POSSIBLE_PIC_JUMP_TABLE;
 
-  if (analyzeJumpTable(Address, JumpTable::JTT_NORMAL, BF))
+  if (analyzeJumpTable(Address, JumpTable::JTT_NORMAL, 0, BF))
     return MemoryContentsType::POSSIBLE_JUMP_TABLE;
 
   return MemoryContentsType::UNKNOWN;
@@ -606,6 +606,7 @@ MemoryContentsType BinaryContext::analyzeMemoryAt(uint64_t Address,
 
 bool BinaryContext::analyzeJumpTable(const uint64_t Address,
                                      const JumpTable::JumpTableType Type,
+                                     const uint64_t Anchor,
                                      const BinaryFunction &BF,
                                      const uint64_t NextJTAddress,
                                      JumpTable::AddressesType *EntriesAsAddress,
@@ -666,9 +667,10 @@ bool BinaryContext::analyzeJumpTable(const uint64_t Address,
 
   LLVM_DEBUG({
     using JTT = JumpTable::JumpTableType;
-    dbgs() << formatv("BOLT-DEBUG: analyzeJumpTable @{0:x} in {1}, JTT={2}\n",
-                      Address, BF.getPrintName(),
-                      Type == JTT::JTT_PIC ? "PIC" : "Normal");
+    dbgs() << formatv(
+        "BOLT-DEBUG: analyzeJumpTable @{0:x} in {1}, JTT={2}, Anchor={3:x}\n",
+        Address, BF.getPrintName(), Type == JTT::JTT_PIC ? "PIC" : "Normal",
+        Anchor);
   });
   const uint64_t EntrySize = getJumpTableEntrySize(Type);
   for (uint64_t EntryAddress = Address; EntryAddress <= UpperBound - EntrySize;
@@ -693,7 +695,7 @@ bool BinaryContext::analyzeJumpTable(const uint64_t Address,
 
     const uint64_t Value =
         (Type == JumpTable::JTT_PIC)
-            ? Address + *getSignedValueAtAddress(EntryAddress, EntrySize)
+            ? Anchor + *getSignedValueAtAddress(EntryAddress, EntrySize)
             : *getPointerAtAddress(EntryAddress);
 
     // __builtin_unreachable() case.
@@ -759,14 +761,17 @@ void BinaryContext::populateJumpTables() {
     if (!llvm::all_of(JT->Parents, std::mem_fn(&BinaryFunction::isSimple)))
       continue;
 
-    uint64_t NextJTAddress = 0;
+    uint64_t NextJTAddress =
+        JT->getSize() ? JT->getAddress() + JT->getSize() : 0;
     auto NextJTI = std::next(JTI);
     if (NextJTI != JTE)
-      NextJTAddress = NextJTI->second->getAddress();
+      NextJTAddress =
+          NextJTAddress ? std::min(NextJTAddress, NextJTI->second->getAddress())
+                        : NextJTI->second->getAddress();
 
-    const bool Success =
-        analyzeJumpTable(JT->getAddress(), JT->Type, *(JT->Parents[0]),
-                         NextJTAddress, &JT->EntriesAsAddress, &JT->IsSplit);
+    const bool Success = analyzeJumpTable(
+        JT->getAddress(), JT->Type, JT->Anchor, *(JT->Parents[0]),
+        NextJTAddress, &JT->EntriesAsAddress, &JT->IsSplit);
     if (!Success) {
       LLVM_DEBUG({
         dbgs() << "failed to analyze ";
@@ -778,6 +783,7 @@ void BinaryContext::populateJumpTables() {
       });
       llvm_unreachable("jump table heuristic failure");
     }
+    JT->Size = JT->EntriesAsAddress.size() * JT->EntrySize;
     for (BinaryFunction *Frag : JT->Parents) {
       if (JT->IsSplit)
         Frag->setHasIndirectTargetToSplitFragment(true);
@@ -886,13 +892,20 @@ BinaryFunction *BinaryContext::createBinaryFunction(
   return BF;
 }
 
-const MCSymbol *
-BinaryContext::getOrCreateJumpTable(BinaryFunction &Function, uint64_t Address,
-                                    JumpTable::JumpTableType Type) {
+const MCSymbol *BinaryContext::getOrCreateJumpTable(
+    BinaryFunction &Function, uint64_t Address, uint64_t Size,
+    JumpTable::JumpTableType Type, uint64_t Anchor) {
   // Two fragments of same function access same jump table
   if (JumpTable *JT = getJumpTableContainingAddress(Address)) {
     assert(JT->Type == Type && "jump table types have to match");
+    assert(JT->Anchor == Anchor && "jump table anchors have to match");
+    assert((Size == 0 || Size == JT->Size) && "jump table sizes have to match");
     assert(Address == JT->getAddress() && "unexpected non-empty jump table");
+
+    // Depending on the instruction sequence we may at different points have
+    // different knowledge about the size of the jump table. If we previously
+    // did not know the size, and do know now, track it.
+    JT->Size = std::max(JT->Size, Size);
 
     if (llvm::is_contained(JT->Parents, &Function))
       return JT->getFirstLabel();
@@ -933,9 +946,10 @@ BinaryContext::getOrCreateJumpTable(BinaryFunction &Function, uint64_t Address,
   LLVM_DEBUG(dbgs() << "BOLT-DEBUG: creating jump table " << JTLabel->getName()
                     << " in function " << Function << '\n');
 
-  JumpTable *JT = new JumpTable(*JTLabel, Address, EntrySize, Type,
+  JumpTable *JT = new JumpTable(*JTLabel, Address, EntrySize, Type, Anchor,
                                 JumpTable::LabelMapType{{0, JTLabel}},
                                 *getSectionForAddress(Address));
+  JT->Size = Size;
   JT->Parents.push_back(&Function);
   if (opts::Verbosity > 2)
     JT->print(this->outs());
@@ -964,8 +978,9 @@ BinaryContext::duplicateJumpTable(BinaryFunction &Function, JumpTable *JT,
   MCSymbol *NewLabel = Ctx->createNamedTempSymbol("duplicatedJT");
   JumpTable *NewJT =
       new JumpTable(*NewLabel, JT->getAddress(), JT->EntrySize, JT->Type,
-                    JumpTable::LabelMapType{{Offset, NewLabel}},
+                    JT->Anchor, JumpTable::LabelMapType{{Offset, NewLabel}},
                     *getSectionForAddress(JT->getAddress()));
+  NewJT->Size = JT->Size;
   NewJT->Parents = JT->Parents;
   NewJT->Entries = JT->Entries;
   NewJT->Counts = JT->Counts;

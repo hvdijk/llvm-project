@@ -28,10 +28,10 @@ extern cl::opt<unsigned> Verbosity;
 } // namespace opts
 
 bolt::JumpTable::JumpTable(MCSymbol &Symbol, uint64_t Address, size_t EntrySize,
-                           JumpTableType Type, LabelMapType &&Labels,
-                           BinarySection &Section)
+                           JumpTableType Type, uint64_t Anchor,
+                           LabelMapType &&Labels, BinarySection &Section)
     : BinaryData(Symbol, Address, 0, EntrySize, Section), EntrySize(EntrySize),
-      OutputEntrySize(EntrySize), Type(Type), Labels(Labels) {}
+      OutputEntrySize(EntrySize), Type(Type), Anchor(Anchor), Labels(Labels) {}
 
 std::pair<size_t, size_t>
 bolt::JumpTable::getEntriesForAddress(const uint64_t Addr) const {

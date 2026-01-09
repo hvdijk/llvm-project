@@ -1190,6 +1190,19 @@ public:
     return Instructions.begin()->first;
   }
 
+  /// Return offset for the specified symbol. The symbol must be a label in the
+  /// function.
+  uint64_t getLabelOffset(const MCSymbol *Label) const {
+    for (auto &L : Labels) {
+      if (L.second == Label)
+        return L.first;
+    }
+    llvm_unreachable("Label not found in function");
+  }
+
+  /// Resolves an expression to an address.
+  uint64_t getExprValue(const MCExpr *Expr) const;
+
   /// Return jump table that covers a given \p Address in memory.
   JumpTable *getJumpTableContainingAddress(uint64_t Address) {
     auto JTI = JumpTables.upper_bound(Address);

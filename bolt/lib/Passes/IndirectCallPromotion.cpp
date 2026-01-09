@@ -382,16 +382,15 @@ IndirectCallPromotion::maybeGetHotJumpTableTargets(BinaryBasicBlock &BB,
 
   JumpTableInfoType HotTargets;
   MCInst *MemLocInstr;
-  MCInst *PCRelBaseOut;
   MCInst *FixedEntryLoadInstr;
-  unsigned BaseReg, IndexReg;
-  int64_t DispValue;
-  const MCExpr *DispExpr;
+  unsigned IndexRegNum;
+  uint64_t ArrayStart, ArrayEnd;
+  uint64_t Anchor;
   MutableArrayRef<MCInst> Insts(&BB.front(), &CallInst);
   const IndirectBranchType Type = BC.MIB->analyzeIndirectBranch(
-      Function, CallInst, Insts.begin(), Insts.end(),
-      BC.AsmInfo->getCodePointerSize(), MemLocInstr, BaseReg, IndexReg,
-      DispValue, DispExpr, PCRelBaseOut, FixedEntryLoadInstr);
+      Function, CallInst, /*Size=*/0, /*Offset=*/0, Insts.begin(), Insts.end(),
+      BC.AsmInfo->getCodePointerSize(), MemLocInstr, IndexRegNum, ArrayStart,
+      ArrayEnd, Anchor, FixedEntryLoadInstr);
 
   assert(MemLocInstr && "There should always be a load for jump tables");
   if (!MemLocInstr)
@@ -409,10 +408,9 @@ IndirectCallPromotion::maybeGetHotJumpTableTargets(BinaryBasicBlock &BB,
 
   DEBUG_VERBOSE(1, {
     dbgs() << "Jmp info: Type = " << (unsigned)Type << ", "
-           << "BaseReg = " << BC.MRI->getName(BaseReg) << ", "
-           << "IndexReg = " << BC.MRI->getName(IndexReg) << ", "
-           << "DispValue = " << Twine::utohexstr(DispValue) << ", "
-           << "DispExpr = " << DispExpr << ", "
+           << "ArrayStart = " << Twine::utohexstr(ArrayStart) << ", "
+           << "ArrayEnd = " << Twine::utohexstr(ArrayEnd) << ", "
+           << "Anchor = " << Twine::utohexstr(Anchor) << ", "
            << "MemLocInstr = ";
     BC.printInstruction(dbgs(), *MemLocInstr, 0, &Function);
     dbgs() << "\n";
@@ -429,19 +427,6 @@ IndirectCallPromotion::maybeGetHotJumpTableTargets(BinaryBasicBlock &BB,
     return JumpTableInfoType();
   }
   MemoryAccessProfile &MemAccessProfile = ErrorOrMemAccessProfile.get();
-
-  uint64_t ArrayStart;
-  if (DispExpr) {
-    ErrorOr<uint64_t> DispValueOrError =
-        BC.getSymbolValue(*BC.MIB->getTargetSymbol(DispExpr));
-    assert(DispValueOrError && "global symbol needs a value");
-    ArrayStart = *DispValueOrError;
-  } else {
-    ArrayStart = static_cast<uint64_t>(DispValue);
-  }
-
-  if (BaseReg == BC.MRI->getProgramCounter())
-    ArrayStart += Function.getAddress() + MemAccessProfile.NextInstrOffset;
 
   // This is a map of [symbol] -> [count, index] and is used to combine indices
   // into the jump table since there may be multiple addresses that all have the
@@ -513,8 +498,6 @@ IndirectCallPromotion::maybeGetHotJumpTableTargets(BinaryBasicBlock &BB,
       dbgs() << "BOLT-INFO:  Idx = " << Target.second << ", "
              << "Count = " << Target.first << "\n";
   });
-
-  BC.MIB->getOrCreateAnnotationAs<uint16_t>(CallInst, "JTIndexReg") = IndexReg;
 
   TargetFetchInst = MemLocInstr;
 

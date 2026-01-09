@@ -66,6 +66,9 @@ public:
   /// The type of this jump table.
   JumpTableType Type;
 
+  /// The anchor for PIC jump tables (what an entry of zero maps to).
+  uint64_t Anchor;
+
   /// Whether this jump table has entries pointing to multiple functions.
   bool IsSplit{false};
 
@@ -95,14 +98,10 @@ public:
 private:
   /// Constructor should only be called by a BinaryContext.
   JumpTable(MCSymbol &Symbol, uint64_t Address, size_t EntrySize,
-            JumpTableType Type, LabelMapType &&Labels, BinarySection &Section);
+            JumpTableType Type, uint64_t Anchor, LabelMapType &&Labels,
+            BinarySection &Section);
 
 public:
-  /// Return the size of the jump table.
-  uint64_t getSize() const {
-    return std::max(EntriesAsAddress.size(), Entries.size()) * EntrySize;
-  }
-
   const MCSymbol *getFirstLabel() const {
     assert(Labels.count(0) != 0 && "labels must have an entry at 0");
     return Labels.find(0)->second;

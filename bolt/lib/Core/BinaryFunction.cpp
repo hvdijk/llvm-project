@@ -816,38 +816,19 @@ BinaryFunction::processIndirectBranch(MCInst &Instruction, unsigned Size,
   // The instruction loading the fixed PIC jump table entry value.
   MCInst *FixedEntryLoadInstr;
 
+  unsigned IndexRegNum;
+
   // Address of the table referenced by MemLocInstr. Could be either an
   // array of function pointers, or a jump table.
-  uint64_t ArrayStart = 0;
+  uint64_t ArrayStart = 0, ArrayEnd = 0;
 
-  unsigned BaseRegNum, IndexRegNum;
-  int64_t DispValue;
-  const MCExpr *DispExpr;
-
-  // In AArch, identify the instruction adding the PC-relative offset to
-  // jump table entries to correctly decode it.
-  MCInst *PCRelBaseInstr;
-  uint64_t PCRelAddr = 0;
-
-  auto Begin = Instructions.begin();
-  if (BC.isAArch64()) {
-    // Start at the last label as an approximation of the current basic block.
-    // This is a heuristic, since the full set of labels have yet to be
-    // determined
-    for (const uint32_t Offset :
-         llvm::make_first_range(llvm::reverse(Labels))) {
-      auto II = Instructions.find(Offset);
-      if (II != Instructions.end()) {
-        Begin = II;
-        break;
-      }
-    }
-  }
+  // Anchor point if the table is a jump table.
+  uint64_t Anchor = 0;
 
   IndirectBranchType BranchType = BC.MIB->analyzeIndirectBranch(
-      *this, Instruction, Begin, Instructions.end(), PtrSize, MemLocInstr,
-      BaseRegNum, IndexRegNum, DispValue, DispExpr, PCRelBaseInstr,
-      FixedEntryLoadInstr);
+      *this, Instruction, Size, Offset, Instructions.begin(),
+      Instructions.end(), PtrSize, MemLocInstr, IndexRegNum, ArrayStart,
+      ArrayEnd, Anchor, FixedEntryLoadInstr);
 
   if ((BranchType == IndirectBranchType::UNKNOWN ||
        BranchType == IndirectBranchType::POSSIBLE_TAIL_CALL) &&
@@ -856,64 +837,6 @@ BinaryFunction::processIndirectBranch(MCInst &Instruction, unsigned Size,
 
   if (MemLocInstr != &Instruction)
     IndexRegNum = BC.MIB->getNoRegister();
-
-  if (BC.isAArch64()) {
-    const MCSymbol *Sym = BC.MIB->getTargetSymbol(*PCRelBaseInstr, 1);
-    assert(Sym && "Symbol extraction failed");
-    ErrorOr<uint64_t> SymValueOrError = BC.getSymbolValue(*Sym);
-    if (SymValueOrError) {
-      PCRelAddr = *SymValueOrError;
-    } else {
-      for (std::pair<const uint32_t, MCSymbol *> &Elmt : Labels) {
-        if (Elmt.second == Sym) {
-          PCRelAddr = Elmt.first + getAddress();
-          break;
-        }
-      }
-    }
-    uint64_t InstrAddr = 0;
-    for (auto II = Instructions.rbegin(); II != Instructions.rend(); ++II) {
-      if (&II->second == PCRelBaseInstr) {
-        InstrAddr = II->first + getAddress();
-        break;
-      }
-    }
-    assert(InstrAddr != 0 && "instruction not found");
-    // We do this to avoid spurious references to code locations outside this
-    // function (for example, if the indirect jump lives in the last basic
-    // block of the function, it will create a reference to the next function).
-    // This replaces a symbol reference with an immediate.
-    BC.MIB->replaceMemOperandDisp(*PCRelBaseInstr,
-                                  MCOperand::createImm(PCRelAddr - InstrAddr));
-    // FIXME: Disable full jump table processing for AArch64 until we have a
-    // proper way of determining the jump table limits.
-    return IndirectBranchType::UNKNOWN;
-  }
-
-  auto getExprValue = [&](const MCExpr *Expr) {
-    const MCSymbol *TargetSym;
-    uint64_t TargetOffset;
-    std::tie(TargetSym, TargetOffset) = BC.MIB->getTargetSymbolInfo(Expr);
-    ErrorOr<uint64_t> SymValueOrError = BC.getSymbolValue(*TargetSym);
-    assert(SymValueOrError && "Global symbol needs a value");
-    return *SymValueOrError + TargetOffset;
-  };
-
-  // RIP-relative addressing should be converted to symbol form by now
-  // in processed instructions (but not in jump).
-  if (DispExpr) {
-    ArrayStart = getExprValue(DispExpr);
-    BaseRegNum = BC.MIB->getNoRegister();
-    if (BC.isAArch64()) {
-      ArrayStart &= ~0xFFFULL;
-      ArrayStart += DispValue & 0xFFFULL;
-    }
-  } else {
-    ArrayStart = static_cast<uint64_t>(DispValue);
-  }
-
-  if (BaseRegNum == BC.MRI->getProgramCounter())
-    ArrayStart += getAddress() + Offset + Size;
 
   if (FixedEntryLoadInstr) {
     assert(BranchType == IndirectBranchType::POSSIBLE_PIC_FIXED_BRANCH &&
@@ -991,7 +914,7 @@ BinaryFunction::processIndirectBranch(MCInst &Instruction, unsigned Size,
   }
 
   // Check if there's already a jump table registered at this address.
-  MemoryContentsType MemType;
+  MemoryContentsType MemType = MemoryContentsType::UNKNOWN;
   if (JumpTable *JT = BC.getJumpTableContainingAddress(ArrayStart)) {
     switch (JT->Type) {
     case JumpTable::JTT_NORMAL:
@@ -1002,7 +925,15 @@ BinaryFunction::processIndirectBranch(MCInst &Instruction, unsigned Size,
       break;
     }
   } else {
-    MemType = BC.analyzeMemoryAt(ArrayStart, *this);
+    if (Anchor) {
+      if (BC.analyzeJumpTable(ArrayStart, JumpTable::JTT_PIC, Anchor, *this,
+                              ArrayEnd))
+        MemType = MemoryContentsType::POSSIBLE_PIC_JUMP_TABLE;
+    } else {
+      if (BC.analyzeJumpTable(ArrayStart, JumpTable::JTT_NORMAL, Anchor, *this,
+                              ArrayEnd))
+        MemType = MemoryContentsType::POSSIBLE_JUMP_TABLE;
+    }
   }
 
   // Check that jump table type in instruction pattern matches memory contents.
@@ -1023,8 +954,13 @@ BinaryFunction::processIndirectBranch(MCInst &Instruction, unsigned Size,
   }
 
   // Convert the instruction into jump table branch.
-  const MCSymbol *JTLabel = BC.getOrCreateJumpTable(*this, ArrayStart, JTType);
-  BC.MIB->replaceMemOperandDisp(*MemLocInstr, JTLabel, BC.Ctx.get());
+  uint64_t ArraySize = ArrayEnd ? ArrayEnd - ArrayStart : 0;
+  const MCSymbol *JTLabel =
+      BC.getOrCreateJumpTable(*this, ArrayStart, ArraySize, JTType, Anchor);
+  // There need not be a single MemLocInstr to update, e.g. in the case of
+  // AArch64 ADRP+ADD.
+  if (MemLocInstr)
+    BC.MIB->replaceMemOperandDisp(*MemLocInstr, JTLabel, BC.Ctx.get());
   BC.MIB->setJumpTable(Instruction, ArrayStart, IndexRegNum);
 
   JTSites.emplace_back(Offset, ArrayStart);
@@ -1565,6 +1501,17 @@ add_instruction:
   updateState(State::Disassembled);
 
   return Error::success();
+}
+
+uint64_t BinaryFunction::getExprValue(const MCExpr *Expr) const {
+  const MCSymbol *TargetSym;
+  uint64_t TargetOffset;
+  std::tie(TargetSym, TargetOffset) = BC.MIB->getTargetSymbolInfo(Expr);
+  ErrorOr<uint64_t> SymValueOrError = BC.getSymbolValue(*TargetSym);
+  if (!SymValueOrError) {
+    SymValueOrError = getAddress() + getLabelOffset(TargetSym);
+  }
+  return *SymValueOrError + TargetOffset;
 }
 
 MCSymbol *BinaryFunction::registerBranch(uint64_t Src, uint64_t Dst) {
@@ -2161,16 +2108,21 @@ bool BinaryFunction::postProcessIndirectBranches(
       if (BC.MIB->isTailCall(Instr) || BC.MIB->getJumpTable(Instr)) {
         const unsigned PtrSize = BC.AsmInfo->getCodePointerSize();
         MCInst *MemLocInstr;
-        unsigned BaseRegNum, IndexRegNum;
-        int64_t DispValue;
-        const MCExpr *DispExpr;
-        MCInst *PCRelBaseInstr;
+        unsigned IndexRegNum;
+        uint64_t ArrayStart, ArrayEnd;
+        uint64_t Anchor;
         MCInst *FixedEntryLoadInstr;
         IndirectBranchType Type = BC.MIB->analyzeIndirectBranch(
-            *this, Instr, BB.begin(), II, PtrSize, MemLocInstr, BaseRegNum,
-            IndexRegNum, DispValue, DispExpr, PCRelBaseInstr,
+            *this, Instr, /*Size=*/0, /*Offset=*/0, BB.begin(), II, PtrSize,
+            MemLocInstr, IndexRegNum, ArrayStart, ArrayEnd, Anchor,
             FixedEntryLoadInstr);
         if (Type != IndirectBranchType::UNKNOWN || MemLocInstr != nullptr)
+          continue;
+
+        // AArch64 jump table set up code may span multiple basic blocks. If we
+        // previously detected it as a jump table, trust that for now, we will
+        // validate this in isSafeIndirectBranch instead.
+        if (BC.isAArch64() && BC.MIB->getJumpTable(Instr))
           continue;
 
         if (!opts::StrictMode)
