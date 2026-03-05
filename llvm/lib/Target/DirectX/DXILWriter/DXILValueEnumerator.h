@@ -29,10 +29,12 @@ namespace llvm {
 class BasicBlock;
 class Comdat;
 class DIArgList;
+class DICompileUnit;
 class Function;
 class Instruction;
 class LocalAsMetadata;
 class MDNode;
+class MDTuple;
 class Metadata;
 class Module;
 class NamedMDNode;
@@ -117,6 +119,8 @@ private:
   /// GlobalBasicBlockIDs - This map memoizes the basic block ID's referenced by
   /// the "getGlobalBasicBlockID" method.
   mutable DenseMap<const BasicBlock *, unsigned> GlobalBasicBlockIDs;
+
+  DenseMap<const DICompileUnit *, const MDTuple *> DICompileUnitSubprograms;
 
   using InstructionMapType = DenseMap<const Instruction *, unsigned>;
   InstructionMapType InstructionMap;
@@ -230,6 +234,14 @@ public:
   /// specified basic block.  This is relatively expensive information, so it
   /// should only be used by rare constructs such as address-of-label.
   unsigned getGlobalBasicBlockID(const BasicBlock *BB) const;
+
+  const MDTuple *getDICompileUnitSubprograms(const DICompileUnit *CU) const {
+    if (auto It = DICompileUnitSubprograms.find(CU);
+        It != DICompileUnitSubprograms.end()) {
+      return It->second;
+    }
+    return nullptr;
+  }
 
   /// incorporateFunction/purgeFunction - If you'd like to deal with a function,
   /// use these two methods to get its data into the ValueEnumerator!
