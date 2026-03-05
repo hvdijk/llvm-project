@@ -369,10 +369,14 @@ ValueEnumerator::ValueEnumerator(const Module &M, Type *PrefixType) {
   {
     std::multimap<const DICompileUnit *, const Metadata *> CUSubprograms;
 
-    for (const Function &F : M)
-      if (const DISubprogram *SP = F.getSubprogram())
+    for (const Function &F : M) {
+      if (const DISubprogram *SP = F.getSubprogram()) {
         if (SP->getUnit())
           CUSubprograms.insert({SP->getUnit(), SP});
+        auto *FunctionMD = ConstantAsMetadata::get(const_cast<Function *>(&F));
+        DISubprogramFunction.insert({SP, FunctionMD});
+      }
+    }
 
     for (auto It = CUSubprograms.begin(), End = CUSubprograms.end();
          It != End;) {
@@ -704,6 +708,13 @@ void ValueEnumerator::EnumerateMetadata(unsigned F, const Metadata *MD) {
           Worklist.push_back(std::make_pair(SPs, SPs->op_begin()));
           continue;
 	}
+      }
+    }
+
+    // DISubprogram gets its function changed.
+    if (auto *SP = dyn_cast<DISubprogram>(N)) {
+      if (auto *FM = getDISubprogramFunction(SP)) {
+        enumerateMetadataImpl(F, FM);
       }
     }
 

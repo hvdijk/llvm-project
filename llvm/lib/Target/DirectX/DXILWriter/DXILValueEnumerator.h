@@ -28,8 +28,10 @@ namespace llvm {
 
 class BasicBlock;
 class Comdat;
+class ConstantAsMetadata;
 class DIArgList;
 class DICompileUnit;
+class DISubprogram;
 class Function;
 class Instruction;
 class LocalAsMetadata;
@@ -121,6 +123,7 @@ private:
   mutable DenseMap<const BasicBlock *, unsigned> GlobalBasicBlockIDs;
 
   DenseMap<const DICompileUnit *, const MDTuple *> DICompileUnitSubprograms;
+  DenseMap<const DISubprogram *, const ConstantAsMetadata *> DISubprogramFunction;
 
   using InstructionMapType = DenseMap<const Instruction *, unsigned>;
   InstructionMapType InstructionMap;
@@ -238,6 +241,14 @@ public:
   const MDTuple *getDICompileUnitSubprograms(const DICompileUnit *CU) const {
     if (auto It = DICompileUnitSubprograms.find(CU);
         It != DICompileUnitSubprograms.end()) {
+      return It->second;
+    }
+    return nullptr;
+  }
+
+  const ConstantAsMetadata *getDISubprogramFunction(const DISubprogram *SP) const {
+    if (auto It = DISubprogramFunction.find(SP);
+        It != DISubprogramFunction.end()) {
       return It->second;
     }
     return nullptr;
