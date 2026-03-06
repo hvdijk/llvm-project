@@ -219,6 +219,11 @@ private:
   void writeModuleInfo();
   void writeValueAsMetadata(const ValueAsMetadata *MD,
                             SmallVectorImpl<uint64_t> &Record);
+
+  // DXDI* metadata nodes have MDTuple type. Check if N is a DXDI
+  // metadata and write it. Otherwise return false.
+  bool tryWriteDXDIMetadata(const MDTuple *N, SmallVectorImpl<uint64_t> &Record,
+                            unsigned Abbrev);
   void writeMDTuple(const MDTuple *N, SmallVectorImpl<uint64_t> &Record,
                     unsigned Abbrev);
   void writeDILocation(const DILocation *N, SmallVectorImpl<uint64_t> &Record,
@@ -305,6 +310,9 @@ private:
   void writeDIGlobalVariable(const DIGlobalVariable *N,
                              SmallVectorImpl<uint64_t> &Record,
                              unsigned Abbrev);
+  void writeDXDIGlobalVariable(const MDTuple *N,
+                               SmallVectorImpl<uint64_t> &Record,
+                               unsigned Abbrev);
   void writeDILocalVariable(const DILocalVariable *N,
                             SmallVectorImpl<uint64_t> &Record, unsigned Abbrev);
   void writeDILabel(const DILabel *N, SmallVectorImpl<uint64_t> &Record,
@@ -1358,9 +1366,31 @@ void DXILBitcodeWriter::writeValueAsMetadata(
   Record.clear();
 }
 
+bool DXILBitcodeWriter::tryWriteDXDIMetadata(const MDTuple *N,
+                                             SmallVectorImpl<uint64_t> &Record,
+                                             unsigned Abbrev) {
+  if (N->getNumOperands() == 0)
+    return false;
+
+  MDString *MD = dyn_cast_if_present<MDString>(N->getOperand(0));
+  if (!MD)
+    return false;
+
+  StringRef Name = MD->getString();
+  if (Name == "DXDIGlobalVariable") {
+    writeDXDIGlobalVariable(N, Record, Abbrev);
+  } else {
+    return false;
+  }
+
+  return true;
+}
+
 void DXILBitcodeWriter::writeMDTuple(const MDTuple *N,
                                      SmallVectorImpl<uint64_t> &Record,
                                      unsigned Abbrev) {
+  if (tryWriteDXDIMetadata(N, Record, Abbrev))
+    return;
   for (unsigned i = 0, e = N->getNumOperands(); i != e; ++i) {
     Metadata *MD = N->getOperand(i);
     assert(!(MD && isa<LocalAsMetadata>(MD)) &&
@@ -1371,6 +1401,10 @@ void DXILBitcodeWriter::writeMDTuple(const MDTuple *N,
                                     : bitc::METADATA_NODE,
                     Record, Abbrev);
   Record.clear();
+}
+
+static uint64_t getMetadataZExt(Metadata *MD) {
+  return mdconst::extract<ConstantInt>(MD)->getZExtValue();
 }
 
 void DXILBitcodeWriter::writeDILocation(const DILocation *N,
@@ -1645,6 +1679,30 @@ void DXILBitcodeWriter::writeDIGlobalVariable(const DIGlobalVariable *N,
   Record.push_back(/* N->getRawVariable() */ 0);
   Record.push_back(VE.getMetadataOrNullID(N->getStaticDataMemberDeclaration()));
 
+  Stream.EmitRecord(bitc::METADATA_GLOBAL_VAR, Record, Abbrev);
+  Record.clear();
+}
+
+void DXILBitcodeWriter::writeDXDIGlobalVariable(
+    const MDTuple *N, SmallVectorImpl<uint64_t> &Record, unsigned Abbrev) {
+  ArrayRef<MDOperand> NewOps = N->operands().take_front(5);
+  ArrayRef<MDOperand> OrigOps = N->operands().drop_front(5);
+
+  uint64_t Line = getMetadataZExt(NewOps[2]);
+  bool IsLocalToUnit = getMetadataZExt(NewOps[3]);
+  bool IsDefinition = getMetadataZExt(NewOps[4]);
+
+  Record.push_back(N->isDistinct());
+  Record.push_back(VE.getMetadataOrNullID(OrigOps[0])); // scope
+  Record.push_back(VE.getMetadataOrNullID(OrigOps[1])); // name
+  Record.push_back(VE.getMetadataOrNullID(OrigOps[5])); // linkage name
+  Record.push_back(VE.getMetadataOrNullID(OrigOps[2])); // file
+  Record.push_back(Line);
+  Record.push_back(VE.getMetadataOrNullID(OrigOps[3])); // type
+  Record.push_back(IsLocalToUnit);
+  Record.push_back(IsDefinition);
+  Record.push_back(VE.getMetadataOrNullID(NewOps[1]));  // expr
+  Record.push_back(VE.getMetadataOrNullID(OrigOps[6])); // static member
   Stream.EmitRecord(bitc::METADATA_GLOBAL_VAR, Record, Abbrev);
   Record.clear();
 }
