@@ -1533,7 +1533,7 @@ void DXILBitcodeWriter::writeDICompileUnit(const DICompileUnit *N,
 void DXILBitcodeWriter::writeDISubprogram(const DISubprogram *N,
                                           SmallVectorImpl<uint64_t> &Record,
                                           unsigned Abbrev) {
-  Record.push_back(N->isDistinct());
+  Record.push_back(/*Distinct*/ false);
   Record.push_back(VE.getMetadataOrNullID(N->getScope()));
   Record.push_back(VE.getMetadataOrNullID(N->getRawName()));
   Record.push_back(VE.getMetadataOrNullID(N->getRawLinkageName()));
