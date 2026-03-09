@@ -177,6 +177,22 @@ class DXILPrepareModule : public ModulePass {
 
 public:
   bool runOnModule(Module &M) override {
+    for (auto &F : M) {
+      for (auto &BB : F) {
+        for (auto &I : BB) {
+          for (DbgVariableRecord &DVR :
+               make_early_inc_range(filterDbgVars(I.getDbgRecordRange()))) {
+            if (DVR.isDbgAssign()) {
+              DbgVariableRecord::createDbgVariableRecord(
+                  DVR.getAddress(), DVR.getVariable(), DVR.getExpression(),
+                  DVR.getDebugLoc(), DVR);
+              DVR.eraseFromParent();
+            }
+          }
+        }
+      }
+    }
+
     M.convertFromNewDbgValues();
 
     PointerTypeMap PointerTypes = PointerTypeAnalysis::run(M);
