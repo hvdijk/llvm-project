@@ -180,6 +180,9 @@ public:
     for (auto &F : M) {
       for (auto &BB : F) {
         for (auto &I : BB) {
+          I.eraseMetadataIf([](unsigned KindID, MDNode *) {
+            return KindID == LLVMContext::MD_DIAssignID;
+          });
           for (DbgVariableRecord &DVR :
                make_early_inc_range(filterDbgVars(I.getDbgRecordRange()))) {
             if (DVR.isDbgAssign()) {
