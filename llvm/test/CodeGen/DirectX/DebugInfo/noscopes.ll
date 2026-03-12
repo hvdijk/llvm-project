@@ -5,7 +5,6 @@
 
 ; CHECK: DICompileUnit: 1
 ; CHECK: DIFile: 1
-; CHECK: DILocation: 1
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 

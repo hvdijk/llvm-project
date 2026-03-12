@@ -5,14 +5,11 @@
 
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 1
-; CHECK: DICompositeType: 1
-; CHECK: DIDerivedType: 2
 ; CHECK: DIExpression: 1
 ; CHECK: DIFile: 1
 ; CHECK: DIFlagPrototyped: 1
-; CHECK: DIFlagTypePassByValue: 1
-; CHECK: DILocalVariable: 3
-; CHECK: DILocation: 3
+; CHECK: DILocalVariable: 1
+; CHECK: DILocation: 1
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 

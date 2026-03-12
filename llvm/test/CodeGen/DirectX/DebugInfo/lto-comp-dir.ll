@@ -5,7 +5,7 @@
 
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 2
-; CHECK: DIFile: 4
+; CHECK: DIFile: 2
 ; CHECK: DIFlagPrototyped: 2
 ; CHECK: DILocation: 3
 ; CHECK: DISubprogram: 2

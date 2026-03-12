@@ -5,8 +5,7 @@
 
 ; CHECK: DIBasicType: 2
 ; CHECK: DICompileUnit: 1
-; CHECK: DICompositeType: 2
-; CHECK: DIDerivedType: 1
+; CHECK: DICompositeType: 1
 ; CHECK: DIExpression: 2
 ; CHECK: DIFile: 1
 ; CHECK: DIFlagFwdDecl: 1

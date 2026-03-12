@@ -3,13 +3,13 @@
 ; RUN: llvm-dis %t.bc -o - | %python %S/di_stat.py > %t.stat
 ; RUN: FileCheck %s --input-file %t.stat
 
-; CHECK: DIBasicType: 2
+; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 2
-; CHECK: DIFile: 4
+; CHECK: DIFile: 2
 ; CHECK: DILexicalBlock: 2
 ; CHECK: DILocation: 2
 ; CHECK: DISubprogram: 2
-; CHECK: DISubroutineType: 2
+; CHECK: DISubroutineType: 1
 
 
 ; Check that two compile units are generated

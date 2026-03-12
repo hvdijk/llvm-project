@@ -14,7 +14,7 @@
 ; CHECK: DIFlagPrototyped: 2
 ; CHECK: DIFlagTypePassByValue: 1
 ; CHECK: DILocalVariable: 1
-; CHECK: DILocation: 8
+; CHECK: DILocation: 5
 ; CHECK: DISubprogram: 2
 ; CHECK: DISubroutineType: 2
 

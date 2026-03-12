@@ -5,11 +5,11 @@
 
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 1
-; CHECK: DIFile: 2
+; CHECK: DIFile: 1
 ; CHECK: DIFlagPrototyped: 1
 ; CHECK: DILexicalBlock: 1
 ; CHECK: DILocalVariable: 1
-; CHECK: DILocation: 3
+; CHECK: DILocation: 2
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 

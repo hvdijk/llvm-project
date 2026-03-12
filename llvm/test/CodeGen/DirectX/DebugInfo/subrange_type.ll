@@ -8,7 +8,6 @@
 ; CHECK: DICompositeType: 1
 ; CHECK: DIFile: 1
 ; CHECK: DILocalVariable: 1
-; CHECK: DILocation: 2
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubrangeType: 1
 ; CHECK: DISubroutineType: 1

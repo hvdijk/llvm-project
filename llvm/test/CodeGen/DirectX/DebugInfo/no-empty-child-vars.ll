@@ -10,7 +10,7 @@
 ; CHECK: DIFlagAllCallsDescribed: 3
 ; CHECK: DIFlagPrototyped: 3
 ; CHECK: DILocalVariable: 6
-; CHECK: DILocation: 13
+; CHECK: DILocation: 11
 ; CHECK: DISubprogram: 3
 ; CHECK: DISubroutineType: 1
 

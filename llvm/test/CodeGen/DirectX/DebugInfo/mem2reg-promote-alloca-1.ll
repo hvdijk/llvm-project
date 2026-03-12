@@ -7,7 +7,7 @@
 ; CHECK: DICompileUnit: 1
 ; CHECK: DIDerivedType: 1
 ; CHECK: DIExpression: 5
-; CHECK: DIFile: 2
+; CHECK: DIFile: 1
 ; CHECK: DIFlagAllCallsDescribed: 2
 ; CHECK: DIFlagPrototyped: 2
 ; CHECK: DIGlobalVariable: 1
@@ -15,7 +15,7 @@
 ; CHECK: DILocalVariable: 2
 ; CHECK: DILocation: 6
 ; CHECK: DISubprogram: 2
-; CHECK: DISubroutineType: 3
+; CHECK: DISubroutineType: 2
 
 
 ;; Check that mem2reg removes dbg.value(%param.addr, DIExpression(DW_OP_deref...))

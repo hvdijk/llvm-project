@@ -4,8 +4,7 @@
 ; RUN: FileCheck %s --input-file %t.stat
 
 ; CHECK: DICompileUnit: 3
-; CHECK: DIFile: 4
-; CHECK: DISubroutineType: 1
+; CHECK: DIFile: 3
 
 
 

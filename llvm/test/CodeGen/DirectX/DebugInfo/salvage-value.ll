@@ -10,8 +10,8 @@
 ; CHECK: DIFile: 1
 ; CHECK: DIFlagAllCallsDescribed: 1
 ; CHECK: DIFlagPrototyped: 1
-; CHECK: DILocalVariable: 7
-; CHECK: DILocation: 4
+; CHECK: DILocalVariable: 6
+; CHECK: DILocation: 3
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 

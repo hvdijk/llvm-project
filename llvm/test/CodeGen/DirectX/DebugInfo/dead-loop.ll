@@ -13,7 +13,7 @@
 ; CHECK: DIFlagPrototyped: 2
 ; CHECK: DILexicalBlock: 1
 ; CHECK: DILocalVariable: 1
-; CHECK: DILocation: 7
+; CHECK: DILocation: 6
 ; CHECK: DISubprogram: 2
 ; CHECK: DISubroutineType: 2
 

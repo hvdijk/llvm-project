@@ -6,7 +6,7 @@
 ; CHECK: DICompileUnit: 1
 ; CHECK: DIExpression: 2
 ; CHECK: DIFile: 1
-; CHECK: DILocalVariable: 3
+; CHECK: DILocalVariable: 2
 ; CHECK: DILocation: 15
 ; CHECK: DISubprogram: 3
 

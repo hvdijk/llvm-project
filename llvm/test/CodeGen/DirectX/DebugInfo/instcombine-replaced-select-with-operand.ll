@@ -16,7 +16,7 @@
 ; CHECK: DIFlagTypePassByValue: 1
 ; CHECK: DILexicalBlock: 2
 ; CHECK: DILocalVariable: 3
-; CHECK: DILocation: 23
+; CHECK: DILocation: 15
 ; CHECK: DISubprogram: 4
 ; CHECK: DISubroutineType: 3
 

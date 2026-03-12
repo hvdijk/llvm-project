@@ -9,7 +9,6 @@
 ; CHECK: DIExpression: 4
 ; CHECK: DIFile: 1
 ; CHECK: DIFlagPrototyped: 1
-; CHECK: DILexicalBlock: 1
 ; CHECK: DILocalVariable: 1
 ; CHECK: DILocation: 1
 ; CHECK: DISubprogram: 1

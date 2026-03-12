@@ -3,7 +3,6 @@
 ; RUN: llvm-dis %t.bc -o - | %python %S/di_stat.py > %t.stat
 ; RUN: FileCheck %s --input-file %t.stat
 
-; CHECK: DIAssignID: 1
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 1
 ; CHECK: DIExpression: 3

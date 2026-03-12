@@ -6,14 +6,11 @@
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 1
 ; CHECK: DICompositeType: 1
-; CHECK: DIDerivedType: 5
-; CHECK: DIExpression: 1
+; CHECK: DIDerivedType: 4
 ; CHECK: DIFile: 1
-; CHECK: DIFlagArtificial: 4
-; CHECK: DIFlagObjectPointer: 3
+; CHECK: DIFlagArtificial: 2
+; CHECK: DIFlagObjectPointer: 1
 ; CHECK: DIFlagPrototyped: 4
-; CHECK: DILocalVariable: 2
-; CHECK: DILocation: 4
 ; CHECK: DISubprogram: 4
 ; CHECK: DISubroutineType: 2
 

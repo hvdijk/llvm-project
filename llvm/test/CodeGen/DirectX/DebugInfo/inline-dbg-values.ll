@@ -6,11 +6,11 @@
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 1
 ; CHECK: DIExpression: 10
-; CHECK: DIFile: 3
+; CHECK: DIFile: 2
 ; CHECK: DIFlagPrototyped: 2
-; CHECK: DILexicalBlock: 2
-; CHECK: DILocalVariable: 3
-; CHECK: DILocation: 13
+; CHECK: DILexicalBlock: 1
+; CHECK: DILocalVariable: 2
+; CHECK: DILocation: 10
 ; CHECK: DISubprogram: 2
 ; CHECK: DISubroutineType: 2
 

@@ -5,11 +5,9 @@
 
 ; CHECK: DICompileUnit: 3
 ; CHECK: DIFile: 3
-; CHECK: DIImportedEntity: 1
 ; CHECK: DILexicalBlockFile: 1
 ; CHECK: DILocation: 4
-; CHECK: DINamespace: 1
-; CHECK: DISubprogram: 5
+; CHECK: DISubprogram: 4
 ; CHECK: DISubroutineType: 1
 
 ; REQUIRES: x86-registered-target

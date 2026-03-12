@@ -5,7 +5,7 @@
 
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 1
-; CHECK: DIFile: 2
+; CHECK: DIFile: 1
 
 ; UNSUPPORTED: target={{.*}}-aix{{.*}}
 

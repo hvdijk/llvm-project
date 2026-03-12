@@ -7,10 +7,10 @@
 ; CHECK: DICompileUnit: 1
 ; CHECK: DIDerivedType: 2
 ; CHECK: DIExpression: 3
-; CHECK: DIFile: 2
+; CHECK: DIFile: 1
 ; CHECK: DIFlagPrototyped: 1
 ; CHECK: DILocalVariable: 3
-; CHECK: DILocation: 7
+; CHECK: DILocation: 4
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 

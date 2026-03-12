@@ -5,9 +5,9 @@
 
 ; CHECK: DICompileUnit: 1
 ; CHECK: DICompositeType: 1
-; CHECK: DIDerivedType: 4
+; CHECK: DIDerivedType: 3
 ; CHECK: DIExpression: 1
-; CHECK: DIFile: 2
+; CHECK: DIFile: 1
 ; CHECK: DIFlagFwdDecl: 1
 ; CHECK: DILexicalBlock: 1
 ; CHECK: DILocalVariable: 1

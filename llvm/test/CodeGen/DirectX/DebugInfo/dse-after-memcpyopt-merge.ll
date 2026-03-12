@@ -3,7 +3,7 @@
 ; RUN: llvm-dis %t.bc -o - | %python %S/di_stat.py > %t.stat
 ; RUN: FileCheck %s --input-file %t.stat
 
-; CHECK: DIAssignID: 14
+; CHECK: DIAssignID: 8
 ; CHECK: DIBasicType: 1
 ; CHECK: DICompileUnit: 1
 ; CHECK: DICompositeType: 2
@@ -18,7 +18,7 @@
 ; CHECK: DIFlagTypePassByValue: 1
 ; CHECK: DILexicalBlock: 1
 ; CHECK: DILocalVariable: 3
-; CHECK: DILocation: 21
+; CHECK: DILocation: 9
 ; CHECK: DISubprogram: 4
 ; CHECK: DISubrange: 1
 ; CHECK: DISubroutineType: 3
