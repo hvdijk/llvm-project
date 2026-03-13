@@ -15,6 +15,7 @@
 ; CHECK: DISubprogram: 3
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-legalize-i8-use-chain
 
 ; bool f();
 ; inline __attribute__((always_inline)) int f1() {

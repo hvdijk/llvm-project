@@ -23,20 +23,7 @@
 ; CHECK: DISubprogram: 8
 ; CHECK: DISubroutineType: 5
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+; REQUIRES: bug-legalize-i8-use-chain
 
 ; IR generated from clang/test/CodeGenCXX/debug-info-namespace.cpp, file paths
 ; changed to protect the guilty. The C++ source code is:

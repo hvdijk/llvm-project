@@ -16,6 +16,7 @@
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-legalize-i8-use-chain
 
 ;; Check that a dbg.assign for a promoted variable becomes a kill location if
 ;; it used an arglist.
