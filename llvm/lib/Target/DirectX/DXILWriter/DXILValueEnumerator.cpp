@@ -17,6 +17,7 @@
 #include "llvm/IR/Argument.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/Constant.h"
+#include "llvm/IR/DebugInfo.h"
 #include "llvm/IR/DebugInfoMetadata.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/Function.h"
@@ -362,21 +363,22 @@ static UseListOrderStack predictUseListOrder(const Module &M) {
 }
 
 ValueEnumerator::ValueEnumerator(const Module &M, Type *PrefixType) {
-  EnumerateType(PrefixType);
-
-  UseListOrders = predictUseListOrder(M);
-
   {
+    DebugInfoFinder DIF;
+    DIF.processModule(M);
+
     std::multimap<const DICompileUnit *, const Metadata *> CUSubprograms;
 
     for (const Function &F : M) {
       if (const DISubprogram *SP = F.getSubprogram()) {
-        if (SP->getUnit())
-          CUSubprograms.insert({SP->getUnit(), SP});
         auto *FunctionMD = ConstantAsMetadata::get(const_cast<Function *>(&F));
         DISubprogramFunction.insert({SP, FunctionMD});
       }
     }
+
+    for (const DISubprogram *SP : DIF.subprograms())
+      if (SP->getUnit())
+        CUSubprograms.insert({SP->getUnit(), SP});
 
     for (auto It = CUSubprograms.begin(), End = CUSubprograms.end();
          It != End;) {
@@ -390,6 +392,11 @@ ValueEnumerator::ValueEnumerator(const Module &M, Type *PrefixType) {
       DICompileUnitSubprograms.insert({CU, SubprogramMD});
     }
   }
+
+
+  EnumerateType(PrefixType);
+
+  UseListOrders = predictUseListOrder(M);
 
   // Enumerate the global variables.
   for (const GlobalVariable &GV : M.globals()) {
