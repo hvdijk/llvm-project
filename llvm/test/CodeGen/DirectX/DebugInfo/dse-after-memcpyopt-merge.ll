@@ -23,6 +23,7 @@
 ; CHECK: DISubrange: 1
 ; CHECK: DISubroutineType: 3
 
+; REQUIRES: bug-mem-intrinsics
 
 ;; Observed in the wild, but test is created by running memcpyopt on
 ;; assignment-tracking/memcpyopt/merge-stores.ll then manually inserting

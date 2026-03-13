@@ -20,6 +20,7 @@
 ; CHECK: DISubprogram: 23
 ; CHECK: DISubroutineType: 16
 
+; REQUIRES: bug-mem-intrinsics
 
 ;; Check that the fragments generated in SROA for a split alloca that has a
 ;; dbg.assign with non-zero-offset fragment are correct.

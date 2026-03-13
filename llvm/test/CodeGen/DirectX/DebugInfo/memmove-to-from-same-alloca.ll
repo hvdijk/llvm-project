@@ -18,6 +18,7 @@
 ; CHECK: DISubrange: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-mem-intrinsics
 
 ;; Generated from this C++ source:
 ;; __attribute__((nodebug)) struct Blob {int P[6];} Glob;

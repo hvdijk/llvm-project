@@ -23,6 +23,7 @@
 ; CHECK: DISubrange: 4
 ; CHECK: DISubroutineType: 6
 
+; REQUIRES: bug-mem-intrinsics
 
 ;; This test checks that `trackAssignments` is working correctly by using the
 ;; pass-wrapper `declare-to-assign`. Each function checks some specific

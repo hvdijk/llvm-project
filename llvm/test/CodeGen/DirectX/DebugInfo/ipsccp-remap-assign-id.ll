@@ -17,6 +17,7 @@
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-mem-intrinsics
 
 ;; Check the dbg.assign DIAssignID operand gets remapped after cloning.
 

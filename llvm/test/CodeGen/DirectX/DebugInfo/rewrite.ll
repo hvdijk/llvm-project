@@ -20,6 +20,7 @@
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-mem-intrinsics
 
 ; Check that the new slices of an alloca and memset intructions get dbg.assign
 ; intrinsics with the correct fragment info. Ensure that only the

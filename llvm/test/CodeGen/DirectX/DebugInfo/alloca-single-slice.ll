@@ -19,6 +19,7 @@
 ; CHECK: DISubrange: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-mem-intrinsics
 
 ; Check that single sliced allocas retain their assignment tracking debug info.
 

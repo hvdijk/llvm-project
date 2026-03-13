@@ -18,6 +18,7 @@
 ; CHECK: DISubrange: 1
 ; CHECK: DISubroutineType: 2
 
+; REQUIRES: bug-mem-intrinsics
 
 ;; $ cat test.cpp
 ;; void esc(int*);

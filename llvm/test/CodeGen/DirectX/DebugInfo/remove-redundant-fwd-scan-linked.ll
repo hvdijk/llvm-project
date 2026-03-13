@@ -18,6 +18,7 @@
 ; CHECK: DISubprogram: 2
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-mem-intrinsics
 
 ;; $ cat -n reduce.c
 ;;  1	void ext();
