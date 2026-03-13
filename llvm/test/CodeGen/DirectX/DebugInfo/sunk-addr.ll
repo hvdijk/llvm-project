@@ -15,6 +15,7 @@
 ; CHECK: DISubroutineType: 1
 
 ; REQUIRES: x86-registered-target
+; REQUIRES: bug-legalize-use-after-def-is-destroyed
 
 ;; Check that when CodeGenPrepare moves an address computation to a block it's
 ;; used in its dbg.assign uses are updated.

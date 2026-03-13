@@ -17,6 +17,8 @@
 ; CHECK: DISubprogram: 4
 ; CHECK: DISubroutineType: 2
 
+; REQUIRES: bug-legalize-use-after-def-is-destroyed
+
 ; For some reason, the output when targetting sparc is not quite as expected.
 ; XFAIL: target=sparc{{.*}}
 
