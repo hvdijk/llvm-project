@@ -11,6 +11,8 @@
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-pointer-analysis-use-list
+
 ; PR 5942
 define ptr @foo() nounwind {
 entry:

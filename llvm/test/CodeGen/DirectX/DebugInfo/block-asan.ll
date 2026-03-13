@@ -14,6 +14,7 @@
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-pointer-analysis-use-list
 
 ; The IR of this testcase is generated from the following C code:
 ; void bar (int);

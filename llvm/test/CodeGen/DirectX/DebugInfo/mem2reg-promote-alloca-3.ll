@@ -15,6 +15,7 @@
 ; CHECK: DISubprogram: 2
 ; CHECK: DISubroutineType: 2
 
+; REQUIRES: bug-pointer-analysis-use-list
 
 ;; Check that mem2reg removes dbg.value(%local, DIExpression(DW_OP_deref...))
 ;; that instcombine LowerDbgDeclare inserted before the call to 'esc' when

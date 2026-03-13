@@ -20,6 +20,7 @@
 ; CHECK: DISubprogram: 4
 ; CHECK: DISubroutineType: 4
 
+; REQUIRES: bug-pointer-analysis-use-list
 
 ;; Check that when instcombine sinks an instruction used by a dbg.assign, the
 ;; usual debug intrinsic updating doesn't take place (i.e. do not

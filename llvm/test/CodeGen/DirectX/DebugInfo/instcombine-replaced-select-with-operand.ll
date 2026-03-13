@@ -20,6 +20,7 @@
 ; CHECK: DISubprogram: 4
 ; CHECK: DISubroutineType: 3
 
+; REQUIRES: bug-pointer-analysis-use-list
 
 ;; Ensure that debug uses of a select are replaced when the select is replaced
 ;; with one of its operands in InstCombine's replacedSelectWithOperand.
