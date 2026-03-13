@@ -16,6 +16,8 @@
 ; CHECK: DISubrange: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-scalable-vec
+
 
 ;; Check declare-to-assign skips scalable vectors for now. i.e. do not replace
 ;; the dbg.declare with a dbg.assign intrinsic.
