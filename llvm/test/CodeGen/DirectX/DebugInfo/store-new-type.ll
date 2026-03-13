@@ -18,6 +18,8 @@
 ; CHECK: DISubrange: 2
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-legalize-sigsegv
+
 
 ;; Based on test/Transforms/InstCombine/shufflevec-bitcast.ll in which the
 ;; store of <4 x i4> is replaced with a store of type <2 x i8>. Debug info
