@@ -24,7 +24,7 @@
 
 declare i8 @get_i8()
 
-define internal fastcc i64 @fun() !dbg !18 {
+define fastcc i64 @fun() !dbg !18 {
 entry:
   %codepoint = alloca i32, align 4, !DIAssignID !27
   call void @llvm.dbg.assign(metadata i1 poison, metadata !15, metadata !DIExpression(), metadata !27, metadata ptr %codepoint, metadata !DIExpression()), !dbg !26

@@ -25,7 +25,7 @@
 ; Verification should succeed.
 ; VERIFY: No errors.
 
-define internal void @_GLOBAL__sub_I__() !dbg !7 {
+define void @_GLOBAL__sub_I__() !dbg !7 {
 entry:
   ret void
 }

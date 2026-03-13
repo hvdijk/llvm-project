@@ -23,7 +23,7 @@
 
 %F = type { [0 x i8], ptr, [8 x i8] }
 
-define internal void @_ZN2e34main17h934ff72f9a38d4bbE() unnamed_addr #0 !dbg !5 {
+define void @_ZN2e34main17h934ff72f9a38d4bbE() unnamed_addr #0 !dbg !5 {
 start:
   %qq = alloca %F, align 8
   call void @llvm.dbg.declare(metadata ptr %qq, metadata !10, metadata !24), !dbg !25
