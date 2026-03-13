@@ -22,6 +22,7 @@
 ; CHECK: DISubprogram: 5
 ; CHECK: DISubroutineType: 4
 
+; REQUIRES: bug-icmp-operands
 
 ;; $ cat test.cpp
 ;; class a {

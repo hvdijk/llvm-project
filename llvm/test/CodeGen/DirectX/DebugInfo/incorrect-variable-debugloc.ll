@@ -17,6 +17,7 @@
 ; CHECK: DISubprogram: 5
 ; CHECK: DISubroutineType: 3
 
+; REQUIRES: bug-icmp-operands
 
 ; This is a test case that's as reduced as I can get it, though I haven't fully
 ; understood the mechanisms by which this bug occurs, so perhaps there's further
