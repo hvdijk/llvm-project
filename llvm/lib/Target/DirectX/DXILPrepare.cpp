@@ -21,6 +21,7 @@
 #include "llvm/Analysis/DXILResource.h"
 #include "llvm/CodeGen/Passes.h"
 #include "llvm/IR/AttributeMask.h"
+#include "llvm/IR/DebugInfo.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/Instruction.h"
 #include "llvm/IR/Module.h"
@@ -183,15 +184,29 @@ public:
           I.eraseMetadataIf([](unsigned KindID, MDNode *) {
             return KindID == LLVMContext::MD_DIAssignID;
           });
-          for (DbgVariableRecord &DVR :
-               make_early_inc_range(filterDbgVars(I.getDbgRecordRange()))) {
-            if (DVR.isDbgAssign()) {
+          for (DbgRecord &DR : make_early_inc_range(I.getDbgRecordRange())) {
+            if (auto *DLR = dyn_cast<DbgLabelRecord>(&DR)) {
+              DLR->eraseFromParent();
+              continue;
+            }
+            if (auto *DVR = dyn_cast<DbgVariableRecord>(&DR);
+                DVR && DVR->isDbgAssign()) {
               DbgVariableRecord::createDbgVariableRecord(
-                  DVR.getAddress(), DVR.getVariable(), DVR.getExpression(),
-                  DVR.getDebugLoc(), DVR);
-              DVR.eraseFromParent();
+                  DVR->getAddress(), DVR->getVariable(), DVR->getExpression(),
+                  DVR->getDebugLoc(), *DVR);
+              DVR->eraseFromParent();
+              continue;
             }
           }
+        }
+      }
+      if (DISubprogram *SP = F.getSubprogram()) {
+        if (MDTuple *RN = cast_or_null<MDTuple>(SP->getRawRetainedNodes())) {
+          SmallVector<Metadata *> MDs(RN->operands());
+          MDs.erase(std::remove_if(MDs.begin(), MDs.end(),
+                                   [](Metadata *M) { return isa<DILabel>(M); }),
+                    MDs.end());
+          SP->replaceRetainedNodes(MDTuple::get(M.getContext(), MDs));
         }
       }
     }
