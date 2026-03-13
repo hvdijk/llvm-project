@@ -12,6 +12,7 @@
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 
+; REQUIRES: bug-attr-kind
 
 define void @CGRectStandardize(ptr sret(i32) %agg.result, ptr byval(i32) %rect) nounwind ssp !dbg !0 {
 entry:

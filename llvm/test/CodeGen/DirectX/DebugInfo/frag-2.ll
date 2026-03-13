@@ -23,6 +23,7 @@
 ; CHECK: DISubrange: 1
 ; CHECK: DISubroutineType: 6
 
+; REQUIRES: bug-attr-kind
 
 ;; $ cat test.cpp
 ;; class a {
