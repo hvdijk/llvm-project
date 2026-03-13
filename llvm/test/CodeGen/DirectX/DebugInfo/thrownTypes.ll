@@ -4,13 +4,12 @@
 ; RUN: FileCheck %s --input-file %t.stat
 
 ; CHECK: DICompileUnit: 1
-; CHECK: DICompositeType: 2
 ; CHECK: DIFile: 1
 ; CHECK: DILocation: 1
 ; CHECK: DISubprogram: 1
 ; CHECK: DISubroutineType: 1
 
-
+; DXDI note: DICompositeType here is only used for thrownTypes metadata, which is not supported.
 
 ; Function Attrs: nounwind uwtable
 define void @f() #0 !dbg !5 {
