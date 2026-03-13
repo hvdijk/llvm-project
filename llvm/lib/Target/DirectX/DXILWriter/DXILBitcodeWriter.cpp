@@ -1078,13 +1078,13 @@ void DXILBitcodeWriter::writeTypeTable() {
     }
     case Type::PointerTyID: {
       // POINTER: [pointee type, address space]
-      // Emitting an empty struct type for the pointer's type allows this to be
-      // order-independent. Non-struct types must be emitted in bitcode before
-      // they can be referenced.
-      TypeVals.push_back(false);
-      Code = bitc::TYPE_CODE_OPAQUE;
-      writeStringRecord(Stream, bitc::TYPE_CODE_STRUCT_NAME,
-                        "dxilOpaquePtrReservedName", StructNameAbbrev);
+      PointerType *PTy = cast<PointerType>(T);
+      Code = bitc::TYPE_CODE_POINTER;
+      TypeVals.push_back(getTypeID(Type::getInt8Ty(M.getContext())));
+      unsigned AddressSpace = PTy->getAddressSpace();
+      TypeVals.push_back(AddressSpace);
+      if (AddressSpace == 0)
+        AbbrevToUse = PtrAbbrev;
       break;
     }
     case Type::FunctionTyID: {
