@@ -391,8 +391,14 @@ ValueEnumerator::ValueEnumerator(const Module &M, Type *PrefixType) {
       auto *SubprogramMD = MDTuple::get(M.getContext(), Subprograms);
       DICompileUnitSubprograms.insert({CU, SubprogramMD});
     }
-  }
 
+    for (const llvm::DIGlobalVariableExpression *GVE : DIF.global_variables()) {
+      auto [It, Inserted] = DIGlobalVariableExpression.insert(
+          {GVE->getVariable(), GVE->getExpression()});
+      if (!Inserted)
+        It->second = nullptr;
+    }
+  }
 
   EnumerateType(PrefixType);
 
@@ -680,6 +686,8 @@ void ValueEnumerator::dropFunctionFromMetadata(
 }
 
 void ValueEnumerator::EnumerateMetadata(unsigned F, const Metadata *MD) {
+  MD = getDXILMetadata(MD);
+
   // It's vital for reader efficiency that uniqued subgraphs are done in
   // post-order; it's expensive when their operands have forward references.
   // If a distinct node is referenced from a uniqued node, it'll be delayed
@@ -689,8 +697,9 @@ void ValueEnumerator::EnumerateMetadata(unsigned F, const Metadata *MD) {
   // Start by enumerating MD, and then work through its transitive operands in
   // post-order.  This requires a depth-first search.
   SmallVector<std::pair<const MDNode *, MDNode::op_iterator>, 32> Worklist;
-  if (const MDNode *N = enumerateMetadataImpl(F, MD))
+  if (const MDNode *N = enumerateMetadataImpl(F, MD)) {
     Worklist.push_back(std::make_pair(N, N->op_begin()));
+  }
 
   while (!Worklist.empty()) {
     const MDNode *N = Worklist.back().first;
@@ -701,7 +710,7 @@ void ValueEnumerator::EnumerateMetadata(unsigned F, const Metadata *MD) {
         Worklist.back().second, N->op_end(),
         [&](const Metadata *MD) { return enumerateMetadataImpl(F, MD); });
     if (I != N->op_end()) {
-      auto *Op = cast<MDNode>(*I);
+      auto *Op = cast<MDNode>(getDXILMetadata(*I));
       Worklist.back().second = ++I;
 
       // Delay traversing Op if it's a distinct node and N is uniqued.
@@ -729,6 +738,16 @@ void ValueEnumerator::EnumerateMetadata(unsigned F, const Metadata *MD) {
       }
     }
 
+    // DIGlobalVariable gets an expression added.
+    if (auto *GV = dyn_cast<DIGlobalVariable>(N)) {
+      if (auto *E = getDIGlobalVariableExpression(GV)) {
+        if (enumerateMetadataImpl(F, E)) {
+          Worklist.push_back(std::make_pair(E, E->op_begin()));
+          continue;
+        }
+      }
+    }
+
     // All the operands have been visited.  Now assign an ID.
     Worklist.pop_back();
     MDs.push_back(N);
@@ -746,6 +765,8 @@ void ValueEnumerator::EnumerateMetadata(unsigned F, const Metadata *MD) {
 
 const MDNode *ValueEnumerator::enumerateMetadataImpl(unsigned F,
                                                      const Metadata *MD) {
+  MD = getDXILMetadata(MD);
+
   if (!MD)
     return nullptr;
 
@@ -915,6 +936,12 @@ void ValueEnumerator::organizeMetadata() {
   }
   R.Last = FunctionMDs.size();
   FunctionMDInfo[PrevF] = R;
+}
+
+const Metadata *ValueEnumerator::getDXILMetadata(const Metadata *M) const {
+  if (auto *GVE = dyn_cast_or_null<llvm::DIGlobalVariableExpression>(M))
+    return GVE->getVariable();
+  return M;
 }
 
 void ValueEnumerator::incorporateFunctionMetadata(const Function &F) {

@@ -31,6 +31,8 @@ class Comdat;
 class ConstantAsMetadata;
 class DIArgList;
 class DICompileUnit;
+class DIExpression;
+class DIGlobalVariable;
 class DISubprogram;
 class Function;
 class Instruction;
@@ -123,7 +125,10 @@ private:
   mutable DenseMap<const BasicBlock *, unsigned> GlobalBasicBlockIDs;
 
   DenseMap<const DICompileUnit *, const MDTuple *> DICompileUnitSubprograms;
-  DenseMap<const DISubprogram *, const ConstantAsMetadata *> DISubprogramFunction;
+  DenseMap<const DISubprogram *, const ConstantAsMetadata *>
+      DISubprogramFunction;
+  DenseMap<const DIGlobalVariable *, const DIExpression *>
+      DIGlobalVariableExpression;
 
   using InstructionMapType = DenseMap<const Instruction *, unsigned>;
   InstructionMapType InstructionMap;
@@ -164,7 +169,7 @@ public:
   }
 
   unsigned getMetadataOrNullID(const Metadata *MD) const {
-    return MetadataMap.lookup(MD).ID;
+    return MetadataMap.lookup(getDXILMetadata(MD)).ID;
   }
 
   unsigned numMDs() const { return MDs.size(); }
@@ -253,6 +258,17 @@ public:
     }
     return nullptr;
   }
+
+  const DIExpression *
+  getDIGlobalVariableExpression(const DIGlobalVariable *GV) const {
+    if (auto It = DIGlobalVariableExpression.find(GV);
+        It != DIGlobalVariableExpression.end()) {
+      return It->second;
+    }
+    return nullptr;
+  }
+
+  const Metadata *getDXILMetadata(const Metadata *M) const;
 
   /// incorporateFunction/purgeFunction - If you'd like to deal with a function,
   /// use these two methods to get its data into the ValueEnumerator!
