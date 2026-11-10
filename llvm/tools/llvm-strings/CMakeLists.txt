@@ -16,7 +16,11 @@ add_llvm_tool(llvm-strings
   )
 
 if(APPLE)
-  target_link_libraries(llvm-strings PRIVATE iconv)
+  find_package(Iconv REQUIRED)
+  if (NOT Iconv_FOUND)
+    message(FATAL_ERROR "iconv should always be available but was not found")
+  endif()
+  target_link_libraries(llvm-strings PRIVATE Iconv::Iconv)
 endif()
 
 if(LLVM_INSTALL_BINUTILS_SYMLINKS)
