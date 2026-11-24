@@ -24,12 +24,17 @@ class TestArm64eAttach(TestBase):
         process = target.AttachToProcessWithID(listener, popen.pid, error)
         self.assertSuccess(error)
         self.assertTrue(process, PROCESS_IS_VALID)
-        self.assertEqual(target.GetTriple().split('-')[0], "arm64e",
-                         "target triple is updated correctly")
+        self.assertEqual(
+            target.GetTriple().split("-")[0],
+            "arm64e",
+            "target triple is updated correctly",
+        )
 
-        self.expect('process plugin packet send qProcessInfo',
-                    "debugserver returns correct triple",
-                    substrs=['cputype:100000c', 'cpusubtype:2', 'ptrsize:8'])
+        self.expect(
+            "process plugin packet send qProcessInfo",
+            "debugserver returns correct triple",
+            substrs=["cputype:100000c", "cpusubtype:2", "ptrsize:8"],
+        )
 
         error = process.Kill()
         self.assertSuccess(error)

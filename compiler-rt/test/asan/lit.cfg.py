@@ -19,6 +19,7 @@ def get_required_attr(config, attr_name):
         )
     return attr_value
 
+
 # Setup config name.
 config.name = "AddressSanitizer" + config.name_suffix
 
@@ -110,6 +111,7 @@ if platform.system() == "Windows":
     config.available_features.add(win_runtime_feature)
 
 llvm_config.feature_config([("--assertion-mode", {"ON": "asserts"})])
+
 
 def build_invocation(compile_flags, with_lto=False):
     lto_flags = []

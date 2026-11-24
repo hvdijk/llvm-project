@@ -2,7 +2,6 @@
 Test SBprocess and SBThread APIs with printing of the stack traces using lldbutil.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

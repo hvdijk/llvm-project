@@ -6,10 +6,17 @@
 #
 # ===----------------------------------------------------------------------===##
 
-from libcxx.test.dsl import compilerMacros, sourceBuilds, hasCompileFlag, programSucceeds, runScriptExitCode
+from libcxx.test.dsl import (
+    compilerMacros,
+    sourceBuilds,
+    hasCompileFlag,
+    programSucceeds,
+    runScriptExitCode,
+)
 from libcxx.test.dsl import Feature, AddCompileFlag, AddLinkFlag
 import platform
 import sys
+
 
 def _mingwSupportsModules(cfg):
     # Only mingw headers are known to work with libc++ built as a module,
@@ -228,7 +235,8 @@ features = [
     # manages to find binaries to execute.
     Feature(
         name="executor-has-no-bash",
-        when=lambda cfg: runScriptExitCode(cfg, ["%{exec} bash -c 'bash --version'"]) != 0,
+        when=lambda cfg: runScriptExitCode(cfg, ["%{exec} bash -c 'bash --version'"])
+        != 0,
     ),
     # Whether module support for the platform is available.
     Feature(

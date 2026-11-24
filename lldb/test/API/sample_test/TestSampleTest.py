@@ -2,7 +2,6 @@
 Describe the purpose of the test class here.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

@@ -92,7 +92,9 @@ class StdStringViewDataFormatterTestCase(TestBase):
         )
         self.expect_var_path("u16_string", type=u16string_view_name, summary='u"ß水氶"')
         self.expect_var_path("u16_empty", type=u16string_view_name, summary='u""')
-        self.expect_var_path("u32_string", type=u32string_view_name, summary='U"🍄🍅🍆🍌"')
+        self.expect_var_path(
+            "u32_string", type=u32string_view_name, summary='U"🍄🍅🍆🍌"'
+        )
         self.expect_var_path("u32_empty", type=u32string_view_name, summary='U""')
 
         # GetSummary returns None so can't be checked by expect_var_path, so we
@@ -151,7 +153,9 @@ class StdStringViewDataFormatterTestCase(TestBase):
         )
         self.expect_var_path("u16_string", type=u16string_view_name, summary='u"ß水氶"')
         self.expect_var_path("u16_empty", type=u16string_view_name, summary='u""')
-        self.expect_var_path("u32_string", type=u32string_view_name, summary='U"🍄🍅🍆🍌"')
+        self.expect_var_path(
+            "u32_string", type=u32string_view_name, summary='U"🍄🍅🍆🍌"'
+        )
         self.expect_var_path("u32_empty", type=u32string_view_name, summary='U""')
 
         self.runCmd("cont")

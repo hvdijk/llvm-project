@@ -78,7 +78,9 @@ class ScriptedProcess(metaclass=ABCMeta):
         """
         return None
 
-    def get_threads_info(self) -> dict[int, "lldb.plugins.scripted_process.ScriptedThread"]:
+    def get_threads_info(
+        self,
+    ) -> dict[int, "lldb.plugins.scripted_process.ScriptedThread"]:
         """Get the dictionary describing the process' Scripted Threads.
 
         Returns:
@@ -260,7 +262,9 @@ class ScriptedThread(metaclass=ABCMeta):
 
     target: lldb.SBTarget
     arch: str
-    originating_process: Union["lldb.plugins.scripted_process.ScriptedProcess", lldb.SBProcess]
+    originating_process: Union[
+        "lldb.plugins.scripted_process.ScriptedProcess", lldb.SBProcess
+    ]
     process: lldb.SBProcess
     args: lldb.SBStructuredData
     idx: int
@@ -465,7 +469,9 @@ class ScriptedFrame(metaclass=ABCMeta):
 
     target: lldb.SBTarget
     arch: str
-    originating_thread: Union["lldb.plugins.scripted_process.ScriptedThread", lldb.SBThread]
+    originating_thread: Union[
+        "lldb.plugins.scripted_process.ScriptedThread", lldb.SBThread
+    ]
     thread: lldb.SBThread
     process: lldb.SBProcess
     args: lldb.SBStructuredData
@@ -477,7 +483,9 @@ class ScriptedFrame(metaclass=ABCMeta):
 
     @abstractmethod
     def __init__(
-        self, thread: Union["lldb.plugins.scripted_process.ScriptedThread", lldb.SBThread], args: lldb.SBStructuredData
+        self,
+        thread: Union["lldb.plugins.scripted_process.ScriptedThread", lldb.SBThread],
+        args: lldb.SBStructuredData,
     ):
         """Construct a scripted frame.
 
@@ -665,6 +673,7 @@ class ScriptedFrame(metaclass=ABCMeta):
     # dict = {"class_name" : "", extra_args : {"step_type" : str(step_type)}
     #    return dict
 
+
 class PassthroughScriptedProcess(ScriptedProcess):
     """A reference `ScriptedProcess` subclass that forwards every request to
     a "driving" process running in another target of the same debugger.
@@ -848,6 +857,7 @@ class PassthroughScriptedThread(ScriptedThread):
             self.register_ctx[reg.name] = int(reg.value, base=16)
 
         return struct.pack(f"{len(self.register_ctx)}Q", *self.register_ctx.values())
+
 
 ARM32_GPR = [
     {

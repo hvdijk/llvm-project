@@ -12,6 +12,7 @@ from json import loads
 from collections import defaultdict
 from collections import OrderedDict
 
+
 class DILocBug:
     def __init__(self, origin, action, bb_name, fn_name, instr):
         self.origin = origin
@@ -105,6 +106,7 @@ def print_bugs_yaml(name, bugs_dict, indent=2):
                     else:
                         print(get_bug_line(3, f"{key}: {val}", first_line))
                     first_line = False
+
 
 # Report the bugs in form of html.
 def generate_html_report(

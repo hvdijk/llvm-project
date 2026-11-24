@@ -20,6 +20,7 @@ INDEX_OUTPUT_PATH = os.path.join(docs_bin_dir, "CIR", "index.md")
 
 cir_docs_toctree = []
 
+
 # ===============================================
 # Post-process CIRDialect.md
 # ===============================================

@@ -2,7 +2,6 @@
 Test whether a process started by lldb has no extra file descriptors open.
 """
 
-
 import lldb
 from lldbsuite.test import lldbutil
 from lldbsuite.test.lldbtest import *

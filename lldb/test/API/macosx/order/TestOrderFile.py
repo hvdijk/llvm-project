@@ -2,7 +2,6 @@
 Test that debug symbols have the correct order as specified by the order file.
 """
 
-
 import re
 import lldb
 from lldbsuite.test.decorators import *

@@ -1,6 +1,5 @@
 """Test that the clang modules cache directory can be controlled."""
 
-
 import os
 import shutil
 

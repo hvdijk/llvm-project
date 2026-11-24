@@ -24,6 +24,7 @@ from dex.utils.Exceptions import DebuggerException
 from dex.utils.Timeout import Timeout
 from dex.dextIR import LocIR
 
+
 class BreakpointRange:
     """A range of breakpoints and a set of conditions.
 

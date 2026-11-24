@@ -3,7 +3,6 @@ When a rebuild causes a location to be removed, make sure
 we still handle the remaining locations correctly.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

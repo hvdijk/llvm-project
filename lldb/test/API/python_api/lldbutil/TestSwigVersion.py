@@ -2,7 +2,6 @@
 Test that we embed the swig version into the lldb module
 """
 
-
 """
 import os
 import time

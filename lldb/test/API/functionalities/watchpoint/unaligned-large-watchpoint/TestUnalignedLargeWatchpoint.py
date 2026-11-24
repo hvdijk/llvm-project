@@ -4,7 +4,6 @@ lldb will need multiple hardware watchpoints
 to cover.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

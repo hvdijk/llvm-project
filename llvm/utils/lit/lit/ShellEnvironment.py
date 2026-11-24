@@ -53,7 +53,6 @@ class InternalShellError(Exception):
 
 
 class ShellEnvironment:
-
     """Mutable shell environment containing things like CWD and env vars.
 
     Environment variables are not implemented, but cwd tracking is. In addition,
@@ -267,8 +266,7 @@ def binary_fd(fileobj: TextIO) -> BinaryFileWriter:
 class ByteWriter(Protocol):
     """Structural type for objects that support writing a bytes buffer."""
 
-    def write(self, data: bytes) -> object:
-        ...
+    def write(self, data: bytes) -> object: ...
 
 
 def expand_glob(arg, cwd):

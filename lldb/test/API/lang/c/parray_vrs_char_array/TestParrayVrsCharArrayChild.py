@@ -6,7 +6,6 @@ address.  It only happened for char[] children because they used
 GetAddressOf which relies on the live address.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

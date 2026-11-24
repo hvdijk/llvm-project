@@ -5,7 +5,6 @@ import lldb
 
 
 class ScriptedPlatform(metaclass=ABCMeta):
-
     """
     The base class for a scripted platform.
 

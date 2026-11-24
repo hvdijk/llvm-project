@@ -194,9 +194,11 @@ class Heuristic(object):
                 p = 0 if success else self.penalty_incorrect_program_state
 
                 meta = "expected {}: {}".format(
-                    "{} times".format(expect_state.times)
-                    if expect_state.times >= 0
-                    else "at least once",
+                    (
+                        "{} times".format(expect_state.times)
+                        if expect_state.times >= 0
+                        else "at least once"
+                    ),
                     expect_state.program_state_text,
                 )
 

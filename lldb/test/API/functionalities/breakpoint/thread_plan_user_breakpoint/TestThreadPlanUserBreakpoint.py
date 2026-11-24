@@ -7,7 +7,6 @@ which should be eStopReasonBreakpoint in general,
 and eStopReasonPlanComplete when breakpoint's condition fails or it is disabled.
 """
 
-
 import unittest
 import lldb
 from lldbsuite.test.decorators import *

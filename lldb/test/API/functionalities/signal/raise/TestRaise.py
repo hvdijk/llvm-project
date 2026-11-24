@@ -1,6 +1,5 @@
 """Test that we handle inferiors that send signals to themselves"""
 
-
 import lldb
 import re
 from lldbsuite.test.lldbplatformutil import getDarwinOSTriples

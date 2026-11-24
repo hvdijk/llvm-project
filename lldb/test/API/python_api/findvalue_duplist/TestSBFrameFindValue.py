@@ -1,6 +1,5 @@
 """Test that SBFrame::FindValue finds things but does not duplicate the entire variables list"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

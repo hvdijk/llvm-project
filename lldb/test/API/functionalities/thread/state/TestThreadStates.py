@@ -2,7 +2,6 @@
 Test thread states.
 """
 
-
 import unittest
 import lldb
 from lldbsuite.test.decorators import *

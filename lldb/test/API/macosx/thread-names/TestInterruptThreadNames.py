@@ -1,6 +1,5 @@
 """Test that we get thread names when interrupting a process."""
 
-
 import time
 import lldb
 from lldbsuite.test.decorators import *

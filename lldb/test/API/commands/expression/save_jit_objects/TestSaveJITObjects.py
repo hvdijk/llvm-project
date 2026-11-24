@@ -2,7 +2,6 @@
 Test that LLDB can emit JIT objects when the appropriate setting is enabled
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

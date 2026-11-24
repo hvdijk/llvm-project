@@ -2,7 +2,6 @@
 Test the use of setjmp/longjmp for non-local goto operations in a single-threaded inferior.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

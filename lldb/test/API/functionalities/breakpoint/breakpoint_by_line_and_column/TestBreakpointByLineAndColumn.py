@@ -33,8 +33,12 @@ class BreakpointByLineAndColumnTestCase(TestBase):
         line = (
             line_number("main.cpp", "At the beginning of a function name (col:50)") + 1
         )  # Next line after comment
-        target, process, _, _ = lldbutil.run_to_source_breakpoint(self, "This is a random comment", src_file)
-        bkpt_no = lldbutil.run_break_set_by_file_and_line(self, "main.cpp", line, "--column 50")
+        target, process, _, _ = lldbutil.run_to_source_breakpoint(
+            self, "This is a random comment", src_file
+        )
+        bkpt_no = lldbutil.run_break_set_by_file_and_line(
+            self, "main.cpp", line, "--column 50"
+        )
         breakpoint = target.FindBreakpointByID(bkpt_no)
         threads = lldbutil.continue_to_breakpoint(process, breakpoint)
         self.assertEqual(len(threads), 1, "Stopped at our breakpoint")

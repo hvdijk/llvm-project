@@ -2,7 +2,6 @@
 Test that we can lookup types correctly in the expression parser
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

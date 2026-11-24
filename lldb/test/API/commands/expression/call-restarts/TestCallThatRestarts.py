@@ -2,7 +2,6 @@
 Test calling a function that hits a signal set to auto-restart, make sure the call completes.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

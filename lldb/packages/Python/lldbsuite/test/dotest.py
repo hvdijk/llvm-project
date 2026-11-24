@@ -47,6 +47,7 @@ from ..support import seven
 from ..support import temp_file
 from ..support import xcode
 
+
 def is_exe(fpath):
     """Returns true if fpath is an executable."""
     if fpath is None:

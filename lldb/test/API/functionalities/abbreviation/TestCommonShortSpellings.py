@@ -3,7 +3,6 @@ Test some lldb command abbreviations to make sure the common short spellings of
 many commands remain available even after we add/delete commands in the future.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,6 +2,7 @@
 Tests that frame variable and expr work for
 C++ unions and their static data members.
 """
+
 import lldb
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test.decorators import *

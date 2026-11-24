@@ -123,7 +123,6 @@ View the output from {self.name} here.
         elif create_new:
             self.comment = {"body": comment_text}
 
-
     def run(self, args: LintArgs) -> bool:
         if args.verbose:
             print(f"got changed files: {args.changed_files}")

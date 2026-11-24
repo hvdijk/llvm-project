@@ -2,7 +2,6 @@
 Test that a binary can be slid to different load addresses correctly
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

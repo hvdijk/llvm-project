@@ -3,7 +3,6 @@ Make sure that deleting breakpoints in another breakpoint
 callback doesn't cause problems.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

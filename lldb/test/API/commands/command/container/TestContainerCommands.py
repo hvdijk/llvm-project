@@ -2,7 +2,6 @@
 Test user added container commands
 """
 
-
 import sys
 import lldb
 from lldbsuite.test.decorators import *

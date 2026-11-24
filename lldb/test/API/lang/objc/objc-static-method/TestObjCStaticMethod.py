@@ -1,6 +1,5 @@
 """Test calling functions in static methods."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

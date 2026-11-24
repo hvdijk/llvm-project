@@ -12,6 +12,7 @@ import re
 chunk_id = 0
 pass_regex = re.compile(r"\(([\w-]+)\)")
 
+
 # This function gets the pass name from the following line:
 # *** IR Dump Before/After PASS_NAME... ***
 def get_pass_name(line, prefix):

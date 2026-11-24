@@ -1,6 +1,5 @@
 """Test that we properly vend children for a single entry NSDictionary"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

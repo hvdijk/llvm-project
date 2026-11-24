@@ -3,7 +3,6 @@ Test that objective-c constant strings are generated correctly by the expression
 parser.
 """
 
-
 import shutil
 import subprocess
 import lldb

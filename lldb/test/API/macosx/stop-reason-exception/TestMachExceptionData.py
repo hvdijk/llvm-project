@@ -2,7 +2,6 @@
 Test that we get the type code and subcode for MachExceptions
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

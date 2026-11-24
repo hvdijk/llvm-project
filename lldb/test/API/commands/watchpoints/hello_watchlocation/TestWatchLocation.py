@@ -2,7 +2,6 @@
 Test lldb watchpoint that uses '-s size' to watch a pointed location with size.
 """
 
-
 import re
 import lldb
 from lldbsuite.test.decorators import *

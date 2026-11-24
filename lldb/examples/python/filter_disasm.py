@@ -19,6 +19,7 @@ class Program(list):
 
 filter_program = Program(["crustfilt"])
 
+
 def __lldb_init_module(debugger, dict):
     debugger.HandleCommand("command script add -f filter_disasm.fdis fdis")
     print("Disassembly filter command (fdis) loaded")
@@ -27,27 +28,27 @@ def __lldb_init_module(debugger, dict):
 
 def fdis(debugger, args, exe_ctx, result, dict):
     """
-  Call the built in disassembler, then pass its output to a filter program
-  to add in disassembly for hidden opcodes.
-  Except for get and set, use the fdis command like the disassemble command.
-  By default, the filter program is crustfilt, from
-  https://github.com/quic/crustfilt . This can be changed by changing
-  the global variable filter_program.
+    Call the built in disassembler, then pass its output to a filter program
+    to add in disassembly for hidden opcodes.
+    Except for get and set, use the fdis command like the disassemble command.
+    By default, the filter program is crustfilt, from
+    https://github.com/quic/crustfilt . This can be changed by changing
+    the global variable filter_program.
 
-  Usage:
-    fdis [[get] [set <program>] [<disassembly options>]]
+    Usage:
+      fdis [[get] [set <program>] [<disassembly options>]]
 
-    Choose one of the following:
-        get
-            Gets the current filter program
+      Choose one of the following:
+          get
+              Gets the current filter program
 
-        set <program>
-            Sets the current filter program. This can be an executable, which
-            will be found on PATH, or an absolute path.
+          set <program>
+              Sets the current filter program. This can be an executable, which
+              will be found on PATH, or an absolute path.
 
-        <disassembly options>
-            If the first argument is not get or set, the args will be passed
-            to the disassemble command as is.
+          <disassembly options>
+              If the first argument is not get or set, the args will be passed
+              to the disassemble command as is.
 
     """
 
@@ -74,7 +75,9 @@ def fdis(debugger, args, exe_ctx, result, dict):
         return
 
     res = lldb.SBCommandReturnObject()
-    debugger.GetCommandInterpreter().HandleCommand("disassemble -b " + args, exe_ctx, res)
+    debugger.GetCommandInterpreter().HandleCommand(
+        "disassemble -b " + args, exe_ctx, res
+    )
     if len(res.GetError()) > 0:
         result.SetError(res.GetError())
         result.SetStatus(lldb.eReturnStatusFailed)
@@ -92,7 +95,11 @@ def fdis(debugger, args, exe_ctx, result, dict):
         return
 
     if proc.returncode:
-        result.PutCString("warning: {} returned non-zero value {}".format(filter_program, proc.returncode))
+        result.PutCString(
+            "warning: {} returned non-zero value {}".format(
+                filter_program, proc.returncode
+            )
+        )
 
     result.PutCString(proc.stdout)
     result.SetStatus(lldb.eReturnStatusSuccessFinishResult)

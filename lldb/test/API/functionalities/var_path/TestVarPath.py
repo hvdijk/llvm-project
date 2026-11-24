@@ -2,7 +2,6 @@
 Make sure the getting a variable path works and doesn't crash.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *

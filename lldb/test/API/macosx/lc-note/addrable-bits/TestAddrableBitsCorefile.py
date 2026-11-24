@@ -1,6 +1,5 @@
 """Test that corefiles with LC_NOTE "addrable bits" load command, creating and reading."""
 
-
 import os
 import re
 import subprocess

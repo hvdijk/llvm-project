@@ -432,7 +432,7 @@ class ompd_address_space(object):
         if verbose:
             if self.states is None:
                 self.enumerate_states()
-            for (thread_num, thread_ptid) in sorted(list_tids):
+            for thread_num, thread_ptid in sorted(list_tids):
                 if thread_num in self.threads:
                     try:
                         print(

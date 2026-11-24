@@ -2,7 +2,6 @@
 Use lldb Python API to make sure the dynamic checkers are doing their jobs.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

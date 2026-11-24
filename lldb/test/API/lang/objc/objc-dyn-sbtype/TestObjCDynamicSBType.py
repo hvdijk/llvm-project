@@ -2,7 +2,6 @@
 Test that we are able to properly report a usable dynamic type
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

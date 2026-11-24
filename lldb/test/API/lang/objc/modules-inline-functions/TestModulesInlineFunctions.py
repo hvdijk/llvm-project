@@ -1,6 +1,5 @@
 """Test that inline functions from modules are imported correctly"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

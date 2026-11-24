@@ -4,7 +4,6 @@ within same word boundary. We should be able to install individual watchpoints
 on any of the bytes, half-word, or word. This is only for ARM/AArch64 targets.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

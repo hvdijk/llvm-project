@@ -2,7 +2,6 @@
 Test that we recover gracefully from evaluating a breakpoint condition that crashes.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *
@@ -56,4 +55,8 @@ class TestCrashingCondition(TestBase):
             thread.stop_reason == lldb.eStopReasonException
             or thread.stop_reason == lldb.eStopReasonSignal
         )
-        self.assertIn(thread.stop_reason, [lldb.eStopReasonException, lldb.eStopReasonSignal], "Ran to the actual crash")
+        self.assertIn(
+            thread.stop_reason,
+            [lldb.eStopReasonException, lldb.eStopReasonSignal],
+            "Ran to the actual crash",
+        )

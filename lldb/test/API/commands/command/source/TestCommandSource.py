@@ -2,7 +2,6 @@
 Test that lldb command "command source" works correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

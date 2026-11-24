@@ -37,6 +37,7 @@ config.substitutions.append(
 config.substitutions.append(
     (
         "%ctxprofilelib",
-        "-L%s -lclang_rt.ctx_profile%s" % (config.compiler_rt_libdir, config.target_suffix)
+        "-L%s -lclang_rt.ctx_profile%s"
+        % (config.compiler_rt_libdir, config.target_suffix),
     )
 )

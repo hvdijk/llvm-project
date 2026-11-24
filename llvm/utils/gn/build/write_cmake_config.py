@@ -54,7 +54,7 @@ def main():
             print('duplicate key "%s" in args' % key, file=sys.stderr)
             return 1
         if val.startswith("@file:"):
-            file_path = val[len("@file:"):]
+            file_path = val[len("@file:") :]
             with open(file_path) as f:
                 val = f.read()
         values[key] = val.replace("\\n", "\n")

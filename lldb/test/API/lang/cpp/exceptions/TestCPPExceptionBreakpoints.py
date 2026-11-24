@@ -2,7 +2,6 @@
 Test lldb exception breakpoint command for CPP.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

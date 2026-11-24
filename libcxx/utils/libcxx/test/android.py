@@ -20,9 +20,13 @@ def _get_cpu_count() -> int:
     # lack `nproc`. Even if a static toybox binary is pushed to the device, it may
     # return an incorrect value. (e.g. On a Nexus 7 running Android 5.0, toybox
     # nproc returns 1 even though the device has 4 CPUs.)
-    job = subprocess.run(["adb", "shell", "ls /sys/devices/system/cpu"],
-                         encoding="utf8", check=False,
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    job = subprocess.run(
+        ["adb", "shell", "ls /sys/devices/system/cpu"],
+        encoding="utf8",
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
     if job.returncode == 1:
         # Maybe adb is missing, maybe ANDROID_SERIAL needs to be defined, maybe the
         # /sys subdir isn't there. Most errors will be handled later, just use one
@@ -32,11 +36,12 @@ def _get_cpu_count() -> int:
     # Make sure there are no CR characters in the output. Pre-shell_v2, the adb
     # stdout comes from a master pty so newlines are CRLF-delimited. On Windows,
     # LF might also get expanded to CRLF.
-    cpu_listing = job.stdout.replace('\r', '\n')
+    cpu_listing = job.stdout.replace("\r", "\n")
 
     # Count lines that match "cpu${DIGITS}".
-    result = len([line for line in cpu_listing.splitlines()
-                  if re.match(r'cpu(\d)+$', line)])
+    result = len(
+        [line for line in cpu_listing.splitlines() if re.match(r"cpu(\d)+$", line)]
+    )
 
     # Restrict the result to something reasonable.
     if result < 1:
@@ -47,8 +52,9 @@ def _get_cpu_count() -> int:
     return result
 
 
-def _job_limit_socket_thread(temp_dir: tempfile.TemporaryDirectory,
-                             server: socket.socket, job_count: int) -> None:
+def _job_limit_socket_thread(
+    temp_dir: tempfile.TemporaryDirectory, server: socket.socket, job_count: int
+) -> None:
     """Service the job limit server socket, accepting only as many connections
     as there should be concurrent jobs.
     """
@@ -88,8 +94,8 @@ def adb_job_limit_socket() -> str:
     # won't prevent interpreter shutdown. The temp dir will still be removed on
     # shutdown.
     cpu_count = _get_cpu_count()
-    threading.Thread(target=_job_limit_socket_thread,
-                     args=(temp_dir, server, cpu_count),
-                     daemon=True).start()
+    threading.Thread(
+        target=_job_limit_socket_thread, args=(temp_dir, server, cpu_count), daemon=True
+    ).start()
 
     return sock_addr

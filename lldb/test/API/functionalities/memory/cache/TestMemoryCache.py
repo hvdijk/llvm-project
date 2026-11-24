@@ -2,7 +2,6 @@
 Test the MemoryCache L1 flush.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

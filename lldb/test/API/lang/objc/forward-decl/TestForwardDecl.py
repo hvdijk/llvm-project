@@ -1,6 +1,5 @@
 """Test that a forward-declared class works when its complete definition is in a library"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

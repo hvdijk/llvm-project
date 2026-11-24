@@ -2,7 +2,6 @@
 Test that we can hit breakpoints in global constructors
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

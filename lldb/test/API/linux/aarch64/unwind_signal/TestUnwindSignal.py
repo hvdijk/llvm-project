@@ -1,7 +1,6 @@
 """Test that we can unwind out of a signal handler.
    Which for AArch64 Linux requires a specific unwind plan."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

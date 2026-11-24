@@ -2,7 +2,6 @@
 Test that thread plan listing, and deleting works.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 import lldbsuite.test.lldbutil as lldbutil

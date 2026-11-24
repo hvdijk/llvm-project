@@ -2,7 +2,6 @@
 Test that SBProcess.LoadImageUsingPaths works correctly.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

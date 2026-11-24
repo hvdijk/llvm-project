@@ -2,7 +2,6 @@
 Test setting a breakpoint by line and column.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

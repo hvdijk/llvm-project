@@ -33,8 +33,10 @@ def main():
     parser.add_argument("--extra-scp-args", type=str, required=False)
     parser.add_argument("--codesign_identity", type=str, required=False, default=None)
     parser.add_argument("--env", type=str, nargs="*", required=False, default=[])
-    parser.add_argument("--prepend_env", type=str, nargs="*", required=False, default=[])
-    parser.add_argument("-v", "--verbose", action='store_true')
+    parser.add_argument(
+        "--prepend_env", type=str, nargs="*", required=False, default=[]
+    )
+    parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("command", nargs=argparse.ONE_OR_MORE)
     args = parser.parse_args()
     commandLine = args.command
@@ -63,7 +65,7 @@ def main():
         universal_newlines=True,
         check=True,
         capture_output=True,
-        stdin=subprocess.DEVNULL
+        stdin=subprocess.DEVNULL,
     ).stdout.strip()
 
     # HACK:
@@ -94,7 +96,9 @@ def main():
             # the temporary file while still open doesn't work on Windows.
             tmpTar.close()
             remoteTarball = pathOnRemote(tmpTar.name)
-            runCommand(scp(tmpTar.name, remoteTarball), check=True, stdin=subprocess.DEVNULL)
+            runCommand(
+                scp(tmpTar.name, remoteTarball), check=True, stdin=subprocess.DEVNULL
+            )
         finally:
             # Make sure we close the file in case an exception happens before
             # we've closed it above -- otherwise close() is idempotent.

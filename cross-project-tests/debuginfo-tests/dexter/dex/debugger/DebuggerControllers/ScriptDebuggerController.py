@@ -33,6 +33,7 @@ class DebuggerAction(Enum):
     CONTINUE = 2
     EXIT = 3
 
+
 class ScriptDebuggerController(DebuggerControllerBase):
     """Uses a Dexter Script to drive a debugger session, using "where" nodes to make breakpoint/stepping decisions, and
     "expect" nodes to evaluate variables."""
@@ -219,6 +220,7 @@ class ScriptDebuggerController(DebuggerControllerBase):
                 if should_step_out:
                     return False
                 return where in pending_wheres
+
             for where, bp_ids in self._where_bps.items():
                 if bp_ids and not where_should_have_breakpoint(where):
                     bp_to_delete.extend(bp_ids)

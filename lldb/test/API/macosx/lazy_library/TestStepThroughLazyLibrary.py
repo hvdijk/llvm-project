@@ -3,7 +3,6 @@ Test that we can step through the stubs implementing the
 Darwin linker's lazy_library feature.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 import lldbsuite.test.lldbutil as lldbutil

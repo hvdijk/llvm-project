@@ -322,7 +322,7 @@ class LLVMConfig:
         output, _ = self.get_process_output([config_path] + arguments)
         lines = output.split("\n")
 
-        for (feature_line, (_, patterns)) in zip(lines, features):
+        for feature_line, (_, patterns) in zip(lines, features):
             # We should have either a callable or a dictionary.  If it's a
             # dictionary, grep each key against the output and use the value if
             # it matches.  If it's a callable, it does the entire translation.
@@ -330,7 +330,7 @@ class LLVMConfig:
                 features_to_add = patterns(feature_line)
                 self.config.available_features.update(features_to_add)
             else:
-                for (re_pattern, feature) in patterns.items():
+                for re_pattern, feature in patterns.items():
                     if re.search(re_pattern, feature_line):
                         self.config.available_features.add(feature)
 

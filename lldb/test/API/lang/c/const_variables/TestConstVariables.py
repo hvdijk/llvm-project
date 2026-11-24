@@ -1,6 +1,5 @@
 """Check that compiler-generated constant values work correctly"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

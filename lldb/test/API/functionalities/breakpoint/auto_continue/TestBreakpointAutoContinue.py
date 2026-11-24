@@ -2,7 +2,6 @@
 Test that the breakpoint auto-continue flag works correctly.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

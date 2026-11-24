@@ -145,6 +145,7 @@ def _typename_with_n_generic_arguments(gdb_type, n):
     result = (template[:-2] + ">") % tuple(arg_list)
     return result
 
+
 class StdTuplePrinter(object):
     """Print a std::tuple."""
 
@@ -195,6 +196,7 @@ class StdPairPrinter(object):
 
     def children(self):
         return iter([("first", self.val["first"]), ("second", self.val["second"])])
+
 
 class StdStringPrinter(object):
     """Print a std::string."""

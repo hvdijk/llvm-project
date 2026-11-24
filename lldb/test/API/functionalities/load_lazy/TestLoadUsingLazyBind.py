@@ -2,7 +2,6 @@
 Test that SBProcess.LoadImageUsingPaths uses RTLD_LAZY
 """
 
-
 import os
 import shutil
 import lldb

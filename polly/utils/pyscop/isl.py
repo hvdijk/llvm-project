@@ -433,7 +433,7 @@ def islFunctionTwoOp(islFunction, opOne, opTwo):
     return islFunction(opOne, opTwo)
 
 
-for (operation, base, operands, ret) in functions:
+for operation, base, operands, ret in functions:
     functionName = "isl_" + base.isl_name() + "_" + operation
     islFunction = getattr(isl, functionName)
     if len(operands) == 1:
@@ -467,7 +467,7 @@ def islFunctionTwoOpKeep(islFunction, opOne, opTwo):
     return islFunction(opOne, opTwo)
 
 
-for (operation, base, operands, ret) in keep_functions:
+for operation, base, operands, ret in keep_functions:
     functionName = "isl_" + base.isl_name() + "_" + operation
     islFunction = getattr(isl, functionName)
     if len(operands) == 1:

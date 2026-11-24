@@ -75,12 +75,7 @@ def process_identifiers(line):
     for tk in parts:
         if is_identifier(tk) and (
             tk.startswith("__Z")
-            or (
-                tk.startswith("_")
-                and len(tk) > 1
-                and tk[1].isalpha()
-                and tk[1] != "Z"
-            )
+            or (tk.startswith("_") and len(tk) > 1 and tk[1].isalpha() and tk[1] != "Z")
         ):
             tk = tk[1:]
         new_line += tk
@@ -99,9 +94,7 @@ def process_asm(asm):
         re.compile(r"\s+\..*$"),  # directive
         re.compile(r"\s*#(NO_APP|APP)$"),  # inline ASM
         re.compile(r"\s*#.*$"),  # comment line
-        re.compile(
-            r"\s*\.globa?l\s*([.a-zA-Z_][a-zA-Z0-9$_.]*)"
-        ),  # global directive
+        re.compile(r"\s*\.globa?l\s*([.a-zA-Z_][a-zA-Z0-9$_.]*)"),  # global directive
         re.compile(
             r"\s*\.(string|asciz|ascii|[1248]?byte|short|word|long|quad|value|zero)"
         ),

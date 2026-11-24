@@ -12,6 +12,7 @@ class DelayingHandler(http.server.BaseHTTPRequestHandler):
         # Wait until the client has finished running.
         self.can_respond.wait()
 
+
 httpd = http.server.HTTPServer(("localhost", 0), DelayingHandler)
 port = httpd.socket.getsockname()[1]
 

@@ -1,6 +1,5 @@
 """Test stepping and setting breakpoints in indirect and re-exported symbols."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

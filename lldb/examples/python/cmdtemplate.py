@@ -14,6 +14,7 @@ import lldb
 import sys
 from lldb.plugins.parsed_cmd import ParsedCommand
 
+
 class FrameStatCommand(ParsedCommand):
     program = "framestats"
 
@@ -33,46 +34,46 @@ class FrameStatCommand(ParsedCommand):
         ov_parser.add_option(
             "i",
             "in-scope",
-            help = "in_scope_only = True",
-            value_type = lldb.eArgTypeBoolean,
-            dest = "bool_arg",
-            default = True,
+            help="in_scope_only = True",
+            value_type=lldb.eArgTypeBoolean,
+            dest="bool_arg",
+            default=True,
         )
 
         ov_parser.add_option(
             "i",
             "in-scope",
-            help = "in_scope_only = True",
-            value_type = lldb.eArgTypeBoolean,
-            dest = "inscope",
+            help="in_scope_only = True",
+            value_type=lldb.eArgTypeBoolean,
+            dest="inscope",
             default=True,
         )
-        
+
         ov_parser.add_option(
             "a",
             "arguments",
-            help = "arguments = True",
-            value_type = lldb.eArgTypeBoolean,
-            dest = "arguments",
-            default = True,
+            help="arguments = True",
+            value_type=lldb.eArgTypeBoolean,
+            dest="arguments",
+            default=True,
         )
 
         ov_parser.add_option(
             "l",
             "locals",
-            help = "locals = True",
-            value_type = lldb.eArgTypeBoolean,
-            dest = "locals",
-            default = True,
+            help="locals = True",
+            value_type=lldb.eArgTypeBoolean,
+            dest="locals",
+            default=True,
         )
 
         ov_parser.add_option(
             "s",
             "statics",
-            help = "statics = True",
-            value_type = lldb.eArgTypeBoolean,
-            dest = "statics",
-            default = True,
+            help="statics = True",
+            value_type=lldb.eArgTypeBoolean,
+            dest="statics",
+            default=True,
         )
         ov_parser.add_option(
             "t",
@@ -88,14 +89,15 @@ class FrameStatCommand(ParsedCommand):
         return "Example command for use in debugging"
 
     def get_long_help(self):
-        return ("This command is meant to be an example of how to make "
+        return (
+            "This command is meant to be an example of how to make "
             "an LLDB command that does something useful, follows "
             "best practices, and exploits the SB API. "
             "Specifically, this command computes the aggregate "
             "and average size of the variables in the current "
             "frame and allows you to tweak exactly which variables "
-            "are to be accounted in the computation.")
-
+            "are to be accounted in the computation."
+        )
 
     def __init__(self, debugger, unused):
         super().__init__(debugger, unused)

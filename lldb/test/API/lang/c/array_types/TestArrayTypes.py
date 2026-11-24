@@ -1,6 +1,5 @@
 """Test breakpoint by file/line number; and list variables with array types."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

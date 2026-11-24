@@ -2,7 +2,6 @@
 Verify that the hash computing logic for ValueObject's values can't crash us.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

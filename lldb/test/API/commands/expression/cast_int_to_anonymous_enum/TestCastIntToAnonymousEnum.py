@@ -3,7 +3,6 @@ Test Expression Parser regression text to ensure that we handle anonymous
 enums importing correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

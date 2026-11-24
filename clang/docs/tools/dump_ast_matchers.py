@@ -52,6 +52,7 @@ traversal_matchers = {}
 # pop-up. ids[name] keeps track of those ids.
 ids = collections.defaultdict(int)
 
+
 def esc(text):
     """Escape any html in the given text."""
     text = re.sub(r"&", "&amp;", text)
@@ -192,7 +193,9 @@ def act_on_decl(declaration, comment, allowed_types):
     """
     if declaration.strip():
 
-        if re.match(r"^\s?(#|namespace|using|template <typename NodeType> using|})", declaration):
+        if re.match(
+            r"^\s?(#|namespace|using|template <typename NodeType> using|})", declaration
+        ):
             return
 
         # Node matchers are defined by writing:

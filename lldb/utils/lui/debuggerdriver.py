@@ -37,7 +37,7 @@ class DebuggerDriver(Thread):
             lldb.SBTarget.eBroadcastBitBreakpointChanged
             # | lldb.SBTarget.eBroadcastBitModuleLoaded
             # | lldb.SBTarget.eBroadcastBitModuleUnloaded
-            | lldb.SBTarget.eBroadcastBitWatchpointChanged
+            | lldb.SBTarget.eBroadcastBitWatchpointChanged,
             # | lldb.SBTarget.eBroadcastBitSymbolLoaded
         )
 

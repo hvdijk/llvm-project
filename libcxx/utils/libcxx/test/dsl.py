@@ -412,16 +412,19 @@ def featureTestMacros(config, flags=""):
 
 
 def _getSubstitution(substitution, all_substitutions):
-  for (orig, replacement) in all_substitutions:
-    if orig == substitution:
-      return replacement
-  raise ValueError('Substitution {} is not in the config.'.format(substitution))
+    for orig, replacement in all_substitutions:
+        if orig == substitution:
+            return replacement
+    raise ValueError("Substitution {} is not in the config.".format(substitution))
+
 
 def _appendToSubstitution(substitutions, key, value):
     return [(k, v + " " + value) if k == key else (k, v) for (k, v) in substitutions]
 
+
 def _prependToSubstitution(substitutions, key, value):
     return [(k, value + " " + v) if k == key else (k, v) for (k, v) in substitutions]
+
 
 def _ensureFlagIsSupported(config, flag):
     (exitCode, out, err) = tryCompileFlag(config, flag)
@@ -511,6 +514,7 @@ class AddFlag(ConfigAction):
 
     def pretty(self, config, litParams):
         return "add {} to %{{flags}}".format(self._getFlag(config))
+
 
 class AddFlagIfSupported(ConfigAction):
     """
@@ -635,10 +639,8 @@ class AddSubstitution(ConfigAction):
 
     def __init__(self, key, substitution):
         self._key = key
-        self._getSub = (
-            lambda config: substitution(config)
-            if callable(substitution)
-            else substitution
+        self._getSub = lambda config: (
+            substitution(config) if callable(substitution) else substitution
         )
 
     def applyTo(self, config):
@@ -843,8 +845,8 @@ class Parameter(object):
                     self.name
                 )
             )
-        getDefault = (
-            lambda: self._default(config) if callable(self._default) else self._default
+        getDefault = lambda: (
+            self._default(config) if callable(self._default) else self._default
         )
 
         if param is not None:

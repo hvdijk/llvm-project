@@ -2,7 +2,6 @@
 Test that CoreFoundation classes CFGregorianDate and CFRange are not improperly uniqued
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

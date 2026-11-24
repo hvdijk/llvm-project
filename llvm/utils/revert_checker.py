@@ -385,7 +385,6 @@ def find_reverts(
 
             all_reverts.append(Revert(sha, reverted_sha))
 
-
     # Since `all_reverts` contains reverts in log order (e.g., newer comes before
     # older), we need to reverse this to keep with our guarantee of older =
     # earlier in the result.

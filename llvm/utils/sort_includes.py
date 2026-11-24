@@ -33,7 +33,7 @@ def sort_includes(f):
     subproject_headers = []
     llvm_headers = []
     system_headers = []
-    for (i, l) in enumerate(lines):
+    for i, l in enumerate(lines):
         if l.strip() == "":
             continue
         if l.startswith("#include"):

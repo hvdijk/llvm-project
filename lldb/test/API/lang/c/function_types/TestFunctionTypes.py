@@ -1,6 +1,5 @@
 """Test variable with function ptr type and that break on the function works."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

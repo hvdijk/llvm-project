@@ -2,7 +2,6 @@
 Test that using a non-existent architecture name does not crash LLDB.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

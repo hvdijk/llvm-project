@@ -15,6 +15,7 @@ import re
 THIS_FILE = os.path.abspath(__file__)
 LIBCXX_UTILS = os.path.dirname(os.path.dirname(os.path.dirname(THIS_FILE)))
 
+
 def _getTempPaths(test):
     """
     Return the values to use for the %{temp} and %t substitutions, respectively.
@@ -33,6 +34,7 @@ def _checkBaseSubstitutions(substitutions):
     substitutions = [s for (s, _) in substitutions]
     for s in ["%{cxx}", "%{compile_flags}", "%{link_flags}", "%{flags}", "%{exec}"]:
         assert s in substitutions, "Required substitution {} was not provided".format(s)
+
 
 def _executeScriptInternal(test, litConfig, commands):
     """
@@ -178,11 +180,14 @@ def parseScript(test, preamble):
                 "%dbg(MODULE std.compat) %{cxx} %{flags} "
                 f"{compileFlags} "
                 "-Wno-reserved-module-identifier -Wno-reserved-user-defined-literal "
-                "-fmodule-file=std=%{temp}/std.pcm " # The std.compat module imports std.
+                "-fmodule-file=std=%{temp}/std.pcm "  # The std.compat module imports std.
                 "--precompile -o %{temp}/std.compat.pcm -c %{module-dir}/std.compat.cppm",
             )
             moduleCompileFlags.extend(
-                ["-fmodule-file=std.compat=%{temp}/std.compat.pcm", "%{temp}/std.compat.pcm"]
+                [
+                    "-fmodule-file=std.compat=%{temp}/std.compat.pcm",
+                    "%{temp}/std.compat.pcm",
+                ]
             )
 
         # Make sure the std module is built before std.compat. Libc++'s
@@ -197,7 +202,9 @@ def parseScript(test, preamble):
             "-Wno-reserved-module-identifier -Wno-reserved-user-defined-literal "
             "--precompile -o %{temp}/std.pcm -c %{module-dir}/std.cppm",
         )
-        moduleCompileFlags.extend(["-fmodule-file=std=%{temp}/std.pcm", "%{temp}/std.pcm"])
+        moduleCompileFlags.extend(
+            ["-fmodule-file=std=%{temp}/std.pcm", "%{temp}/std.pcm"]
+        )
 
         # Add compile flags required for the modules.
         substitutions = config._appendToSubstitution(
@@ -287,14 +294,22 @@ class CxxStandardLibraryTest(lit.formats.FileBasedTest):
         filename = os.path.basename(sourcePath)
 
         # Ignore dot files, excluded tests and tests with an unsupported suffix
-        hasSupportedSuffix = lambda f: any([re.search(ext, f) for ext in SUPPORTED_SUFFIXES])
-        if filename.startswith(".") or filename in localConfig.excludes or not hasSupportedSuffix(filename):
+        hasSupportedSuffix = lambda f: any(
+            [re.search(ext, f) for ext in SUPPORTED_SUFFIXES]
+        )
+        if (
+            filename.startswith(".")
+            or filename in localConfig.excludes
+            or not hasSupportedSuffix(filename)
+        ):
             return
 
         # If this is a generated test, run the generation step and add
         # as many Lit tests as necessary.
-        if re.search('[.]gen[.][^.]+$', filename):
-            for test in self._generateGenTest(testSuite, pathInSuite, litConfig, localConfig):
+        if re.search("[.]gen[.][^.]+$", filename):
+            for test in self._generateGenTest(
+                testSuite, pathInSuite, litConfig, localConfig
+            ):
                 yield test
         else:
             yield lit.Test.Test(testSuite, pathInSuite, localConfig)
@@ -366,11 +381,19 @@ class CxxStandardLibraryTest(lit.formats.FileBasedTest):
                 "%dbg(COMPILED WITH) %{cxx} %s %{flags} %{compile_flags} %{benchmark_flags} %{link_flags} -o %t.exe",
             ]
             if "enable-benchmarks=run" in test.config.available_features:
-                steps += ["%dbg(EXECUTED AS) %{exec} %t.exe --benchmark_min_time=%{benchmark_min_time} --benchmark_out=%{temp}/benchmark-result.json --benchmark_out_format=json"]
-                parse_results = os.path.join(LIBCXX_UTILS, 'parse-google-benchmark-results')
-                steps += [f"{parse_results} %{{temp}}/benchmark-result.json --output-format=lnt > %{{temp}}/results.lnt"]
+                steps += [
+                    "%dbg(EXECUTED AS) %{exec} %t.exe --benchmark_min_time=%{benchmark_min_time} --benchmark_out=%{temp}/benchmark-result.json --benchmark_out_format=json"
+                ]
+                parse_results = os.path.join(
+                    LIBCXX_UTILS, "parse-google-benchmark-results"
+                )
+                steps += [
+                    f"{parse_results} %{{temp}}/benchmark-result.json --output-format=lnt > %{{temp}}/results.lnt"
+                ]
             return self._executeShTest(test, litConfig, steps)
-        elif re.search('[.]gen[.][^.]+$', filename): # This only happens when a generator test is not supported
+        elif re.search(
+            "[.]gen[.][^.]+$", filename
+        ):  # This only happens when a generator test is not supported
             return self._executeShTest(test, litConfig, [])
         else:
             return lit.Test.Result(
@@ -407,7 +430,7 @@ class CxxStandardLibraryTest(lit.formats.FileBasedTest):
         # is unsupported or the generator ran but failed at runtime -- handle both. In the first case,
         # we return the generator test itself, since it should produce the same result when run after
         # test suite generation. In the second case, it's a true error so we report it.
-        steps = [] # Steps must already be in the script
+        steps = []  # Steps must already be in the script
         result = _executeScriptInternal(generator, litConfig, steps)
         if isinstance(result, lit.Test.Result):
             yield generator
@@ -415,18 +438,20 @@ class CxxStandardLibraryTest(lit.formats.FileBasedTest):
 
         (out, err, exitCode, _, _, _) = result
         if exitCode != 0:
-            raise RuntimeError(f"Error while trying to generate gen test {'/'.join(pathInSuite)}\nstdout:\n{out}\n\nstderr:\n{err}")
+            raise RuntimeError(
+                f"Error while trying to generate gen test {'/'.join(pathInSuite)}\nstdout:\n{out}\n\nstderr:\n{err}"
+            )
 
         # Split the generated output into multiple files and generate one test for each file
         for subfile, content in self._splitFile(out):
             generatedFile = testSuite.getExecPath(pathInSuite + (subfile,))
             os.makedirs(os.path.dirname(generatedFile), exist_ok=True)
-            with open(generatedFile, 'w') as f:
+            with open(generatedFile, "w") as f:
                 f.write(content)
             yield lit.Test.Test(testSuite, (generatedFile,), localConfig)
 
     def _splitFile(self, input):
-        DELIM = r'^(//|#)---(.+)'
+        DELIM = r"^(//|#)---(.+)"
         lines = input.splitlines()
         currentFile = None
         thisFileContent = []
@@ -434,10 +459,12 @@ class CxxStandardLibraryTest(lit.formats.FileBasedTest):
             match = re.match(DELIM, line)
             if match:
                 if currentFile is not None:
-                    yield (currentFile, '\n'.join(thisFileContent))
+                    yield (currentFile, "\n".join(thisFileContent))
                 currentFile = match.group(2).strip()
                 thisFileContent = []
-            assert currentFile is not None, f"Some input to split-file doesn't belong to any file, input was:\n{input}"
+            assert (
+                currentFile is not None
+            ), f"Some input to split-file doesn't belong to any file, input was:\n{input}"
             thisFileContent.append(line)
         if currentFile is not None:
-            yield (currentFile, '\n'.join(thisFileContent))
+            yield (currentFile, "\n".join(thisFileContent))

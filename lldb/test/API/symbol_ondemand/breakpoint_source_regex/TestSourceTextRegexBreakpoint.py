@@ -3,7 +3,6 @@ Test source text regex breakpoint hydrates module debug info
 in symbol on-demand mode.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

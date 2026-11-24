@@ -2,7 +2,6 @@
 The evaluating printf(...) after break stop and then up a stack frame.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

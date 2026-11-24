@@ -28,12 +28,12 @@ class EmptyTensorToAllocTensorOp(EmptyTensorToAllocTensorOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
-    def __init__(self, target: Union[Operation, OpView, Value], *, loc=None, ip=None):
-        ...
+    def __init__(
+        self, target: Union[Operation, OpView, Value], *, loc=None, ip=None
+    ): ...
 
     def __init__(
         self,
@@ -77,8 +77,7 @@ class OneShotBufferizeOp(OneShotBufferizeOp):
         test_analysis_only: Optional[bool] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -94,8 +93,7 @@ class OneShotBufferizeOp(OneShotBufferizeOp):
         test_analysis_only: Optional[bool] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,

@@ -2,7 +2,6 @@
 Test PHI nodes work in the IR interpreter.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

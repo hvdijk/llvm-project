@@ -43,7 +43,9 @@ class LibCxxStdFunctionRecognizerTestCase(TestBase):
             substrs=["frame", "foo", "frame", "main"],
         )
         self.expect(
-            "thread backtrace", matching=False, patterns=["frame.*std::__.*::__function"]
+            "thread backtrace",
+            matching=False,
+            patterns=["frame.*std::__.*::__function"],
         )
         # Unfiltered.
         self.expect(

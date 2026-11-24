@@ -22,6 +22,7 @@ from dex.utils.Exceptions import Error, LoadDebuggerException
 from dex.utils.Imports import load_module
 from dex.utils.ReturnCode import ReturnCode
 
+
 def _load_com_module():
     try:
         return load_module(
@@ -58,6 +59,7 @@ class DbgEvent(IntEnum):
 
     first = dbgEventReasonNone
     last = dbgEventReasonContextSwitch
+
 
 class VisualStudio(
     DebuggerBase, metaclass=abc.ABCMeta

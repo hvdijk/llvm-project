@@ -35,17 +35,24 @@ def run_adb_sync_command(command: List[str]) -> None:
     """
     if g_verbose:
         sys.stderr.write(f"running: {shlex.join(command)}\n")
-    proc = subprocess.run(command, universal_newlines=True,
-                          stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT, encoding="utf-8")
+    proc = subprocess.run(
+        command,
+        universal_newlines=True,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
+    )
     if proc.returncode != 0:
         # adb's stdout (e.g. for adb push) should normally be discarded, but
         # on failure, it should be shown. Print it to stderr because it's
         # unrelated to the test program's stdout output. A common error caught
         # here is "No space left on device".
-        sys.stderr.write(f"{proc.stdout}\n"
-                         f"error: adb command exited with {proc.returncode}: "
-                         f"{shlex.join(command)}\n")
+        sys.stderr.write(
+            f"{proc.stdout}\n"
+            f"error: adb command exited with {proc.returncode}: "
+            f"{shlex.join(command)}\n"
+        )
         sys.exit(proc.returncode)
 
 
@@ -61,8 +68,7 @@ def sync_test_dir(local_dir: str, remote_dir: str) -> None:
         local_file = os.path.join(local_dir, local_files[0])
         remote_file = os.path.join(remote_dir, local_files[0])
         if not os.path.islink(local_file) and os.path.isfile(local_file):
-            run_adb_sync_command(["adb", "push", "--sync", local_file,
-                                  remote_file])
+            run_adb_sync_command(["adb", "push", "--sync", local_file, remote_file])
             # Some libc++ tests create temporary files in the working directory,
             # which might be owned by root. In Android M (API 23), the
             # directories are owned by root so they are not writable by the
@@ -77,8 +83,9 @@ def sync_test_dir(local_dir: str, remote_dir: str) -> None:
 
     assert os.path.basename(local_dir) == os.path.basename(remote_dir)
     run_adb_sync_command(["adb", "shell", "mkdir", "-p", remote_dir])
-    run_adb_sync_command(["adb", "push", "--sync", local_dir,
-                          os.path.dirname(remote_dir)])
+    run_adb_sync_command(
+        ["adb", "push", "--sync", local_dir, os.path.dirname(remote_dir)]
+    )
 
     # Some libc++ tests create temporary files in the working directory, which might be
     # owned by root. In Android M (API 23), the directories are owned by root so they are
@@ -87,6 +94,7 @@ def sync_test_dir(local_dir: str, remote_dir: str) -> None:
     run_adb_sync_command(["adb", "shell", "chmod", "777", REMOTE_BASE_DIR])
     run_adb_sync_command(["adb", "shell", "chmod", "777", os.path.dirname(remote_dir)])
     run_adb_sync_command(["adb", "shell", "chmod", "777", remote_dir])
+
 
 def build_env_arg(env_args: List[str], prepend_path_args: List[Tuple[str, str]]) -> str:
     components = []
@@ -119,13 +127,11 @@ def run_command(args: argparse.Namespace) -> int:
         #  - Replacing older shell utilities with toybox (e.g. on old devices).
         #  - Adding a `bash` command that delegates to `sh` (mksh).
         f"{build_env_arg(args.env, args.prepend_path_env)}"
-
         # Set a high oom_score_adj so that, if the test program uses too much
         # memory, it is killed before anything else on the device. The default
         # oom_score_adj is -1000, so a test using too much memory typically
         # crashes the device.
         "echo 1000 >/proc/self/oom_score_adj; "
-
         # If we're running as root, switch to the shell user. The libc++
         # filesystem tests require running without root permissions. Some x86
         # emulator devices (before Android N) do not have a working `adb unroot`
@@ -143,14 +149,14 @@ def run_command(args: argparse.Namespace) -> int:
         #    program (i.e. "$@") only once.
         "run_without_root() {"
         "  chmod 777 .;"
-        "  case \"$(id)\" in"
-        "    *\"uid=0(root)\"*)"
+        '  case "$(id)" in'
+        '    *"uid=0(root)"*)'
         "    if command -v env >/dev/null; then"
-        "      su shell \"$(command -v env)\" PATH=\"$PATH\" \"$@\";"
+        '      su shell "$(command -v env)" PATH="$PATH" "$@";'
         "    else"
-        "      su shell \"$@\";"
+        '      su shell "$@";'
         "    fi;;"
-        "    *) \"$@\";;"
+        '    *) "$@";;'
         "  esac;"
         "}; "
     )
@@ -167,9 +173,13 @@ def run_command(args: argparse.Namespace) -> int:
     #  - The pty converts LF to CRLF.
     #  - The exit code of the shell command wasn't propagated.
     # Work around all three limitations, unless "shell_v2" is present.
-    proc = subprocess.run(["adb", "features"], check=True,
-                          stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                          encoding="utf-8")
+    proc = subprocess.run(
+        ["adb", "features"],
+        check=True,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        encoding="utf-8",
+    )
     adb_features = set(proc.stdout.strip().split())
     has_shell_v2 = "shell_v2" in adb_features
     if has_shell_v2:
@@ -184,7 +194,7 @@ def run_command(args: argparse.Namespace) -> int:
             f"    echo -n __libcxx_adb_exit__=$?"
             f"  ); "
             f"}} 2>&1; "
-            f"echo -n __libcxx_adb_stdout__\"$stdout\""
+            f'echo -n __libcxx_adb_stdout__"$stdout"'
         )
 
     adb_command_line = ["adb", "shell", adb_shell_command]
@@ -192,29 +202,42 @@ def run_command(args: argparse.Namespace) -> int:
         sys.stderr.write(f"running: {shlex.join(adb_command_line)}\n")
 
     if has_shell_v2:
-        proc = subprocess.run(adb_command_line, shell=False, check=False,
-                              encoding="utf-8")
+        proc = subprocess.run(
+            adb_command_line, shell=False, check=False, encoding="utf-8"
+        )
         return proc.returncode
     else:
-        proc = subprocess.run(adb_command_line, shell=False, check=False,
-                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                              encoding="utf-8")
+        proc = subprocess.run(
+            adb_command_line,
+            shell=False,
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            encoding="utf-8",
+        )
         # The old `adb shell` mode used a pty, which converted LF to CRLF.
         # Convert it back.
         output = proc.stdout.replace("\r\n", "\n")
 
         if proc.returncode:
-            sys.stderr.write(f"error: adb failed:\n"
-                             f"  command: {shlex.join(adb_command_line)}\n"
-                             f"  output: {output}\n")
+            sys.stderr.write(
+                f"error: adb failed:\n"
+                f"  command: {shlex.join(adb_command_line)}\n"
+                f"  output: {output}\n"
+            )
             return proc.returncode
 
-        match = re.match(r"(.*)__libcxx_adb_stdout__(.*)__libcxx_adb_exit__=(\d+)$",
-                     output, re.DOTALL)
+        match = re.match(
+            r"(.*)__libcxx_adb_stdout__(.*)__libcxx_adb_exit__=(\d+)$",
+            output,
+            re.DOTALL,
+        )
         if not match:
-            sys.stderr.write(f"error: could not parse adb output:\n"
-                             f"  command: {shlex.join(adb_command_line)}\n"
-                             f"  output: {output}\n")
+            sys.stderr.write(
+                f"error: could not parse adb output:\n"
+                f"  command: {shlex.join(adb_command_line)}\n"
+                f"  output: {output}\n"
+            )
             return 1
 
         # Android M (API 23) will print a warning for DT_FLAGS_1=0x8000001
@@ -258,11 +281,23 @@ def main() -> int:
     """Main function (pylint wants this docstring)."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--execdir", type=str, required=True)
-    parser.add_argument("--env", type=str, required=False, action="append",
-                        default=[], metavar="NAME=VALUE")
-    parser.add_argument("--prepend-path-env", type=str, nargs=2, required=False,
-                        action="append", default=[],
-                        metavar=("NAME", "PATH"))
+    parser.add_argument(
+        "--env",
+        type=str,
+        required=False,
+        action="append",
+        default=[],
+        metavar="NAME=VALUE",
+    )
+    parser.add_argument(
+        "--prepend-path-env",
+        type=str,
+        nargs=2,
+        required=False,
+        action="append",
+        default=[],
+        metavar=("NAME", "PATH"),
+    )
     parser.add_argument("--job-limit-socket")
     parser.add_argument("--verbose", "-v", default=False, action="store_true")
     parser.add_argument("command", nargs=argparse.ONE_OR_MORE)
@@ -275,5 +310,5 @@ def main() -> int:
     return run_command(args)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

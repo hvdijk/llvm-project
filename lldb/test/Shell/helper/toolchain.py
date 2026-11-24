@@ -15,6 +15,7 @@ import lldbflakes
 
 import posixpath
 
+
 def _get_lldb_init_path(config):
     return os.path.join(config.test_exec_root, "lit-lldb-init-quiet")
 

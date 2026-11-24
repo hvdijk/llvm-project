@@ -3,7 +3,6 @@ This is a sanity check that verifies that the module cache path is set
 correctly and points inside the default test build directory.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

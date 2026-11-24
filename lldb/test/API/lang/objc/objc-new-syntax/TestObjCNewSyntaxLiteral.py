@@ -1,6 +1,5 @@
 """Test that the Objective-C syntax for dictionary/array literals and indexing works"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

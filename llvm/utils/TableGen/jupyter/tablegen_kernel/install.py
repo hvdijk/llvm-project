@@ -15,9 +15,7 @@ def install_my_kernel_spec(user=True, prefix=None):
     print("Installing llvm-tblgen IPython kernel spec")
 
     kernel_json = {
-        "argv": [
-            sys.executable, "-m", "tablegen_kernel", "-f", "{connection_file}"
-        ],
+        "argv": [sys.executable, "-m", "tablegen_kernel", "-f", "{connection_file}"],
         "display_name": "LLVM TableGen",
         "language": "tablegen",
         "language_info": {
@@ -25,17 +23,17 @@ def install_my_kernel_spec(user=True, prefix=None):
             "codemirror_mode": "tablegen",
             "mimetype": "text/x-tablegen",
             "file_extension": ".td",
-            "pygments_lexer": "text"
-        }
+            "pygments_lexer": "text",
+        },
     }
 
     with TemporaryDirectory() as tmpdir:
-      json_path = os.path.join(tmpdir, "kernel.json")
-      with open(json_path, 'w') as json_file:
-        json.dump(kernel_json, json_file)
-      KernelSpecManager().install_kernel_spec(
-          tmpdir, "tablegen", user=user, prefix=prefix
-      )
+        json_path = os.path.join(tmpdir, "kernel.json")
+        with open(json_path, "w") as json_file:
+            json.dump(kernel_json, json_file)
+        KernelSpecManager().install_kernel_spec(
+            tmpdir, "tablegen", user=user, prefix=prefix
+        )
 
 
 def _is_root():

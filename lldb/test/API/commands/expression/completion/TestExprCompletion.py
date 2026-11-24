@@ -2,7 +2,6 @@
 Test the lldb command line completion mechanism for the 'expr' command.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

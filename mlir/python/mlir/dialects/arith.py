@@ -26,14 +26,12 @@ class ConstantOp(ConstantOp):
     """Specialization for the constant op class."""
 
     @overload
-    def __init__(self, value: Attribute, *, loc=None, ip=None):
-        ...
+    def __init__(self, value: Attribute, *, loc=None, ip=None): ...
 
     @overload
     def __init__(
         self, result: Type, value: Union[int, float, _array], *, loc=None, ip=None
-    ):
-        ...
+    ): ...
 
     def __init__(self, result, value, *, loc=None, ip=None):
         if value is None:

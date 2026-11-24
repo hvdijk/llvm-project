@@ -3,7 +3,6 @@ Test that breakpoints correctly work in an thumb function in an arbitrary
 named codesection.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

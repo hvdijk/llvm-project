@@ -17,6 +17,7 @@ from subprocess import Popen, PIPE
 # This special value has been used to mark statistics that overflowed.
 TAINT_VALUE = "tainted"
 
+
 # Initialize the plot.
 def init_plot(plt):
     plt.title("Debug Location Statistics", fontweight="bold")

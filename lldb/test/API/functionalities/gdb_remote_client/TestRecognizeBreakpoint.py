@@ -6,7 +6,6 @@ from lldbsuite.test.lldbgdbclient import GDBRemoteTestBase
 
 
 class TestRecognizeBreakpoint(GDBRemoteTestBase):
-
     """This tests the case where the gdb-remote server doesn't support any
     of the thread-info packets, and just tells which thread got the stop
     signal with:

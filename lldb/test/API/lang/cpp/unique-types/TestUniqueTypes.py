@@ -2,7 +2,6 @@
 Test that template instaniations of std::vector<long> and <short> in the same module have the correct types.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

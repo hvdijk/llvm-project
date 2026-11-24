@@ -2,7 +2,6 @@
 Test that writing memory does't affect hardware breakpoints.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

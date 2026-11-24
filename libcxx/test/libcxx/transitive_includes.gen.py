@@ -20,6 +20,7 @@
 # END.
 
 import sys
+
 sys.path.append(sys.argv[1])
 from libcxx.header_information import public_headers
 

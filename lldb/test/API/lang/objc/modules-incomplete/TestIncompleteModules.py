@@ -1,6 +1,5 @@
 """Test that DWARF types are trusted over module types"""
 
-
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil

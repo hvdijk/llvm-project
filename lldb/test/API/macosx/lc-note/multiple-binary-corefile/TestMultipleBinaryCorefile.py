@@ -1,6 +1,5 @@
 """Test corefiles with "main bin spec"/"load binary" with only vmaddrs works."""
 
-
 import os
 import re
 import subprocess

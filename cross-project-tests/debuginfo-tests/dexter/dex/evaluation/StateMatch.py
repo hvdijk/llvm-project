@@ -268,7 +268,6 @@ def get_state_match(
                 early_wheres.add(where)
                 return
 
-
     # As we visit the script nodes in pre-order traversal, we can always assume that an expect's parent !where
     # has already been visited, and thus should have an entry in active_where_expects if it is active.
     def get_active_expects(expect: Expect, expected_value, scope: Scope):

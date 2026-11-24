@@ -3,7 +3,6 @@ Test the "process continue --reverse" and "--forward" options
 when reverse-continue is not supported.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test.decorators import *

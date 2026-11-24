@@ -2,7 +2,6 @@
 Test that dynamic values update their child count correctly
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

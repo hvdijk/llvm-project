@@ -11,6 +11,7 @@ import os
 import shutil
 import time
 
+
 class TestFrameVarDILMemberOfInheritance(TestBase):
     # If your test case doesn't stress debug info, then
     # set this to true.  That way it won't be run once for
@@ -19,8 +20,9 @@ class TestFrameVarDILMemberOfInheritance(TestBase):
 
     def test_frame_var(self):
         self.build()
-        lldbutil.run_to_source_breakpoint(self, "Set a breakpoint here",
-                                          lldb.SBFileSpec("main.cpp"))
+        lldbutil.run_to_source_breakpoint(
+            self, "Set a breakpoint here", lldb.SBFileSpec("main.cpp")
+        )
 
         self.expect_var_path("a.a_", value="1")
         self.expect_var_path("b.b_", value="2")

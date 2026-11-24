@@ -1,4 +1,5 @@
 """ Testing symbol loading via JSON file. """
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

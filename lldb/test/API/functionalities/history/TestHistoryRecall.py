@@ -2,7 +2,6 @@
 Test some features of "session history" and history recall.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

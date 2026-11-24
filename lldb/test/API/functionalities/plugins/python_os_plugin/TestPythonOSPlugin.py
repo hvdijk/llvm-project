@@ -2,7 +2,6 @@
 Test that the Python operating system plugin works correctly
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

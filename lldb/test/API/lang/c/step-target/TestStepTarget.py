@@ -1,6 +1,5 @@
 """Test the 'step target' feature."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

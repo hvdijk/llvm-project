@@ -20,12 +20,12 @@ class TestTypeLookupAnonStruct(TestBase):
         self.expect(
             'frame variable "derb.x"',
             error=True,
-            substrs=['"x" is not a member of "(DerivedB) derb"']
+            substrs=['"x" is not a member of "(DerivedB) derb"'],
         )
         self.expect(
             'frame variable "derb.y"',
             error=True,
-            substrs=['"y" is not a member of "(DerivedB) derb"']
+            substrs=['"y" is not a member of "(DerivedB) derb"'],
         )
         self.expect_var_path("derb.w", value="14")
         self.expect_var_path("derb.k", value="15")

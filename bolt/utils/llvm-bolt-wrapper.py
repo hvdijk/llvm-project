@@ -142,10 +142,8 @@ def replace_cmp_path(tmp: AnyStr, args: Mapping[AnyStr, AnyStr]) -> Sequence[Any
     Example: Namespace(o='abc/test.tmp') -> Namespace(o='/tmp/tmpf9un/test.tmp')
     Except preserve /dev/null.
     """
-    replace_path = (
-        lambda x: os.path.join(tmp, os.path.basename(x))
-        if x != "/dev/null"
-        else "/dev/null"
+    replace_path = lambda x: (
+        os.path.join(tmp, os.path.basename(x)) if x != "/dev/null" else "/dev/null"
     )
     new_args = {key: replace_path(value) for key, value in args.items()}
     return prepend_dash(new_args)

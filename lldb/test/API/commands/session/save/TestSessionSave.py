@@ -1,6 +1,7 @@
 """
 Test the session save feature
 """
+
 import os
 import tempfile
 
@@ -60,7 +61,7 @@ class SessionSaveTestCase(TestBase):
         self.assertFalse(res.Succeeded())
         raw += self.raw_transcript_builder(cmd, res)
 
-        output_file = self.getBuildArtifact('my-session')
+        output_file = self.getBuildArtifact("my-session")
 
         res = lldb.SBCommandReturnObject()
         interpreter.HandleCommand("session save " + output_file, res)

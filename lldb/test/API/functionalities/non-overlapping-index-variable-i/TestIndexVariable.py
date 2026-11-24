@@ -1,7 +1,6 @@
 """Test evaluating expressions which ref. index variable 'i' which just goes
 from out of scope to in scope when stopped at the breakpoint."""
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

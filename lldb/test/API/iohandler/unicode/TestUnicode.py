@@ -26,4 +26,3 @@ class TestCase(PExpectTest):
             "\u1234",
             substrs=["error: '\u1234' is not a valid command".encode("utf-8")],
         )
-

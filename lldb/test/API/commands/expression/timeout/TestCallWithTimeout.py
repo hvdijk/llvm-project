@@ -2,7 +2,6 @@
 Test calling a function that waits a while, and make sure the timeout option to expr works.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

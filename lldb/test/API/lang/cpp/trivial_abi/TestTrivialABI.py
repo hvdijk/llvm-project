@@ -2,7 +2,6 @@
 Test that we work properly with classes with the trivial_abi attribute
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

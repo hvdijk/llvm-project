@@ -2,7 +2,6 @@
 Test that the save_crashlog command functions
 """
 
-
 import os
 import lldb
 import lldbsuite.test.lldbutil as lldbutil

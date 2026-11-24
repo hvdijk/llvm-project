@@ -2,11 +2,11 @@
 Test lookup unnamed symbols.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
+
 
 # --keep-symbol causes error on Windows: llvm-strip.exe: error: option is not supported for COFF
 @skipIfWindows

@@ -2,7 +2,6 @@
 Make sure that we can step in across an arm64 branch island
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

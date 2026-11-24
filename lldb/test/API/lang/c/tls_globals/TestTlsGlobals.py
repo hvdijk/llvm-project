@@ -1,6 +1,5 @@
 """Test that thread-local storage can be read correctly."""
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

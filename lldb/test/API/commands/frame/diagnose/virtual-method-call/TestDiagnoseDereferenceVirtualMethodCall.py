@@ -2,7 +2,6 @@
 Test the output of `frame diagnose` for calling virtual methods
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

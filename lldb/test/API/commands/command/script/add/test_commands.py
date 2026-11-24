@@ -1,6 +1,7 @@
 """
 Test defining commands using the lldb command definitions
 """
+
 import inspect
 import sys
 import lldb
@@ -37,11 +38,13 @@ class ReportingCmd(ParsedCommand):
                 f"{idx}: {args_array.GetItemAtIndex(idx).GetStringValue(10000)}\n"
             )
 
+
 # Use these to make sure that get_repeat_command sends the right
 # command.
 no_args_repeat = None
 one_arg_repeat = None
 two_arg_repeat = None
+
 
 class NoArgsCommand(ReportingCmd):
     program = "no-args"
@@ -266,6 +269,7 @@ class FailCommand(ParsedCommand):
         parser.add_argument_set(
             parser.make_argument_element(lldb.eArgTypeSymbol, "plain")
         )
+
 
 def __lldb_init_module(debugger, dict):
     # Register all classes that have a register_lldb_command method

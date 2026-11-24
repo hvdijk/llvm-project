@@ -1,6 +1,5 @@
 """Test that C++ global variables can be inspected by name and also their mangled name."""
 
-
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil

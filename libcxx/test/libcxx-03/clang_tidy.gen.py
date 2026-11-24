@@ -20,11 +20,13 @@
 # END.
 
 import sys
+
 sys.path.append(sys.argv[1])
 from libcxx.header_information import lit_header_undeprecations, public_headers
 
 for header in public_headers:
-  print(f"""\
+    print(
+        f"""\
 //--- {header}.sh.cpp
 {lit_header_undeprecations.get(header, '')}
 
@@ -32,4 +34,5 @@ for header in public_headers:
 // RUN: %{{clang-tidy}} %s --warnings-as-errors=* -header-filter=.* --config-file=%{{libcxx-dir}}/.clang-tidy --load=%{{test-tools-dir}}/clang_tidy_checks/libcxx-tidy.plugin -- -Wweak-vtables %{{compile_flags}} -fno-modules
 
 #include <{header}>
-""")
+"""
+    )

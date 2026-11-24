@@ -6,7 +6,6 @@ across function boundaries but these lines are outside the source range
 of the constructor.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *

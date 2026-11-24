@@ -28,8 +28,7 @@ class MakeLoopIndependentOp(MakeLoopIndependentOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -39,8 +38,7 @@ class MakeLoopIndependentOp(MakeLoopIndependentOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,

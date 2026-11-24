@@ -2,7 +2,6 @@
 Test breakpoint command with AT_comp_dir set to symbolic link.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

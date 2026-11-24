@@ -12,7 +12,9 @@ import textwrap
 """Get path of script so files are always in correct directory"""
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-default_checkers_td_location = "../../../../clang/include/clang/StaticAnalyzer/Checkers/Checkers.td"
+default_checkers_td_location = (
+    "../../../../clang/include/clang/StaticAnalyzer/Checkers/Checkers.td"
+)
 default_checkers_rst_location = "../../../../clang/docs/analyzer/checkers.rst"
 
 """Get dict of checker related info and parse for full check names
@@ -20,6 +22,8 @@ default_checkers_rst_location = "../../../../clang/docs/analyzer/checkers.rst"
 Returns:
   checkers: dict of checker info
 """
+
+
 def get_checkers(checkers_td, checkers_rst):
     p = subprocess.Popen(
         [
@@ -67,7 +71,9 @@ def get_checkers(checkers_td, checkers_rst):
             checker["FullPackageName"] = full_package_name
             checker["ShortName"] = checker_package_prefix + "." + checker_name
             checker["AnchorUrl"] = anchor_url
-            checker["Documentation"] = ".. _%s:" % (checker["ShortName"].replace(".","-")) in checker_rst_text
+            checker["Documentation"] = (
+                ".. _%s:" % (checker["ShortName"].replace(".", "-")) in checker_rst_text
+            )
             documentable_checkers.append(checker)
 
     documentable_checkers.sort(key=lambda x: x["FullPackageName"])
@@ -80,6 +86,8 @@ Args:
   checker: Checker for which to generate documentation.
   has_documentation: Specify that there is other documentation to link to.
 """
+
+
 def generate_documentation(checker, has_documentation):
     full_package_name = checker["FullPackageName"]
     short_name = checker["ShortName"]
@@ -129,6 +137,8 @@ def generate_documentation(checker, has_documentation):
 Args:
   checkers: dict acquired from get_checkers()
 """
+
+
 def update_documentation_list(checkers):
     with open(os.path.join(__location__, "list.md"), "r+") as f:
         f_text = f.read()

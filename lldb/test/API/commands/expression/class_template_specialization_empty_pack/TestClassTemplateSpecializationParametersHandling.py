@@ -4,7 +4,6 @@ that we generate a TemplateTypeParmDecl in the TemplateParameterList for empty
 variadic packs.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

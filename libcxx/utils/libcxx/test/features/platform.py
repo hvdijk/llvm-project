@@ -6,9 +6,17 @@
 #
 # ===----------------------------------------------------------------------===##
 
-from libcxx.test.dsl import programOutput, Feature, compilerMacros, programSucceeds, AddCompileFlag, sourceBuilds
+from libcxx.test.dsl import (
+    programOutput,
+    Feature,
+    compilerMacros,
+    programSucceeds,
+    AddCompileFlag,
+    sourceBuilds,
+)
 import platform
 import sys
+
 
 def _getAndroidDeviceApi(cfg):
     return int(
@@ -24,6 +32,7 @@ def _getAndroidDeviceApi(cfg):
             """,
         )
     )
+
 
 # Add features representing the target platform name: darwin, linux, windows, etc...
 features = [

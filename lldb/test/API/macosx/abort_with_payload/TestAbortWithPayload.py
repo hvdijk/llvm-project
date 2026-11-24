@@ -3,7 +3,6 @@ Test that the FrameRecognizer for __abort_with_payload
 works properly
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 import lldbsuite.test.lldbutil as lldbutil
@@ -106,8 +105,8 @@ class TestAbortWithPayload(TestBase):
         # We always stop at __abort_with_payload, regardless of whether the caller
         # was abort_with_reason or abort_with_payload or any future API that
         # funnels here. Since I don't want to have to know too much about the
-        # callers, I just always report what is in the function I've 
-        # 
+        # callers, I just always report what is in the function I've
+        #
         # add the payload ones if it is the payload not the reason function.
         self.assertEqual(arguments[2].name, "payload_addr")
         self.assertEqual(arguments[3].name, "payload_size")

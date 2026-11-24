@@ -3,7 +3,6 @@ Test that "memory region" command can show memory tagged regions
 on AArch64 Linux.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

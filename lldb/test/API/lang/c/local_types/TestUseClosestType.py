@@ -5,7 +5,6 @@ even if there are other definitions of the type in other
 CU's.  Assert that that is true.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *

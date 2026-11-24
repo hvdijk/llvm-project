@@ -2,7 +2,6 @@
 Test stop hook functionality
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *

@@ -83,7 +83,7 @@ class Remark(yaml.YAMLObject):
 
         def _reduce_memory_dict(old_dict):
             new_dict = dict()
-            for (k, v) in iteritems(old_dict):
+            for k, v in iteritems(old_dict):
                 if type(k) is str:
                     k = intern(k)
 
@@ -103,7 +103,7 @@ class Remark(yaml.YAMLObject):
     def recover_yaml_structure(self):
         def tuple_to_dict(t):
             d = dict()
-            for (k, v) in t:
+            for k, v in t:
                 if type(v) is tuple:
                     v = tuple_to_dict(v)
                 d[k] = v

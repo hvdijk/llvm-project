@@ -1,6 +1,5 @@
 """Test the SBData APIs."""
 
-
 from math import fabs
 import lldb
 from lldbsuite.test.decorators import *

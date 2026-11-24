@@ -2,7 +2,6 @@
 Test that we obey thread conditioned breakpoints.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

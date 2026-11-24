@@ -2,7 +2,6 @@
 Test _regexp-break command which uses regular expression matching to dispatch to other built in breakpoint commands.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.lldbtest import *

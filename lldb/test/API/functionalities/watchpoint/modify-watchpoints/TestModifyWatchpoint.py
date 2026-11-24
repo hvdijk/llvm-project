@@ -3,7 +3,6 @@ Confirm that lldb modify watchpoints only stop
 when the value being watched changes.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

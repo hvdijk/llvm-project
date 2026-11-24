@@ -3,7 +3,6 @@ Test the reuse of  C++ result variables, particularly making sure
 that the dynamic typing is preserved.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

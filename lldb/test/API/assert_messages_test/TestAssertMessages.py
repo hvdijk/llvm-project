@@ -2,7 +2,6 @@
 Test the format of API test suite assert failure messages
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test import lldbplatform

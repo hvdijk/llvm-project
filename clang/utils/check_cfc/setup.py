@@ -1,6 +1,7 @@
 """For use on Windows. Run with:
     python.exe setup.py py2exe
     """
+
 from __future__ import absolute_import, division, print_function
 from distutils.core import setup
 

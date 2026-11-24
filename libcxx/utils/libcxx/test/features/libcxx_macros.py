@@ -39,7 +39,8 @@ macros = {
 for macro, feature in macros.items():
     features.append(
         Feature(
-            name=lambda cfg, m=macro, f=feature: f + ("={}".format(compilerMacros(cfg)[m]) if compilerMacros(cfg)[m] else ""),
+            name=lambda cfg, m=macro, f=feature: f
+            + ("={}".format(compilerMacros(cfg)[m]) if compilerMacros(cfg)[m] else ""),
             when=lambda cfg, m=macro: m in compilerMacros(cfg),
         )
     )

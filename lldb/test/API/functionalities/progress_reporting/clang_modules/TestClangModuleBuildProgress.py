@@ -1,6 +1,7 @@
 """
 Test clang module build progress events.
 """
+
 import os
 import shutil
 

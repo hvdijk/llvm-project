@@ -3,7 +3,6 @@ Test that we can compile expressions referring to
 absent weak symbols from a dylib.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

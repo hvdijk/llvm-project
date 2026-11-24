@@ -2,7 +2,6 @@
 Test that --allow-jit=false does disallow JITting:
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

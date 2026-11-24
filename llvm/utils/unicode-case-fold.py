@@ -27,6 +27,7 @@ from urllib.request import urlopen
 # This variable will body of the mappings function
 body = ""
 
+
 # Reads file line-by-line, extracts Common and Simple case fold mappings and
 # returns a (from_char, to_char, from_name) tuple.
 def mappings(f):

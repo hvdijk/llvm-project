@@ -2,7 +2,6 @@
 Test reporting of MTE tag access faults.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

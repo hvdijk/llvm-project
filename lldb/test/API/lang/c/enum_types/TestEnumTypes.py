@@ -1,6 +1,5 @@
 """Look up enum type information and check for correct display."""
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

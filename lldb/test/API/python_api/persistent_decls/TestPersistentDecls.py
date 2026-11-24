@@ -3,7 +3,6 @@ Test the SBTarget API's to retrieve persistent types
 and values.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import skipIfWasm

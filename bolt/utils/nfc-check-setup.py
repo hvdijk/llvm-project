@@ -9,6 +9,7 @@ import textwrap
 
 msg_prefix = "\n> NFC-Mode:"
 
+
 def get_relevant_bolt_changes(dir: str) -> str:
     # Return a list of bolt source changes that are relevant to testing.
     all_changes = subprocess.run(
@@ -33,6 +34,7 @@ def get_relevant_bolt_changes(dir: str) -> str:
     )
     return keep_relevant.stdout
 
+
 def get_git_ref_or_rev(dir: str) -> str:
     # Run 'git symbolic-ref -q --short HEAD || git rev-parse --short HEAD'
     cmd_ref = "git symbolic-ref -q --short HEAD"
@@ -43,6 +45,7 @@ def get_git_ref_or_rev(dir: str) -> str:
         return ref.stdout.strip()
     cmd_rev = "git rev-parse --short HEAD"
     return subprocess.check_output(shlex.split(cmd_rev), cwd=dir, text=True).strip()
+
 
 def switch_back(
     switch_back: bool, stash: bool, source_dir: str, old_ref: str, new_ref: str
@@ -61,6 +64,7 @@ def switch_back(
             f"to {new_ref}. Local changes were stashed. Switch back using\n\t"
             f"git checkout {old_ref}\n"
         )
+
 
 def main():
     parser = argparse.ArgumentParser(

@@ -2,7 +2,6 @@
 Test some expressions involving STL data types.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

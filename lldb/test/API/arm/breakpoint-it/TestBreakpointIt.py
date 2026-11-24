@@ -3,7 +3,6 @@ Test that breakpoints in an IT instruction don't fire if their condition is
 false.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

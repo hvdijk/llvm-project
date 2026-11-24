@@ -306,9 +306,14 @@ class Tool(TestToolBase):
         """
         try:
             if self.context.options.binary:
-                if platform.system() == 'Darwin' and os.path.exists(self.context.options.binary + '.dSYM'):
+                if platform.system() == "Darwin" and os.path.exists(
+                    self.context.options.binary + ".dSYM"
+                ):
                     # On Darwin, the debug info is in the .dSYM which might not be found by lldb, copy it into the tmp working directory
-                    shutil.copytree(self.context.options.binary + '.dSYM', self.context.options.executable + '.dSYM')
+                    shutil.copytree(
+                        self.context.options.binary + ".dSYM",
+                        self.context.options.executable + ".dSYM",
+                    )
                 # Copy user's binary into the tmp working directory.
                 shutil.copy(
                     self.context.options.binary, self.context.options.executable

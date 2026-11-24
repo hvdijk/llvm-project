@@ -3,7 +3,6 @@ Test that a Python breakpoint callback defined in another Python
 breakpoint callback works properly. 
 """
 
-
 import lldb
 import os
 import lldbsuite.test.lldbutil as lldbutil

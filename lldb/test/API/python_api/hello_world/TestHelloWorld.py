@@ -1,6 +1,5 @@
 """Test Python APIs for target (launch and attach), breakpoint, and process."""
 
-
 import os
 
 import lldb

@@ -11,7 +11,6 @@ o test_expr_commands_can_handle_quotes:
   Throw some expression commands with quotes at lldb.
 """
 
-
 import unittest
 import lldb
 from lldbsuite.test.decorators import *

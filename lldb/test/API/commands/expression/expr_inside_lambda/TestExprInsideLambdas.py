@@ -4,7 +4,6 @@
     while we're on a breakpoint inside a lambda.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,7 +2,6 @@
 Test lldb Python commands.
 """
 
-
 import sys
 import lldb
 from lldbsuite.test.decorators import *

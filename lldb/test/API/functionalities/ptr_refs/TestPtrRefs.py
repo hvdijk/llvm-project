@@ -2,7 +2,6 @@
 Test the ptr_refs tool on Darwin
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

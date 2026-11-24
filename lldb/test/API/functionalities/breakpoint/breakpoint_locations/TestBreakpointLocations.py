@@ -2,7 +2,6 @@
 Test breakpoint commands for a breakpoint ID with multiple locations.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

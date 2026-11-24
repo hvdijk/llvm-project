@@ -6,7 +6,6 @@ timeout to reply, and the detach would time out.  Make sure that doesn't
 happen.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

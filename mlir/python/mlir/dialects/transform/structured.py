@@ -83,8 +83,7 @@ class FuseIntoContainingOp(FuseIntoContainingOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -94,8 +93,7 @@ class FuseIntoContainingOp(FuseIntoContainingOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,
@@ -150,8 +148,7 @@ class FuseOp(FuseOp):
         use_forall: bool = False,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -164,8 +161,7 @@ class FuseOp(FuseOp):
         use_forall: bool = False,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,
@@ -270,8 +266,7 @@ class MapCopyToThreadsOp(MapCopyToThreadsOp):
         desired_bit_alignment: Union[int, IntegerAttr],
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -282,8 +277,7 @@ class MapCopyToThreadsOp(MapCopyToThreadsOp):
         desired_bit_alignment: Union[int, IntegerAttr],
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,
@@ -375,8 +369,7 @@ class MatchOp(MatchOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     @classmethod
@@ -388,8 +381,7 @@ class MatchOp(MatchOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @classmethod
     def match_op_names(
@@ -553,8 +545,7 @@ class TileUsingForOp(TileUsingForOp):
         interchange: MixedValues | None = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -565,8 +556,7 @@ class TileUsingForOp(TileUsingForOp):
         interchange: MixedValues | None = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,
@@ -679,8 +669,7 @@ class TileUsingForallOp(TileUsingForallOp):
         mapping=None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -692,8 +681,7 @@ class TileUsingForallOp(TileUsingForallOp):
         mapping=None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,

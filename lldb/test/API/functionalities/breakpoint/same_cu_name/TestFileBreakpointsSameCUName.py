@@ -3,7 +3,6 @@ Test setting a breakpoint by file and line when many instances of the
 same file name exist in the CU list.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

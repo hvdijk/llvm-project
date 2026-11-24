@@ -23,6 +23,7 @@ def get_path_from_clang(args, allow_failure):
     path = lit_config.run_command_cached(clang_cmd, allow_failure, text=True)
     return path.strip(), clang_cmd
 
+
 def find_compiler_libdir():
     """
     Returns the path to library resource directory used

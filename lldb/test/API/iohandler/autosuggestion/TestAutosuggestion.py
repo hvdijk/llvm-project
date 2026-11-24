@@ -46,7 +46,6 @@ class TestCase(PExpectTest):
             + " "
         )
 
-
     @skipIfAsan
     @skipIfEditlineSupportMissing
     def test_autosuggestion(self):
@@ -130,7 +129,6 @@ class TestCase(PExpectTest):
         breakpoint_output_needle = "Syntax: breakpoint <subcommand>"
         self.child.send(ctrl_f + "help breakpoint" + "\n")
         self.child.expect_exact(breakpoint_output_needle)
-
 
     @skipIfAsan
     @skipIfEditlineSupportMissing

@@ -2,7 +2,6 @@
 Test that we page getting a long backtrace on more than one thread
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -28,8 +28,8 @@ _warningFlags = [
     "-Wno-aligned-allocation-unavailable",
     "-Wno-atomic-alignment",
     "-Wno-reserved-module-identifier",
-    '-Wdeprecated-copy',
-    '-Wdeprecated-copy-dtor',
+    "-Wdeprecated-copy",
+    "-Wdeprecated-copy-dtor",
     "-Wshift-negative-value",
     # GCC warns about places where we might want to add sized allocation/deallocation
     # functions, but we know better what we're doing/testing in the test suite.
@@ -53,28 +53,22 @@ _warningFlags = [
     "-Wunused-parameter",
     "-Wunreachable-code",
     "-Wno-unused-local-typedef",
-
     # Disable warnings for extensions used in C++03
     "-Wno-local-type-template-args",
     "-Wno-c++11-extensions",
-
     # TODO(philnik) This fails with the PSTL.
     "-Wno-unknown-pragmas",
     # Don't fail compilation in case the compiler fails to perform the requested
     # loop vectorization.
     "-Wno-pass-failed",
-
     # TODO: Find out why GCC warns in lots of places (is this a problem with always_inline?)
     "-Wno-dangling-reference",
     "-Wno-mismatched-new-delete",
     "-Wno-redundant-move",
-
     # This doesn't make sense in real code, but we have to test it because the standard requires us to not break
     "-Wno-self-move",
-
     # We're not annotating all the APIs, since that's a lot of annotations compared to how many we actually care about
     "-Wno-nullability-completeness",
-
     # Technically not a warning flag, but might as well be:
     "-flax-vector-conversions=none",
 ]

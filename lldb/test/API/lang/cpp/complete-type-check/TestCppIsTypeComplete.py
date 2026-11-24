@@ -1,6 +1,5 @@
 """ Tests SBType.IsTypeComplete on C++ types. """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

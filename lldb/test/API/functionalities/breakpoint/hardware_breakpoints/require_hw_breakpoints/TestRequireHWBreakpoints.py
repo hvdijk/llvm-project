@@ -5,7 +5,6 @@ Some of these tests require a target that does not have hardware breakpoints.
 So that we can check we fail when required to use them.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

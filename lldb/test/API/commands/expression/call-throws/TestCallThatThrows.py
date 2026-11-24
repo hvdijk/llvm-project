@@ -2,7 +2,6 @@
 Test calling a function that throws an ObjC exception, make sure that it doesn't propagate the exception.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

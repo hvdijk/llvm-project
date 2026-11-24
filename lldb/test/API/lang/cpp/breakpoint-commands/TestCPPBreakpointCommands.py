@@ -2,7 +2,6 @@
 Test lldb breakpoint command for CPP methods & functions in a namespace.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

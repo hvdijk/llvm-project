@@ -3,7 +3,6 @@ Test that inlined breakpoints (breakpoint set on a file/line included from
 another source file) works correctly.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

@@ -1,6 +1,5 @@
 """Test that a dSYM can be found when a binary is in a bundle hnd has dots in the filename."""
 
-
 import os.path
 from time import sleep
 

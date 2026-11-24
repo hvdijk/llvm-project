@@ -4,7 +4,6 @@ Regression test for <rdar://problem/8981098>:
 The expression parser's type search only looks in the current compilation unit for types.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

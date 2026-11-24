@@ -1,6 +1,5 @@
 """Test that a global ObjC object found before the process is started updates correctly."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

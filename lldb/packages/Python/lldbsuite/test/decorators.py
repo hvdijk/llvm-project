@@ -82,7 +82,7 @@ def _check_expected_version(comparison, expected, actual):
 
 
 def _get_macos_sdk_version() -> str | None:
-    """ Returns the current macOS SDK version or None if this system doesn't
+    """Returns the current macOS SDK version or None if this system doesn't
     use a macOS SDK."""
     if platform.mac_ver()[0] == "":
         return None
@@ -249,6 +249,7 @@ def _xfailForVariant(variant_name, expected_fn, bugnumber=None):
         bugnumber: Optional bug reference or the decorated function itself
             (when the decorator is used without parentheses).
     """
+
     def expectedFailure_impl(func):
         if isinstance(func, type) and issubclass(func, unittest.TestCase):
             raise Exception("Decorator can only be used to decorate a test method")
@@ -293,6 +294,7 @@ def _skipForVariant(variant_name, expected_fn, bugnumber=None):
         bugnumber: Optional bug reference or the decorated function itself
             (when the decorator is used without parentheses).
     """
+
     def skipImpl(func):
         if isinstance(func, type) and issubclass(func, unittest.TestCase):
             raise Exception("Decorator can only be used to decorate a test method")

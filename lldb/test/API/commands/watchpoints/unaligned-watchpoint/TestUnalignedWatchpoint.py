@@ -6,7 +6,6 @@ instead of the address of our watched byte.  Test that lldb
 correctly associates this watchpoint trap with our watchpoint.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

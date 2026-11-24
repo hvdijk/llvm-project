@@ -2,7 +2,6 @@
 Test that the lldb driver's batch mode works correctly.
 """
 
-
 import lldb
 import subprocess
 from lldbsuite.test.decorators import *

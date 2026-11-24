@@ -5,7 +5,6 @@ need to be implemented with a hardware watchpoint on both
 doublewords.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

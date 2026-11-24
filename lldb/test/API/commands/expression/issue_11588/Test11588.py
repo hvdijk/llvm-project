@@ -4,7 +4,6 @@ valobj.AddressOf() returns None when an address is
 expected in a SyntheticChildrenProvider
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -35,8 +35,9 @@ if "HOME" in os.environ:
 
 # Win32 seeks DLLs along %PATH%.
 if sys.platform in ["win32", "cygwin"] and os.path.isdir(config.shlibdir):
-    config.environment["PATH"] = os.path.pathsep.join((
-            config.shlibdir, config.environment["PATH"]))
+    config.environment["PATH"] = os.path.pathsep.join(
+        (config.shlibdir, config.environment["PATH"])
+    )
 
 # Win32 may use %SYSTEMDRIVE% during file system shell operations, so propagate.
 if sys.platform == "win32" and "SYSTEMDRIVE" in os.environ:

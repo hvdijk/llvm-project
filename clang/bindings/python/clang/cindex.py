@@ -124,11 +124,9 @@ if TYPE_CHECKING:
     TSeq = TypeVar("TSeq", covariant=True)
 
     class NoSliceSequence(Protocol[TSeq]):
-        def __len__(self) -> int:
-            ...
+        def __len__(self) -> int: ...
 
-        def __getitem__(self, key: int) -> TSeq:
-            ...
+        def __getitem__(self, key: int) -> TSeq: ...
 
 
 # Python 3 strings are unicode, translate them to/from utf8 for C-interop.
@@ -651,7 +649,6 @@ class BaseEnumeration(Enum):
     """
     Common base class for named enumerations held in sync with Index.h values.
     """
-
 
     def from_param(self):
         return self.value
@@ -1604,6 +1601,7 @@ class CursorKind(BaseEnumeration):
     # A code completion overload candidate.
     OVERLOAD_CANDIDATE = 700
 
+
 ### Template Argument Kinds ###
 class TemplateArgumentKind(BaseEnumeration):
     """
@@ -1622,6 +1620,7 @@ class TemplateArgumentKind(BaseEnumeration):
     PACK = 8
     INVALID = 9
 
+
 ### Exception Specification Kinds ###
 class ExceptionSpecificationKind(BaseEnumeration):
     """
@@ -1639,6 +1638,7 @@ class ExceptionSpecificationKind(BaseEnumeration):
     UNINSTANTIATED = 7
     UNPARSED = 8
     NOTHROW = 9
+
 
 ### Cursors ###
 
@@ -2544,6 +2544,7 @@ class StorageClass(BaseEnumeration):
     AUTO = 6
     REGISTER = 7
 
+
 ### Availability Kinds ###
 
 
@@ -2557,6 +2558,7 @@ class AvailabilityKind(BaseEnumeration):
     NOT_AVAILABLE = 2
     NOT_ACCESSIBLE = 3
 
+
 ### C++ access specifiers ###
 
 
@@ -2569,6 +2571,7 @@ class AccessSpecifier(BaseEnumeration):
     PUBLIC = 1
     PROTECTED = 2
     PRIVATE = 3
+
 
 ### Type Kinds ###
 
@@ -2713,6 +2716,7 @@ class TypeKind(BaseEnumeration):
     HLSLATTRIBUTEDRESOURCE = 180
     HLSLINLINESPIRV = 181
     PREDEFINEDSUGAR = 182
+
 
 class RefQualifierKind(BaseEnumeration):
     """Describes a specific ref-qualifier of a type."""
@@ -3065,6 +3069,7 @@ class Type(Structure):
 
 
 ## Opaque Clang Objects ##
+
 
 ### Completion Chunk Kinds ###
 class CompletionChunkKind(BaseEnumeration):
@@ -4048,7 +4053,6 @@ class Rewriter(OpaqueClangObject):
 
 
 class PrintingPolicyProperty(BaseEnumeration):
-
     """
     A PrintingPolicyProperty identifies a property of a PrintingPolicy.
     """
@@ -4528,6 +4532,7 @@ class Config:
         Returns the libclang version string used by the bindings
         """
         return _CXString.from_result(self.lib.clang_getClangVersion())
+
 
 conf = Config()
 

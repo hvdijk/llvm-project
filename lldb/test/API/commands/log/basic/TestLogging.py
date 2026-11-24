@@ -2,7 +2,6 @@
 Test lldb logging.  This test just makes sure logging doesn't crash, and produces some output.
 """
 
-
 import os
 import json
 import lldb

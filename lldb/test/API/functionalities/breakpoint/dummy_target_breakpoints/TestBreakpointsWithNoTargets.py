@@ -2,7 +2,6 @@
 Test breakpoint commands set before we have a target
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

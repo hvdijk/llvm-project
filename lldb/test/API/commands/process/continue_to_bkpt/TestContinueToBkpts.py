@@ -2,7 +2,6 @@
 Test the "process continue -b" option.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

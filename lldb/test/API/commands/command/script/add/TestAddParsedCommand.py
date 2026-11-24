@@ -2,7 +2,6 @@
 Test option and argument definitions in parsed script commands
 """
 
-
 import sys
 import os
 import lldb

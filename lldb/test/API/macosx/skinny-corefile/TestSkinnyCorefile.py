@@ -1,6 +1,5 @@
 """Test that lldb can create a skinny corefile, and load all available libraries correctly."""
 
-
 import os
 import re
 import subprocess

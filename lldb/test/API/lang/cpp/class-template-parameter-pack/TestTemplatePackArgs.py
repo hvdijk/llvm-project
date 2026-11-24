@@ -2,6 +2,7 @@
 Test that the type of arguments to C++ template classes that have variadic
 parameters can be enumerated.
 """
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

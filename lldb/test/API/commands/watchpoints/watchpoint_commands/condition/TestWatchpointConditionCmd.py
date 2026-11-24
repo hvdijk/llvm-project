@@ -2,7 +2,6 @@
 Test watchpoint modify command to set condition on a watchpoint.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

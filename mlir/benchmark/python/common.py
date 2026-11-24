@@ -1,4 +1,5 @@
 """Common utilities that are useful for all the benchmarks."""
+
 import numpy as np
 
 from mlir import ir
@@ -11,9 +12,7 @@ from mlir.passmanager import PassManager
 
 def setup_passes(mlir_module):
     """Setup pass pipeline parameters for benchmark functions."""
-    opt = (
-        "parallelization-strategy=none"
-    )
+    opt = "parallelization-strategy=none"
     pipeline = f"builtin.module(sparsifier{{{opt}}})"
     PassManager.parse(pipeline).run(mlir_module.operation)
 

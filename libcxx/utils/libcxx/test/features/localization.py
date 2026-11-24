@@ -6,7 +6,14 @@
 #
 # ===----------------------------------------------------------------------===##
 
-from libcxx.test.dsl import Feature, programSucceeds, hasAnyLocale, programOutput, testMacros, AddSubstitution
+from libcxx.test.dsl import (
+    Feature,
+    programSucceeds,
+    hasAnyLocale,
+    programOutput,
+    testMacros,
+    AddSubstitution,
+)
 import re
 
 features = [
@@ -61,14 +68,17 @@ for locale, alts in _locales.items():
         Feature(
             name="locale.{}".format(locale),
             when=lambda cfg, alts=alts: hasAnyLocale(cfg, alts),
-            actions=lambda cfg, locale=locale, alts=alts: _getLocaleFlagsAction(
-                cfg, locale, alts, _provide_locale_conversions[locale]
-            )
-            if locale in _provide_locale_conversions
-            and "TEST_HAS_NO_WIDE_CHARACTERS" not in testMacros(cfg)
-            else [],
+            actions=lambda cfg, locale=locale, alts=alts: (
+                _getLocaleFlagsAction(
+                    cfg, locale, alts, _provide_locale_conversions[locale]
+                )
+                if locale in _provide_locale_conversions
+                and "TEST_HAS_NO_WIDE_CHARACTERS" not in testMacros(cfg)
+                else []
+            ),
         ),
     )
+
 
 # Provide environment locale conversions through substitutions to avoid platform specific
 # maintenance.

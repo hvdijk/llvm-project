@@ -2,7 +2,6 @@
 Test SBType APIs to fetch member function types.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,7 +2,6 @@
 Test that variables with unsigned types display correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

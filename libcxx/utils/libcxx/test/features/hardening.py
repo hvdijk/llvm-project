@@ -30,7 +30,7 @@ for mode in ("none", "fast", "extensive", "debug"):
     features.append(
         Feature(
             name=f"libcpp-hardening-mode={mode}",
-            when=lambda cfg, prog=check_program: programSucceeds(cfg, prog)
+            when=lambda cfg, prog=check_program: programSucceeds(cfg, prog),
         )
     )
 
@@ -54,7 +54,7 @@ for semantic in ("ignore", "observe", "quick_enforce", "enforce"):
     features.append(
         Feature(
             name=f"libcpp-assertion-semantic={semantic}",
-            when=lambda cfg, prog=check_program: programSucceeds(cfg, prog)
+            when=lambda cfg, prog=check_program: programSucceeds(cfg, prog),
         )
     )
 
@@ -104,10 +104,14 @@ enabling_modes = {
     "debug": ("debug",),
 }
 for category, modes in enabling_modes.items():
-    expression = "can-test-hardening-assertions && ({})".format(" || ".join(f"libcpp-hardening-mode={mode}" for mode in modes))
+    expression = "can-test-hardening-assertions && ({})".format(
+        " || ".join(f"libcpp-hardening-mode={mode}" for mode in modes)
+    )
     features.append(
         Feature(
             name=f"can-test-hardening-assertions-{category}",
-            when=lambda cfg, expr=expression: BooleanExpression.evaluate(expr, cfg.available_features)
+            when=lambda cfg, expr=expression: BooleanExpression.evaluate(
+                expr, cfg.available_features
+            ),
         )
     )

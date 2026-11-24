@@ -2,7 +2,6 @@
 Use lldb Python API to test base class resolution for ObjC classes
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

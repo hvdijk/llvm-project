@@ -1,6 +1,5 @@
 """Test that we handle inferiors which change their process group"""
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

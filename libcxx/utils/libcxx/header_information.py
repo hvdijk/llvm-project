@@ -11,6 +11,7 @@ import pathlib, functools
 libcxx_root = pathlib.Path(__file__).resolve().parent.parent.parent
 assert libcxx_root.exists()
 
+
 def _is_header_file(file):
     """Returns whether the given file is a header file, i.e. not a directory or the modulemap file."""
     return not file.is_dir() and not file.name in [
@@ -20,6 +21,7 @@ def _is_header_file(file):
         "libcxx.imp",
         "__config_site.in",
     ]
+
 
 @functools.total_ordering
 class Header:
@@ -94,7 +96,12 @@ class Header:
         """
         # These headers have been removed in C++20 so are never part of a module.
         removed_in_20 = ["ccomplex", "ciso646", "cstdalign", "cstdbool", "ctgmath"]
-        return self.is_public() and not self.is_experimental() and not self.is_C_compatibility() and not self._name in removed_in_20
+        return (
+            self.is_public()
+            and not self.is_experimental()
+            and not self.is_C_compatibility()
+            and not self._name in removed_in_20
+        )
 
     def is_cxx03_frozen_header(self) -> bool:
         """Returns whether the header is a frozen C++03 support header."""
@@ -145,8 +152,15 @@ class Header:
 
 # Commonly-used sets of headers
 libcxx_include = libcxx_root / "include"
-all_headers = [Header(p.relative_to(libcxx_include).as_posix()) for p in libcxx_include.rglob("[_a-z]*") if _is_header_file(p)]
-all_headers += [Header("__config_site"), Header("__assertion_handler")] # Headers generated during the build process
+all_headers = [
+    Header(p.relative_to(libcxx_include).as_posix())
+    for p in libcxx_include.rglob("[_a-z]*")
+    if _is_header_file(p)
+]
+all_headers += [
+    Header("__config_site"),
+    Header("__assertion_handler"),
+]  # Headers generated during the build process
 public_headers = [h for h in all_headers if h.is_public()]
 module_headers = [h for h in all_headers if h.has_cxx20_module()]
 module_c_headers = [h for h in all_headers if h.has_cxx20_module() and h.is_cstd()]

@@ -104,7 +104,7 @@ class SourceFileRenderer:
             )
             html_highlighted = html_highlighted.replace("</pre></div>", "")
 
-        for (linenum, html_line) in enumerate(html_highlighted.split("\n"), start=1):
+        for linenum, html_line in enumerate(html_highlighted.split("\n"), start=1):
             print(
                 """
 <tr>

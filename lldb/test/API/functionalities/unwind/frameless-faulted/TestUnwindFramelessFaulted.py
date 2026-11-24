@@ -19,7 +19,6 @@ class TestUnwindFramelessFaulted(TestBase):
     # to test for the linker version or Xcode version so  tie this to
     # macOS 15 which uses Xcode 16 and does not have the issues.
     @skipIf(macos_version=["<", "15.0"])
-
     def test_frameless_faulted_unwind(self):
         self.build()
 

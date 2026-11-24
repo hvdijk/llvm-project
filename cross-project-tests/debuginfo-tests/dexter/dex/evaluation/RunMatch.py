@@ -30,6 +30,7 @@ from dex.evaluation.StateMatch import StateMatchContext, get_state_match
 from dex.test_script import DexterScript, Scope
 from dex.test_script.Nodes import Expect, ExpectAll, Line, Step
 
+
 class DebuggerStepMatch:
     """Class used to record the match between a DexterScript and a StepIR, including the state match, determining which
     script nodes are "active", and the expect matches, which compare the debugger's output to the DexterScript's

@@ -4,7 +4,6 @@ Test some lldb help commands.
 See also CommandInterpreter::OutputFormattedHelpText().
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

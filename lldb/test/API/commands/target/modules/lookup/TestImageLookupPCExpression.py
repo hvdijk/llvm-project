@@ -2,7 +2,6 @@
 Make sure that "target modules lookup -va $pc" works
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -24,4 +23,3 @@ class TestImageLookupPCInC(TestBase):
 
         self.expect("target modules lookup -va $pc", substrs=["doSomething"])
         self.expect("target modules lookup -va $pc+4", substrs=["doSomething"])
-

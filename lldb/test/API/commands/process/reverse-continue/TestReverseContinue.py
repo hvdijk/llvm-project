@@ -2,7 +2,6 @@
 Test the "process continue --reverse" and "--forward" options.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test.decorators import *

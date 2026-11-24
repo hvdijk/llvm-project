@@ -1,6 +1,7 @@
 """
 Test support for the DebugInfoD network symbol acquisition protocol.
 """
+
 import os
 import shutil
 import tempfile

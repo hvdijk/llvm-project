@@ -20,6 +20,7 @@ INCLUDE_FILENAME_REGEX = re.compile(
     r'#include "lldb/(API/)?(?P<include_filename>.*){0,1}"'
 )
 
+
 def modify_main_includes(input_file_path, output_file_path):
     with open(input_file_path, "r") as input_file:
         lines = input_file.readlines()

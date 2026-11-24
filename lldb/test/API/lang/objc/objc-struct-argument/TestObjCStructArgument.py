@@ -1,6 +1,5 @@
 """Test passing structs to Objective-C methods."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

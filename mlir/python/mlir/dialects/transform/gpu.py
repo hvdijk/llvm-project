@@ -29,8 +29,7 @@ class MapForallToBlocks(MapForallToBlocks):
         generate_gpu_launch: Optional[Union[bool, Attribute]] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -41,8 +40,7 @@ class MapForallToBlocks(MapForallToBlocks):
         generate_gpu_launch: Optional[Union[bool, Attribute]] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,
@@ -86,8 +84,7 @@ class MapNestedForallToThreads(MapNestedForallToThreads):
         sync_after_distribute: Optional[bool] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -99,8 +96,7 @@ class MapNestedForallToThreads(MapNestedForallToThreads):
         sync_after_distribute: Optional[bool] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,

@@ -1,6 +1,5 @@
 """Test that conflicting symbols in different shared libraries work correctly"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

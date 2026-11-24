@@ -5,6 +5,7 @@ Exception: in single process mode _execute is called directly.
 For efficiency, we copy all data needed to execute all tests into each worker
 and store it in global variables. This reduces the cost of each task.
 """
+
 import contextlib
 import os
 import signal

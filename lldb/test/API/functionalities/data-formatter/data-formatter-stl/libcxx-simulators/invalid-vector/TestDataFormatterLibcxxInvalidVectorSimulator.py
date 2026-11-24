@@ -2,7 +2,6 @@
 Test we can understand various layouts of the libc++'s std::string
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -13,7 +12,7 @@ import functools
 class LibcxxInvalidVectorDataFormatterSimulatorTestCase(TestBase):
     NO_DEBUG_INFO_TESTCASE = True
 
-    @skipIf(compiler="clang", compiler_version=['<', '18.0'])
+    @skipIf(compiler="clang", compiler_version=["<", "18.0"])
     def test_most(self):
         self.build()
         lldbutil.run_to_source_breakpoint(self, "return 0", lldb.SBFileSpec("main.cpp"))

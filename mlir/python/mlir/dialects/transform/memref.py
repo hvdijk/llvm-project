@@ -28,12 +28,12 @@ class MemRefAllocaToGlobalOp(MemRefAllocaToGlobalOp):
         *,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
-    def __init__(self, alloca: Union[Operation, OpView, Value], *, loc=None, ip=None):
-        ...
+    def __init__(
+        self, alloca: Union[Operation, OpView, Value], *, loc=None, ip=None
+    ): ...
 
     def __init__(
         self,
@@ -76,8 +76,7 @@ class MemRefMultiBufferOp(MemRefMultiBufferOp):
         skip_analysis: Optional[bool] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     @overload
     def __init__(
@@ -88,8 +87,7 @@ class MemRefMultiBufferOp(MemRefMultiBufferOp):
         skip_analysis: Optional[bool] = None,
         loc=None,
         ip=None,
-    ):
-        ...
+    ): ...
 
     def __init__(
         self,

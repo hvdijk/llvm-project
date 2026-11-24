@@ -1,6 +1,5 @@
 """Test that importing modules in Objective-C works as expected."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

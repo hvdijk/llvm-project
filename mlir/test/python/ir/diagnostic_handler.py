@@ -19,8 +19,7 @@ def run(f):
 def testLifecycleContextDestroy():
     ctx = Context()
 
-    def callback(foo):
-        ...
+    def callback(foo): ...
 
     handler = ctx.attach_diagnostic_handler(callback)
     assert handler.attached
@@ -38,8 +37,7 @@ def testLifecycleContextDestroy():
 def testLifecycleExplicitDetach():
     ctx = Context()
 
-    def callback(foo):
-        ...
+    def callback(foo): ...
 
     handler = ctx.attach_diagnostic_handler(callback)
     assert handler.attached
@@ -51,8 +49,7 @@ def testLifecycleExplicitDetach():
 def testLifecycleWith():
     ctx = Context()
 
-    def callback(foo):
-        ...
+    def callback(foo): ...
 
     with ctx.attach_diagnostic_handler(callback) as handler:
         assert handler.attached
@@ -63,8 +60,7 @@ def testLifecycleWith():
 def testLifecycleWithAndExplicitDetach():
     ctx = Context()
 
-    def callback(foo):
-        ...
+    def callback(foo): ...
 
     with ctx.attach_diagnostic_handler(callback) as handler:
         assert handler.attached

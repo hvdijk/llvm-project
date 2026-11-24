@@ -2,6 +2,7 @@
 Tests that frame variable --depth and --element-count options work correctly
 together
 """
+
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

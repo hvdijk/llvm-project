@@ -3,7 +3,6 @@ Watch larger-than-8-bytes regions of memory, confirm that
 writes to those regions are detected.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

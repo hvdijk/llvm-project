@@ -2,7 +2,6 @@
 Test that we can backtrace correctly from Non ABI functions on the stack
 """
 
-
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil

@@ -3,7 +3,6 @@ Make sure the stop reason of a thread that did not run
 during an expression is not changed by running the expression
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

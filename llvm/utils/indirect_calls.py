@@ -18,6 +18,7 @@ import re
 import subprocess
 import optparse
 
+
 # Look for indirect calls/jmps in a binary. re: (call|jmp).*\*
 def look_for_indirect(file):
     args = ["llvm-objdump"]

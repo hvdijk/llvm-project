@@ -2,7 +2,6 @@
 Test stepping out from a function in a multi-threaded program.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

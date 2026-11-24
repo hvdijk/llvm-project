@@ -1,4 +1,5 @@
 """Test that lldb recognizes enum variant emitted by Rust compiler """
+
 import logging
 
 import lldb

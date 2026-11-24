@@ -1,4 +1,5 @@
 """ Test that stop-on-sharedlibrary-events works and cooperates with breakpoints. """
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

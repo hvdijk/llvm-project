@@ -2,7 +2,6 @@
 Test that variables with signed types display correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

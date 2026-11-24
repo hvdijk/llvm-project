@@ -3,7 +3,6 @@ Make sure if we have two classes with the same base name the
 dynamic value calculator doesn't confuse them
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

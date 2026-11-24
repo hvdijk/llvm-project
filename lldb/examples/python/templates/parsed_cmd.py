@@ -106,10 +106,12 @@ There are also a few example commands in the lldb testsuite at:
 
 llvm-project/lldb/test/API/commands/command/script/add/test_commands.py
 """
+
 import inspect
 import lldb
 import sys
 from abc import abstractmethod
+
 
 # Some methods to translate common value types.  Should return a
 # tuple of the value and an error value (True => error) if the
@@ -127,41 +129,45 @@ def to_bool(in_value):
     if low_in in ["y", "yes", "t", "true", "1"]:
         value = True
         error = False
-        
+
     if not value and low_in in ["n", "no", "f", "false", "0"]:
         value = False
         error = False
 
     return (value, error)
 
+
 def to_int(in_value):
-    #FIXME: Not doing errors yet...
+    # FIXME: Not doing errors yet...
     return (int(in_value), False)
+
 
 def to_unsigned(in_value):
     # FIXME: find an unsigned converter...
     # And handle errors.
     return (int(in_value), False)
 
+
 translators = {
-    lldb.eArgTypeBoolean : to_bool,
-    lldb.eArgTypeBreakpointID : to_unsigned,
-    lldb.eArgTypeByteSize : to_unsigned,
-    lldb.eArgTypeCount : to_unsigned,
-    lldb.eArgTypeFrameIndex : to_unsigned,
-    lldb.eArgTypeIndex : to_unsigned,
-    lldb.eArgTypeLineNum : to_unsigned,
-    lldb.eArgTypeNumLines : to_unsigned,
-    lldb.eArgTypeNumberPerLine : to_unsigned,
-    lldb.eArgTypeOffset : to_int,
-    lldb.eArgTypeThreadIndex : to_unsigned,
-    lldb.eArgTypeUnsignedInteger : to_unsigned,
-    lldb.eArgTypeWatchpointID : to_unsigned,
-    lldb.eArgTypeColumnNum : to_unsigned,
-    lldb.eArgTypeRecognizerID : to_unsigned,
-    lldb.eArgTypeTargetID : to_unsigned,
-    lldb.eArgTypeStopHookID : to_unsigned
+    lldb.eArgTypeBoolean: to_bool,
+    lldb.eArgTypeBreakpointID: to_unsigned,
+    lldb.eArgTypeByteSize: to_unsigned,
+    lldb.eArgTypeCount: to_unsigned,
+    lldb.eArgTypeFrameIndex: to_unsigned,
+    lldb.eArgTypeIndex: to_unsigned,
+    lldb.eArgTypeLineNum: to_unsigned,
+    lldb.eArgTypeNumLines: to_unsigned,
+    lldb.eArgTypeNumberPerLine: to_unsigned,
+    lldb.eArgTypeOffset: to_int,
+    lldb.eArgTypeThreadIndex: to_unsigned,
+    lldb.eArgTypeUnsignedInteger: to_unsigned,
+    lldb.eArgTypeWatchpointID: to_unsigned,
+    lldb.eArgTypeColumnNum: to_unsigned,
+    lldb.eArgTypeRecognizerID: to_unsigned,
+    lldb.eArgTypeTargetID: to_unsigned,
+    lldb.eArgTypeStopHookID: to_unsigned,
 }
+
 
 def translate_value(value_type, value):
     try:
@@ -170,10 +176,11 @@ def translate_value(value_type, value):
         # If we don't have a translator, return the string value.
         return (value, False)
 
+
 class LLDBOptionValueParser:
     """
     This class holds the option definitions for the command, and when
-    the command is run, you can ask the parser for the current values.  """
+    the command is run, you can ask the parser for the current values."""
 
     def __init__(self):
         # This is a dictionary of dictionaries.  The key is the long option
@@ -181,41 +188,40 @@ class LLDBOptionValueParser:
         self.options_dict = {}
         self.args_array = []
 
-
     # FIXME: would this be better done on the C++ side?
     # The common completers are missing some useful ones.
     # For instance there really should be a common Type completer
     # And an "lldb command name" completer.
     completion_table = {
-        lldb.eArgTypeAddressOrExpression : lldb.eVariablePathCompletion,
-        lldb.eArgTypeArchitecture : lldb.eArchitectureCompletion,
-        lldb.eArgTypeBreakpointID : lldb.eBreakpointCompletion,
-        lldb.eArgTypeBreakpointIDRange : lldb.eBreakpointCompletion,
-        lldb.eArgTypeBreakpointName : lldb.eBreakpointNameCompletion,
-        lldb.eArgTypeClassName : lldb.eSymbolCompletion,
-        lldb.eArgTypeDirectoryName : lldb.eDiskDirectoryCompletion,
-        lldb.eArgTypeExpression : lldb.eVariablePathCompletion,
-        lldb.eArgTypeExpressionPath : lldb.eVariablePathCompletion,
-        lldb.eArgTypeFilename : lldb.eDiskFileCompletion,
-        lldb.eArgTypeFrameIndex : lldb.eFrameIndexCompletion,
-        lldb.eArgTypeFunctionName : lldb.eSymbolCompletion,
-        lldb.eArgTypeFunctionOrSymbol : lldb.eSymbolCompletion,
-        lldb.eArgTypeLanguage : lldb.eTypeLanguageCompletion,
-        lldb.eArgTypePath : lldb.eDiskFileCompletion,
-        lldb.eArgTypePid : lldb.eProcessIDCompletion,
-        lldb.eArgTypeProcessName : lldb.eProcessNameCompletion,
-        lldb.eArgTypeRegisterName : lldb.eRegisterCompletion,
-        lldb.eArgTypeRunArgs : lldb.eDiskFileCompletion,
-        lldb.eArgTypeShlibName : lldb.eModuleCompletion,
-        lldb.eArgTypeSourceFile : lldb.eSourceFileCompletion,
-        lldb.eArgTypeSymbol : lldb.eSymbolCompletion,
-        lldb.eArgTypeThreadIndex : lldb.eThreadIndexCompletion,
-        lldb.eArgTypeVarName : lldb.eVariablePathCompletion,
-        lldb.eArgTypePlatform : lldb.ePlatformPluginCompletion,
-        lldb.eArgTypeWatchpointID : lldb.eWatchpointIDCompletion,
-        lldb.eArgTypeWatchpointIDRange : lldb.eWatchpointIDCompletion,
-        lldb.eArgTypeModuleUUID : lldb.eModuleUUIDCompletion,
-        lldb.eArgTypeStopHookID : lldb.eStopHookIDCompletion
+        lldb.eArgTypeAddressOrExpression: lldb.eVariablePathCompletion,
+        lldb.eArgTypeArchitecture: lldb.eArchitectureCompletion,
+        lldb.eArgTypeBreakpointID: lldb.eBreakpointCompletion,
+        lldb.eArgTypeBreakpointIDRange: lldb.eBreakpointCompletion,
+        lldb.eArgTypeBreakpointName: lldb.eBreakpointNameCompletion,
+        lldb.eArgTypeClassName: lldb.eSymbolCompletion,
+        lldb.eArgTypeDirectoryName: lldb.eDiskDirectoryCompletion,
+        lldb.eArgTypeExpression: lldb.eVariablePathCompletion,
+        lldb.eArgTypeExpressionPath: lldb.eVariablePathCompletion,
+        lldb.eArgTypeFilename: lldb.eDiskFileCompletion,
+        lldb.eArgTypeFrameIndex: lldb.eFrameIndexCompletion,
+        lldb.eArgTypeFunctionName: lldb.eSymbolCompletion,
+        lldb.eArgTypeFunctionOrSymbol: lldb.eSymbolCompletion,
+        lldb.eArgTypeLanguage: lldb.eTypeLanguageCompletion,
+        lldb.eArgTypePath: lldb.eDiskFileCompletion,
+        lldb.eArgTypePid: lldb.eProcessIDCompletion,
+        lldb.eArgTypeProcessName: lldb.eProcessNameCompletion,
+        lldb.eArgTypeRegisterName: lldb.eRegisterCompletion,
+        lldb.eArgTypeRunArgs: lldb.eDiskFileCompletion,
+        lldb.eArgTypeShlibName: lldb.eModuleCompletion,
+        lldb.eArgTypeSourceFile: lldb.eSourceFileCompletion,
+        lldb.eArgTypeSymbol: lldb.eSymbolCompletion,
+        lldb.eArgTypeThreadIndex: lldb.eThreadIndexCompletion,
+        lldb.eArgTypeVarName: lldb.eVariablePathCompletion,
+        lldb.eArgTypePlatform: lldb.ePlatformPluginCompletion,
+        lldb.eArgTypeWatchpointID: lldb.eWatchpointIDCompletion,
+        lldb.eArgTypeWatchpointIDRange: lldb.eWatchpointIDCompletion,
+        lldb.eArgTypeModuleUUID: lldb.eModuleUUIDCompletion,
+        lldb.eArgTypeStopHookID: lldb.eStopHookIDCompletion,
     }
 
     @classmethod
@@ -235,12 +241,12 @@ class LLDBOptionValueParser:
         return "enum_values" in elem
 
     def option_parsing_started(self):
-        """ This makes the ivars for all the "dest" values in the array and gives them
-            their default values.  You should not have to call this by hand, though if
-            you have some option that needs to do some work when a new command invocation
-            starts, you can override this to handle your special option.  """
+        """This makes the ivars for all the "dest" values in the array and gives them
+        their default values.  You should not have to call this by hand, though if
+        you have some option that needs to do some work when a new command invocation
+        starts, you can override this to handle your special option."""
         for key, elem in self.options_dict.items():
-            elem['_value_set'] = False
+            elem["_value_set"] = False
             # If there's no value_type, then there can't be a dest.
             if not "value_type" in elem:
                 continue
@@ -255,8 +261,8 @@ class LLDBOptionValueParser:
                 continue
 
     def set_enum_value(self, enum_values, input):
-        """ This sets the value for an enum option, you should not have to call this
-        by hand.  """
+        """This sets the value for an enum option, you should not have to call this
+        by hand."""
         candidates = []
         for candidate in enum_values:
             # The enum_values are a two element list of value & help string.
@@ -268,12 +274,12 @@ class LLDBOptionValueParser:
             return (candidates[0], False)
         else:
             return (input, True)
-        
+
     def set_option_value(self, exe_ctx, opt_name, opt_value):
-        """ This sets a single option value.  This will handle most option
+        """This sets a single option value.  This will handle most option
         value types, but if you have an option that has some complex behavior,
         you can override this to implement that behavior, and then pass the
-        rest of the options to the base class implementation. """
+        rest of the options to the base class implementation."""
         elem = self.get_option_element(opt_name)
         if not elem:
             return False
@@ -287,11 +293,11 @@ class LLDBOptionValueParser:
         if "enum_values" in elem:
             (value, error) = self.set_enum_value(elem["enum_values"], opt_value)
         else:
-            (value, error)  = translate_value(elem["value_type"], opt_value)
+            (value, error) = translate_value(elem["value_type"], opt_value)
 
         if error:
             return False
-        
+
         object.__setattr__(self, elem["dest"], value)
         elem["_value_set"] = True
         return True
@@ -387,18 +393,19 @@ class LLDBOptionValueParser:
 
         self.options_dict[long_option] = dict
 
-    def make_argument_element(self, arg_type, repeat = "optional", groups = None):
-        element = {"arg_type" : arg_type, "repeat" : repeat}
+    def make_argument_element(self, arg_type, repeat="optional", groups=None):
+        element = {"arg_type": arg_type, "repeat": repeat}
         if groups:
             element["groups"] = groups
         return element
+
 
 class ParsedCommand:
     def __init__(self, debugger, unused):
         self.debugger = debugger
         self.ov_parser = LLDBOptionValueParser()
         self.setup_command_definition()
-        
+
     def get_options_definition(self):
         return self.get_parser().options_dict
 
@@ -410,7 +417,7 @@ class ParsedCommand:
 
     # The base class will handle calling these methods
     # when appropriate.
-    
+
     def option_parsing_started(self):
         self.get_parser().option_parsing_started()
 
@@ -432,7 +439,7 @@ class ParsedCommand:
     def __call__(self, debugger, args_array, exe_ctx, result):
         """This is the command callback.  The option values are
         provided by the 'dest' properties on the parser.
-    
+
         args_array: This is the list of arguments provided.
         exe_ctx: Gives the SBExecutionContext on which the
                  command should operate.
@@ -450,7 +457,7 @@ class ParsedCommand:
 
     @staticmethod
     def do_register_cmd(cls, debugger, module_name):
-        """ Add any commands contained in this module to LLDB """
+        """Add any commands contained in this module to LLDB"""
         command = "command script add -o -p -c %s.%s %s" % (
             module_name,
             cls.__name__,
@@ -459,5 +466,5 @@ class ParsedCommand:
         debugger.HandleCommand(command)
         print(
             'The "{0}" command has been installed, type "help {0}"'
-            'for detailed help.'.format(cls.program)
+            "for detailed help.".format(cls.program)
         )

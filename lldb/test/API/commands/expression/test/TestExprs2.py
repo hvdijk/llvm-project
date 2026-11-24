@@ -2,7 +2,6 @@
 Test some more expression commands.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

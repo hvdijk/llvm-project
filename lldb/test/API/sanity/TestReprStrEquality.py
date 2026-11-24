@@ -3,7 +3,6 @@ This is a sanity check that verifies that `repr(sbobject)` and `str(sbobject)`
 produce the same string.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 

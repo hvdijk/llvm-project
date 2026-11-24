@@ -131,9 +131,11 @@ def main():
     shuffle_tree = [
         [
             [
-                -1
-                if random.random() <= undef_prob
-                else random.choice(range(shuffle_range))
+                (
+                    -1
+                    if random.random() <= undef_prob
+                    else random.choice(range(shuffle_range))
+                )
                 for _ in itertools.repeat(None, width)
             ]
             for _ in itertools.repeat(None, args.max_shuffle_height - i)

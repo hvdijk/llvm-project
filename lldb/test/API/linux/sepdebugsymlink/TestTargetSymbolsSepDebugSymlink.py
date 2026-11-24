@@ -1,4 +1,5 @@
 """ Testing separate debug info loading for base binary with a symlink. """
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

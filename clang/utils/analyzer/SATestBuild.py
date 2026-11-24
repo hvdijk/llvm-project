@@ -914,9 +914,11 @@ def normalize_reference_results(directory: str, output_dir: str, build_mode: int
                 path_prefix = os.path.join(directory, PATCHED_SOURCE_DIR_NAME)
 
             paths = [
-                source[len(path_prefix) + 1 :]
-                if source.startswith(path_prefix)
-                else source
+                (
+                    source[len(path_prefix) + 1 :]
+                    if source.startswith(path_prefix)
+                    else source
+                )
                 for source in data["files"]
             ]
             data["files"] = paths

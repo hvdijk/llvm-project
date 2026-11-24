@@ -3,7 +3,6 @@ Make sure running internal expressions doesn't
 influence the result variable numbering.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *

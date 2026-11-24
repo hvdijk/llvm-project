@@ -25,6 +25,7 @@ def testCreateGroupOp():
         # CHECK:         %1 = "async.create_group"(%0) : (i32) -> !async.group
         print(module)
 
+
 def testAsyncPass():
     with Context() as context:
         PassManager.parse("any(async-to-async-runtime)")

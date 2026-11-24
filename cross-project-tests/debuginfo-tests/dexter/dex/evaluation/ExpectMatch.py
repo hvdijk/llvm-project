@@ -177,9 +177,9 @@ class DebuggerExpectMatch:
             )
         # If the address is not resolved, then we can assign to it now in our local copy.
         resolved_addr = actual_addr - expected.offset
-        self.provisional_match_context.address_label_resolutions[
-            expected.name
-        ] = resolved_addr
+        self.provisional_match_context.address_label_resolutions[expected.name] = (
+            resolved_addr
+        )
         return actual_result, MatchResult.TRUE
 
     def _get_dict_actual_result(

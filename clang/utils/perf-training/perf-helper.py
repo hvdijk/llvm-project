@@ -639,9 +639,9 @@ def bolt_optimize(args):
         instrumented_outputs
     ), "inconsistent --input / --instrumented-output arguments"
 
-    inputs, instrumented_outputs = filter_bolt_optimized(inputs,
-                                                         instrumented_outputs,
-                                                         opts.readelf)
+    inputs, instrumented_outputs = filter_bolt_optimized(
+        inputs, instrumented_outputs, opts.readelf
+    )
     if not inputs:
         return 0
 

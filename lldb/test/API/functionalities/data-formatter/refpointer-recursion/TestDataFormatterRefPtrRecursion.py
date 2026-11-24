@@ -2,7 +2,6 @@
 Test that ValueObjectPrinter does not cause an infinite loop when a reference to a struct that contains a pointer to itself is printed.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

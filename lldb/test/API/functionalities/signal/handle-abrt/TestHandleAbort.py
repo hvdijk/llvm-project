@@ -1,6 +1,5 @@
 """Test that we can unwind out of a SIGABRT handler"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

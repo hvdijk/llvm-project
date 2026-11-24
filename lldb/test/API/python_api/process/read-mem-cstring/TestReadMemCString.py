@@ -1,6 +1,5 @@
 """Test reading c-strings from memory via SB API."""
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

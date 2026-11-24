@@ -1,6 +1,7 @@
 """
 Test that we are able to broadcast and receive diagnostic events from lldb
 """
+
 import lldb
 
 import lldbsuite.test.lldbutil as lldbutil

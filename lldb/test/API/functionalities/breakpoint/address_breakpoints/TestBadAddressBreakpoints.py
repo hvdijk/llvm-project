@@ -2,7 +2,6 @@
 Test that breakpoints set on a bad address say they are bad.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
