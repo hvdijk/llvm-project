@@ -3,7 +3,6 @@ Confirm that lldb modify watchpoints only stop
 when the value being watched changes.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -18,7 +17,7 @@ class ModifyWatchpointTestCase(TestBase):
         """Test that a modify watchpoint only stops when the value changes."""
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.c")
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", self.main_source_file
         )
 

@@ -6,7 +6,6 @@ instead of the address of our watched byte.  Test that lldb
 correctly associates this watchpoint trap with our watchpoint.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -20,7 +19,7 @@ class UnalignedWatchpointTestCase(TestBase):
         """Test an unaligned watchpoint triggered by a larger aligned write."""
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.c")
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", self.main_source_file
         )
 

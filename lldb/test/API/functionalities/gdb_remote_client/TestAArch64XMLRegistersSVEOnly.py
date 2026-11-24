@@ -1,11 +1,11 @@
-""" Check that when a debug server provides XML that only defines SVE Z registers,
-    and does not include Neon V registers, lldb creates sub-registers to represent
-    the V registers as the bottom 128 bits of the Z registers.
+"""Check that when a debug server provides XML that only defines SVE Z registers,
+and does not include Neon V registers, lldb creates sub-registers to represent
+the V registers as the bottom 128 bits of the Z registers.
 
-    qemu-aarch64 is one such debug server.
+qemu-aarch64 is one such debug server.
 
-    This also doubles as a test that lldb has a fallback path for registers of
-    unknown type that are > 128 bits, as the SVE registers are here.
+This also doubles as a test that lldb has a fallback path for registers of
+unknown type that are > 128 bits, as the SVE registers are here.
 """
 
 from textwrap import dedent
@@ -27,8 +27,7 @@ class Responder(MockGDBServerResponder):
             # Note that QEMU sends the current SVE size in XML and the debugger
             # then reads vg to know the latest size.
             return (
-                dedent(
-                    """\
+                dedent("""\
               <?xml version="1.0"?>
               <target version="1.0">
                 <architecture>aarch64</architecture>
@@ -37,8 +36,7 @@ class Responder(MockGDBServerResponder):
                   <reg name="vg" regnum="1" bitsize="64"/>
                   <reg name="z0" regnum="2" bitsize="2048" type="not_a_type"/>
                 </feature>
-              </target>"""
-                ),
+              </target>"""),
                 False,
             )
 

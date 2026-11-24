@@ -2,7 +2,6 @@
 
 import glob, os, shlex, sys, subprocess
 
-
 device_id = os.environ.get("SANITIZER_IOSSIM_TEST_DEVICE_IDENTIFIER")
 iossim_run_verbose = os.environ.get("SANITIZER_IOSSIM_RUN_VERBOSE")
 wait_for_debug = os.environ.get("SANITIZER_IOSSIM_RUN_WAIT_FOR_DEBUGGER")

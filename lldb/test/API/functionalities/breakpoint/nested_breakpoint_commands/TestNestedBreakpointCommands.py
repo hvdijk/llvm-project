@@ -1,8 +1,7 @@
 """
 Test that a Python breakpoint callback defined in another Python
-breakpoint callback works properly. 
+breakpoint callback works properly.
 """
-
 
 import lldb
 import os
@@ -20,7 +19,7 @@ class TestNestedBreakpointCommands(TestBase):
         self.do_test()
 
     def do_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

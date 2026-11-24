@@ -7,7 +7,7 @@ from lldbsuite.test import lldbutil
 class TestOperatorOverload(TestBase):
     def test_overload(self):
         self.build()
-        (target, process, thread, main_breakpoint) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, main_breakpoint = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("b.cpp")
         )
         frame = thread.GetSelectedFrame()

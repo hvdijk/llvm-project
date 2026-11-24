@@ -52,7 +52,7 @@ class CommandParser:
             current_breakpoint = None
             for line in lines:
                 line_number = line_number + 1  # 1-based, so we do this first
-                (command, new_breakpoint) = self.parse_one_command(line)
+                command, new_breakpoint = self.parse_one_command(line)
 
                 if new_breakpoint:
                     current_breakpoint = None

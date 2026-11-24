@@ -888,16 +888,14 @@ def testElementwiseOp():
 @run
 def testElementwiseOpView():
     with Context(), Location.unknown():
-        module = Module.parse(
-            """
+        module = Module.parse("""
             func.func @f(%c: tensor<4x4xf32>) {
               %0 = linalg.elementwise <add>
                    ins(%c, %c : tensor<4x4xf32>, tensor<4x4xf32>)
                    outs(%c : tensor<4x4xf32>) -> tensor<4x4xf32>
               return
             }
-            """
-        )
+            """)
         func_op = module.body.operations[0]
         op = func_op.regions[0].blocks[0].operations[0]
         assert isinstance(op.opview, linalg.ElementwiseOp)

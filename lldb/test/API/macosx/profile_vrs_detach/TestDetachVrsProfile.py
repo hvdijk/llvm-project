@@ -6,7 +6,6 @@ timeout to reply, and the detach would time out.  Make sure that doesn't
 happen.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -27,7 +26,7 @@ class TestDetachVrsProfile(TestBase):
         self.do_profile_and_detach()
 
     def do_profile_and_detach(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

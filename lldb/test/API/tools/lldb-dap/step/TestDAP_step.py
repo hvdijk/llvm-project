@@ -53,7 +53,7 @@ class TestDAP_step(DAPTestCaseBase):
         thread.step_out()
         top_frame = thread.top_frame()
         x3 = top_frame.locals["x"].value_as_int
-        (src3, line3) = top_frame.source_and_line()
+        src3, line3 = top_frame.source_and_line()
         self.assertEqual(x1, x3, "verify step out variable")
         self.assertGreaterEqual(line3, line1, "verify step out line")
         self.assertEqual(src1, src3, "verify step in source")
@@ -62,7 +62,7 @@ class TestDAP_step(DAPTestCaseBase):
         thread.step_over()
         top_frame = thread.top_frame()
         x4 = top_frame.locals["x"].value_as_int
-        (src4, line4) = top_frame.source_and_line()
+        src4, line4 = top_frame.source_and_line()
         self.assertEqual(x4, x3, "verify step over variable")
         self.assertGreater(line4, line3, "verify step over line")
         self.assertEqual(src1, src4, "verify step over source")

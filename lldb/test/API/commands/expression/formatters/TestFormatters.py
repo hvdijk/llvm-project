@@ -2,7 +2,6 @@
 Test using LLDB data formatters with frozen objects coming from the expression parser.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

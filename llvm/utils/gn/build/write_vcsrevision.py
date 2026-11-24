@@ -8,7 +8,6 @@ import subprocess
 import sys
 import shutil
 
-
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 LLVM_DIR = os.path.dirname(os.path.dirname(os.path.dirname(THIS_DIR)))
 

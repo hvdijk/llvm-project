@@ -833,9 +833,11 @@ def print_stacktrace(thread, string_buffer=False):
                     func="%s [inlined]" % funcs[i] if frame.IsInlined() else funcs[i],
                     file=files[i],
                     line=lines[i],
-                    args=get_args_as_string(frame, showFuncName=False)
-                    if not frame.IsInlined()
-                    else "()",
+                    args=(
+                        get_args_as_string(frame, showFuncName=False)
+                        if not frame.IsInlined()
+                        else "()"
+                    ),
                 ),
                 file=output,
             )

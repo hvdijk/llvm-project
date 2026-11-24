@@ -2,7 +2,6 @@
 Test that we work properly with classes with the trivial_abi attribute
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -60,7 +59,7 @@ class TestTrivialABI(TestBase):
         self.check_value(outVal_ret, 30)
 
     def expr_test(self, trivial):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

@@ -18,7 +18,7 @@ class TestPtrauthAddressExpressions(TestBase):
             self.skipTest("Target must support pointer authentication.")
         self.source = "main.c"
         self.build()
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec(self.source, False)
         )
 

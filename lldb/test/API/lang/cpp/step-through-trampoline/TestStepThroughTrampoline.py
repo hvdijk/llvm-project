@@ -8,7 +8,7 @@ from lldbsuite.test.decorators import *
 class StepThroughTrampoline(TestBase):
     def test(self):
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self,
             "// Set a breakpoint here",
             lldb.SBFileSpec("main.cpp"),

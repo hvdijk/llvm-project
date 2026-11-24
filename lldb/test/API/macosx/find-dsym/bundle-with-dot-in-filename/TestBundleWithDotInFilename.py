@@ -1,6 +1,5 @@
 """Test that a dSYM can be found when a binary is in a bundle hnd has dots in the filename."""
 
-
 import os.path
 from time import sleep
 
@@ -8,7 +7,6 @@ import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
-
 
 exe_name = "find-bundle-with-dots-in-fn"  # must match Makefile
 

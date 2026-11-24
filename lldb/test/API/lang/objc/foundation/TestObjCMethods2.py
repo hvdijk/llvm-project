@@ -2,7 +2,6 @@
 Test more expression command sequences with objective-c.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -17,7 +16,7 @@ class FoundationTestCase2(TestBase):
         self.build()
         main_spec = lldb.SBFileSpec("main.m")
 
-        (target, process, thread, bp) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bp = lldbutil.run_to_source_breakpoint(
             self, "Break here for selector: tests", main_spec
         )
 

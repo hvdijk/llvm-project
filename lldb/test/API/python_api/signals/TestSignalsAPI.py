@@ -2,7 +2,6 @@
 Test SBProcess APIs, including ReadMemory(), WriteMemory(), and others.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -10,15 +10,14 @@ Usage:
       [arguments passed to FileCheck] <path to text IR file>
 
 """
+
 import sys
 import os
 import subprocess
 
 llvm_as = sys.argv[1]
 filecheck = sys.argv[2]
-filecheck_args = [
-    filecheck
-]
+filecheck_args = [filecheck]
 
 filecheck_args.extend(sys.argv[3:-1])
 ir_file = sys.argv[-1]

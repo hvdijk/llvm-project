@@ -1,13 +1,11 @@
 """Test that a dSYM can be found when a binary is in a deep bundle with multiple pathname components."""
 
-
 from time import sleep
 
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
-
 
 exe_name = "deep-bundle"  # must match Makefile
 

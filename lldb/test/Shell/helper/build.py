@@ -250,7 +250,7 @@ def find_toolchain(compiler, tools_dir):
         else:
             priorities = ["clang", "gcc", "clang-cl"]
         for toolchain in priorities:
-            (type, c_compiler, cxx_compiler) = find_toolchain(toolchain, tools_dir)
+            type, c_compiler, cxx_compiler = find_toolchain(toolchain, tools_dir)
             if type and c_compiler and cxx_compiler:
                 return (type, c_compiler, cxx_compiler)
         # Could not find a toolchain.
@@ -545,7 +545,7 @@ class MsvcBuilder(Builder):
                     version_subkey = v + r"\Installed Options"
                     key = winreg.OpenKey(roots_key, version_subkey)
                     installed_options_keys.append(key)
-                    (value, value_type) = winreg.QueryValueEx(key, option_value_name)
+                    value, value_type = winreg.QueryValueEx(key, option_value_name)
                     if value == 1:
                         # The proper architecture is installed.  Return the
                         # associated paths.
@@ -944,9 +944,7 @@ def fix_arguments(args):
 
 fix_arguments(args)
 
-(toolchain_type, c_compiler, cxx_compiler) = find_toolchain(
-    args.compiler, args.tools_dir
-)
+toolchain_type, c_compiler, cxx_compiler = find_toolchain(args.compiler, args.tools_dir)
 if not toolchain_type:
     print(f"Unable to find toolchain {args.compiler}")
     sys.exit(1)

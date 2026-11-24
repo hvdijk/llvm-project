@@ -35,7 +35,7 @@ class FrameProviderPassThroughPrefixTestCase(TestBase):
         """
         self.build()
 
-        (target, process, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec(self.source)
         )
 
@@ -484,7 +484,7 @@ class FrameProviderPassThroughPrefixTestCase(TestBase):
         """
         self.build()
 
-        (target, process, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec(self.source)
         )
 

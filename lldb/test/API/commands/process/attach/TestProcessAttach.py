@@ -2,7 +2,6 @@
 Test process attach.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

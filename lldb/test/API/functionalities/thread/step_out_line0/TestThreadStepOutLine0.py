@@ -3,7 +3,6 @@ Test stepping out of a function when the return location is an unsuitable
 stopping point.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

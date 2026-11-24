@@ -1,6 +1,5 @@
 """Test that forward declarations don't cause bogus conflicts in namespaced types"""
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test.decorators import *

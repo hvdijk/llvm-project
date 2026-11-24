@@ -217,7 +217,7 @@ class TestOverridesResolver(TestBase):
 
         # Now continue and we'll hit this breakpoint but not in the
         # right place:
-        (_, process, thread, bkpt) = lldbutil.run_to_breakpoint_do_run(
+        _, process, thread, bkpt = lldbutil.run_to_breakpoint_do_run(
             self, self.target, bkpt
         )
         # This location should be bkpt_no.1:

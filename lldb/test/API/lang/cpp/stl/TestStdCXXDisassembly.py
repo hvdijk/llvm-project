@@ -15,7 +15,7 @@ class StdCXXDisassembleTestCase(TestBase):
     def test_stdcxx_disasm(self):
         """Do 'disassemble' on each and every 'Code' symbol entry from the std c++ lib."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Set break point at this line", lldb.SBFileSpec("main.cpp")
         )
 

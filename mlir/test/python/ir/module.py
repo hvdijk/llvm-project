@@ -104,11 +104,9 @@ def testRoundtripUnicode():
 @run
 def testRoundtripBinary():
     with Context():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func private @roundtripUnicode() attributes { foo = "😊" }
-    """
-        )
+    """)
         binary_asm = module.operation.get_asm(binary=True)
         assert isinstance(binary_asm, bytes)
         module = Module.parse(binary_asm)

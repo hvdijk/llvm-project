@@ -1,6 +1,5 @@
 """Test that types defined in shared libraries with stripped symbols work correctly."""
 
-
 import unittest
 import lldb
 from lldbsuite.test.decorators import *

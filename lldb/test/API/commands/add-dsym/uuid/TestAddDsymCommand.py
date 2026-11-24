@@ -1,6 +1,5 @@
 """Test that the 'add-dsym', aka 'target symbols add', command informs the user about success or failure."""
 
-
 import os
 import time
 import lldb

@@ -441,8 +441,7 @@ def gen_tests():
         )
     )
 
-    print(
-        """
+    print("""
 #if !defined(CUDA_VERSION)
 #define __device__ __attribute__((device))
 #define __global__ __attribute__((global))
@@ -456,8 +455,7 @@ typedef unsigned long long uint64_t;
 __device__ void test_wmma_buitins(int *src, int *dst,
                                   float *fsrc, float *fdst,
                                   double *dsrc, double *ddst, int ldm) {
-"""
-    )
+""")
 
     for (ptx, sm), tests in sorted(results.items()):
         print()

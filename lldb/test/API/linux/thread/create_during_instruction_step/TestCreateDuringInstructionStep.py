@@ -3,7 +3,6 @@ This tests that we do not lose control of the inferior, while doing an instructi
 over a thread creation instruction.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

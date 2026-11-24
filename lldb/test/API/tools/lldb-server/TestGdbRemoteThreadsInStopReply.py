@@ -81,7 +81,7 @@ class TestGdbRemoteThreadsInStopReply(gdbremote_testcase.GdbRemoteTestCaseBase):
         process_info = self.parse_process_info_response(context)
         endian = process_info.get("endian")
         reg_info = self.parse_register_info_packets(context)
-        (pc_lldb_reg_index, pc_reg_info) = self.find_pc_reg_info(reg_info)
+        pc_lldb_reg_index, pc_reg_info = self.find_pc_reg_info(reg_info)
 
         hw_info = dict()
         hw_info["pc_register"] = pc_lldb_reg_index

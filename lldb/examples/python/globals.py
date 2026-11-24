@@ -99,7 +99,7 @@ def globals(command_args):
         help='Specify the platform to use when creating the debug target. Valid values include "localhost", "darwin-kernel", "ios-simulator", "remote-freebsd", "remote-macosx", "remote-ios", "remote-linux".',
     )
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
 

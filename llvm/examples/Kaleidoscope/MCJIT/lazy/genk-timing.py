@@ -272,7 +272,7 @@ dataSets = [
 ]
 
 # Generate the code
-for (numFuncs, elementsPerFunc, funcsBetweenExec, callWeighting) in dataSets:
+for numFuncs, elementsPerFunc, funcsBetweenExec, callWeighting in dataSets:
     filename = "test-%d-%d-%d-%d.k" % (
         numFuncs,
         elementsPerFunc,

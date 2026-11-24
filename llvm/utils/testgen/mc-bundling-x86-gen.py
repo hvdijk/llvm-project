@@ -26,9 +26,7 @@ PREAMBLE = """
 
   .text
   .bundle_align_mode {0}
-""".format(
-    BUNDLE_SIZE_POW2
-).lstrip()
+""".format(BUNDLE_SIZE_POW2).lstrip()
 
 ALIGNTO = "  .align {0}, 0x90"
 NOPFILL = "  .fill {0}, 1, 0x90"

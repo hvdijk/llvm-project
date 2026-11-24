@@ -2,7 +2,6 @@
 Make sure that we can step in across an arm64 branch island
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -21,7 +20,7 @@ class TestBranchIslandStepping(TestBase):
         self.do_test()
 
     def do_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

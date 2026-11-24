@@ -1,6 +1,5 @@
 """Test that lldb works correctly on compile units form different languages."""
 
-
 import re
 import lldb
 from lldbsuite.test.decorators import *

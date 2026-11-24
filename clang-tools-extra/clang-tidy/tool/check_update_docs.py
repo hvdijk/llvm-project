@@ -28,7 +28,6 @@ import sys
 import tempfile
 from typing import Final, Sequence
 
-
 EXTRA_DIR: Final = os.path.join(os.path.dirname(__file__), "../..")
 CLANG_TIDY_DIR: Final = os.path.join(EXTRA_DIR, "clang-tidy")
 DOCS_DIR: Final = os.path.join(EXTRA_DIR, "docs")

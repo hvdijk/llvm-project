@@ -8,6 +8,7 @@ import re
 import sys
 import typing
 
+
 def IWYU_mapping(header: str) -> typing.Optional[typing.List[str]]:
     ignore = [
         "__cxx03/.+",
@@ -86,6 +87,7 @@ def main(argv: typing.List[str]):
             f'  {{ include: [ "<{header}>", "private", "<{public}>", "public" ] }},\n'
         )
     args.output.write("]\n")
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

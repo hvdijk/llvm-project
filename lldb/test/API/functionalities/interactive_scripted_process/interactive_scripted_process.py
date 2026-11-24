@@ -157,11 +157,8 @@ class MultiplexerScriptedProcess(PassthroughScriptedProcess):
                 bkpts_list = lldb.SBBreakpointList(self.target)
                 error = self.target.BreakpointsCreateFromFile(bkpt_file, bkpts_list)
                 if error.Fail():
-                    log(
-                        "Failed create breakpoints from driving target \
-                        (bkpt file: %s)"
-                        % tf.name
-                    )
+                    log("Failed create breakpoints from driving target \
+                        (bkpt file: %s)" % tf.name)
 
             # Copy breakpoint from passthrough to real target
             if error.Success():
@@ -173,11 +170,8 @@ class MultiplexerScriptedProcess(PassthroughScriptedProcess):
                                 bl.GetAddress()
                             )
                             if not real_bpkt.IsValid():
-                                log(
-                                    "Failed to set breakpoint at address %s in \
-                                    driving target"
-                                    % hex(bl.GetLoadAddress())
-                                )
+                                log("Failed to set breakpoint at address %s in \
+                                    driving target" % hex(bl.GetLoadAddress()))
 
             self.listener_thread = Thread(
                 target=self.wait_for_driving_process_to_stop, daemon=True
@@ -276,11 +270,8 @@ class MultiplexerScriptedProcess(PassthroughScriptedProcess):
             mux_error = lldb.SBError()
             bkpt = create_breakpoint_with_name(self.target, addr, name, mux_error)
             if mux_error.Fail():
-                error.SetError(
-                    "Failed to create breakpoint in multiplexer \
-                               target: %s"
-                    % mux_error.GetCString()
-                )
+                error.SetError("Failed to create breakpoint in multiplexer \
+                               target: %s" % mux_error.GetCString())
                 return False
         return create_breakpoint_with_name(self.driving_target, addr, name, error)
 

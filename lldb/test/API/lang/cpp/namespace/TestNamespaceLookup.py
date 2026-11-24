@@ -2,13 +2,13 @@
 Test the printing of anonymous and named namespace variables.
 """
 
-
 import unittest
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
 from lldbsuite.test import lldbplatformutil
+
 
 class NamespaceLookupTestCase(TestBase):
     SHARED_BUILD_TESTCASE = False

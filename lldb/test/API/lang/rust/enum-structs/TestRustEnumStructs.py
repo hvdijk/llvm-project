@@ -1,4 +1,5 @@
-"""Test that lldb recognizes enum structs emitted by Rust compiler """
+"""Test that lldb recognizes enum structs emitted by Rust compiler"""
+
 import logging
 
 import lldb

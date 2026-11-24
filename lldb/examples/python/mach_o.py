@@ -549,7 +549,7 @@ class Mach:
             self.unpack(file_extractor)
             # f.close()
         except IOError as xxx_todo_changeme:
-            (errno, strerror) = xxx_todo_changeme.args
+            errno, strerror = xxx_todo_changeme.args
             print("I/O error({0}): {1}".format(errno, strerror))
         except ValueError:
             print("Could not convert data to an integer.")
@@ -2059,7 +2059,7 @@ if __name__ == "__main__":
         default=-1,
     )
 
-    (options, mach_files) = parser.parse_args()
+    options, mach_files = parser.parse_args()
     if options.extract_modules:
         if options.section_names:
             print("error: can't use --section option with the --extract-modules option")

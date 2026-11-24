@@ -2,7 +2,6 @@
 Test that thread plan listing, and deleting works.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 import lldbsuite.test.lldbutil as lldbutil
@@ -106,7 +105,7 @@ class TestThreadPlanCommands(TestBase):
                 result_idx += 1
 
     def thread_plan_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

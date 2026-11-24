@@ -768,7 +768,7 @@ def Symbolicate(debugger, command_args):
         help="specify <sect-name>=<start-addr> or <sect-name>=<start-addr>-<end-addr>",
     )
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
     symbolicator = Symbolicator(debugger)

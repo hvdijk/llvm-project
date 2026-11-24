@@ -71,7 +71,7 @@ class TestCorefileUnparseableBinary(TestBase):
 
         os.chmod(dsym_for_uuid, 0o755)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.c")
         )
 

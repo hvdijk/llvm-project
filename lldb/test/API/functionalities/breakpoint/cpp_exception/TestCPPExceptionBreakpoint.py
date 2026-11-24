@@ -2,7 +2,6 @@
 Test that you can set breakpoint and hit the C++ language exception breakpoint
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

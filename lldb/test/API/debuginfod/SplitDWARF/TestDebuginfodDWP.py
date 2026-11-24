@@ -1,6 +1,7 @@
 """
 Test support for the DebugInfoD network symbol acquisition protocol.
 """
+
 import os
 import shutil
 import tempfile
@@ -9,7 +10,6 @@ import lldb
 from lldbsuite.test.decorators import *
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
-
 
 """
 Test support for the DebugInfoD network symbol acquisition protocol.

@@ -308,7 +308,7 @@ def parse_arguments():
 
 def main():
     """Main function of script."""
-    (search_directory, search_pattern, result_format, output_file) = parse_arguments()
+    search_directory, search_pattern, result_format, output_file = parse_arguments()
 
     process_yaml(search_directory, search_pattern, result_format, output_file)
 

@@ -19,20 +19,17 @@ class TestTraceEvents(TraceIntelPTTestCaseBase):
 
         self.expect(
             "thread trace dump instructions 3 -e --forward -c 5",
-            substrs=[
-                """thread #3: tid = 3497496
+            substrs=["""thread #3: tid = 3497496
     0: (event) HW clock tick [40450075477621505]
     1: (event) CPU core changed [new CPU=51]
     2: (event) HW clock tick [40450075477657246]
     3: (event) trace synchronization point [offset = 0x0x1331]
-  m.out`foo() + 65 at multi_thread.cpp:12:21"""
-            ],
+  m.out`foo() + 65 at multi_thread.cpp:12:21"""],
         )
 
         self.expect(
             "thread trace dump instructions 3 -e --forward -c 5 -J",
-            substrs=[
-                """{
+            substrs=["""{
     "id": 0,
     "event": "HW clock tick",
     "hwClock": 40450075477621505
@@ -41,8 +38,7 @@ class TestTraceEvents(TraceIntelPTTestCaseBase):
     "id": 1,
     "event": "CPU core changed",
     "cpuId": 51
-  }"""
-            ],
+  }"""],
         )
 
     @skipIfNoIntelPT
@@ -68,8 +64,7 @@ class TestTraceEvents(TraceIntelPTTestCaseBase):
         # We ensure that the paused events are printed correctly forward
         self.expect(
             "thread trace dump instructions -e -f",
-            patterns=[
-                rf"""thread #1: tid = .*
+            patterns=[rf"""thread #1: tid = .*
     0: \(event\) trace synchronization point \[offset \= 0x0xec0\]
     1: \(event\) hardware disabled tracing
   a.out`main \+ 23 at main.cpp:12
@@ -95,15 +90,13 @@ class TestTraceEvents(TraceIntelPTTestCaseBase):
     16: {ADDRESS_REGEX}    callq  .* ; symbol stub for: foo\(\)
     17: \(event\) software disabled tracing
   a.out`symbol stub for: foo\(\)
-    18: {ADDRESS_REGEX}    jmpq"""
-            ],
+    18: {ADDRESS_REGEX}    jmpq"""],
         )
 
         # We ensure that the paused events are printed correctly backward
         self.expect(
             "thread trace dump instructions -e --id 18",
-            patterns=[
-                rf"""thread #1: tid = .*
+            patterns=[rf"""thread #1: tid = .*
   a.out`symbol stub for: foo\(\)
     18: {ADDRESS_REGEX}    jmpq .*
     17: \(event\) software disabled tracing
@@ -129,6 +122,5 @@ class TestTraceEvents(TraceIntelPTTestCaseBase):
     3: \(event\) software disabled tracing
     2: {ADDRESS_REGEX}    movl .*
     1: \(event\) hardware disabled tracing
-    0: \(event\) trace synchronization point \[offset \= 0x0xec0\]"""
-            ],
+    0: \(event\) trace synchronization point \[offset \= 0x0xec0\]"""],
         )

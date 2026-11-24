@@ -77,11 +77,9 @@ run(testParseSuccess)
 def testParseSpacedPipeline():
     with Context():
         # A registered pass should parse successfully even if has extras spaces for readability
-        pm = PassManager.parse(
-            """builtin.module(
+        pm = PassManager.parse("""builtin.module(
         func.func( print-op-stats{ json=false } )
-    )"""
-        )
+    )""")
         # CHECK: Roundtrip: builtin.module(func.func(print-op-stats{json=false}))
         log("Roundtrip: ", pm)
 
@@ -176,8 +174,7 @@ def testRunPipelineError():
 @run
 def testPostPassOpInvalidation():
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             arith.constant 10
             func.func @foo() {
@@ -185,8 +182,7 @@ def testPostPassOpInvalidation():
               return
             }
           }
-        """
-        )
+        """)
 
         outer_const_op = module.body.operations[0]
         # CHECK: %[[VAL0:.*]] = arith.constant 10 : i64
@@ -217,8 +213,7 @@ def testPostPassOpInvalidation():
         # CHECK: invalidate_ops=True
         log("invalidate_ops=True")
 
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             arith.constant 10
             func.func @foo() {
@@ -226,8 +221,7 @@ def testPostPassOpInvalidation():
               return
             }
           }
-        """
-        )
+        """)
 
         PassManager.parse("builtin.module(canonicalize)").run(module)
 
@@ -262,16 +256,14 @@ def testPostPassOpInvalidation():
 @run
 def testPrintIrAfterAll():
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             func.func @main() {
               %0 = arith.constant 10
               return
             }
           }
-        """
-        )
+        """)
         pm = PassManager.parse("builtin.module(canonicalize)")
         ctx.enable_multithreading(False)
         pm.enable_ir_printing()
@@ -288,16 +280,14 @@ def testPrintIrAfterAll():
 @run
 def testPrintIrBeforeAndAfterAll():
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             func.func @main() {
               %0 = arith.constant 10
               return
             }
           }
-        """
-        )
+        """)
         pm = PassManager.parse("builtin.module(canonicalize)")
         ctx.enable_multithreading(False)
         pm.enable_ir_printing(print_before_all=True, print_after_all=True)
@@ -321,16 +311,14 @@ def testPrintIrBeforeAndAfterAll():
 @run
 def testPrintIrLargeLimitElements():
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             func.func @main() -> tensor<3xi64> {
               %0 = arith.constant dense<[1, 2, 3]> : tensor<3xi64>
               return %0 : tensor<3xi64>
             }
           }
-        """
-        )
+        """)
         pm = PassManager.parse("builtin.module(canonicalize)")
         ctx.enable_multithreading(False)
         pm.enable_ir_printing(large_elements_limit=2)
@@ -342,8 +330,7 @@ def testPrintIrLargeLimitElements():
 @run
 def testPrintIrLargeResourceLimit():
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             func.func @main() -> tensor<3xi64> {
               %0 = arith.constant dense_resource<blob1> : tensor<3xi64>
@@ -357,8 +344,7 @@ def testPrintIrLargeResourceLimit():
               }
             }
           #-}
-        """
-        )
+        """)
         pm = PassManager.parse("builtin.module(canonicalize)")
         ctx.enable_multithreading(False)
         pm.enable_ir_printing(large_resource_limit=4)
@@ -371,8 +357,7 @@ def testPrintIrLargeResourceLimit():
 def testPrintIrLargeResourceLimitVsElementsLimit():
     """Test that large_elements_limit does not affect the printing of resources."""
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             func.func @main() -> tensor<3xi64> {
               %0 = arith.constant dense_resource<blob1> : tensor<3xi64>
@@ -386,8 +371,7 @@ def testPrintIrLargeResourceLimitVsElementsLimit():
               }
             }
           #-}
-        """
-        )
+        """)
         pm = PassManager.parse("builtin.module(canonicalize)")
         ctx.enable_multithreading(False)
         pm.enable_ir_printing(large_elements_limit=1)
@@ -399,16 +383,14 @@ def testPrintIrLargeResourceLimitVsElementsLimit():
 @run
 def testPrintIrTree():
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             func.func @main() {
               %0 = arith.constant 10
               return
             }
           }
-        """
-        )
+        """)
         pm = PassManager.parse("builtin.module(canonicalize)")
         ctx.enable_multithreading(False)
         pm.enable_ir_printing()
@@ -441,16 +423,14 @@ def testPrintIrTree():
 @run
 def testEnableStatistics():
     with Context() as ctx:
-        module = ModuleOp.parse(
-            """
+        module = ModuleOp.parse("""
           module {
             func.func @main() {
               %0 = arith.constant 10
               return
             }
           }
-        """
-        )
+        """)
         pm = PassManager.parse("builtin.module(canonicalize)")
         pm.enable_statistics()
         # CHECK: Pass statistics report

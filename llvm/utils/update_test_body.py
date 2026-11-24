@@ -9,6 +9,7 @@ https://llvm.org/docs/TestingGuide.html#elaborated-tests
 Example:
 PATH=/path/to/clang_build/bin:$PATH llvm/utils/update_test_body.py path/to/test.s
 """
+
 import argparse
 import contextlib
 import os

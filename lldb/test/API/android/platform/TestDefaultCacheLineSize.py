@@ -2,7 +2,6 @@
 Verify the default cache line size for android targets
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

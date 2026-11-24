@@ -18,7 +18,6 @@ from ProjectMap import ProjectInfo
 import pandas as pd
 from typing import List, Tuple
 
-
 INDEX_COLUMN = "index"
 
 

@@ -2,7 +2,6 @@
 Test the printing of anonymous and named namespace variables.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -225,8 +224,9 @@ class NamespaceTestCase(TestBase):
         # Search for a type in an anonymous namespace, both with and without the
         # namespace prefix.
         self.expect("type lookup -- my_uint_t", substrs=["unsigned int"])
-        self.expect("type lookup -- (anonymous namespace)::my_uint_t",
-                    substrs=["unsigned int"])
+        self.expect(
+            "type lookup -- (anonymous namespace)::my_uint_t", substrs=["unsigned int"]
+        )
 
         # rdar://problem/8660275
         # test/namespace: 'expression -- i+j' not working

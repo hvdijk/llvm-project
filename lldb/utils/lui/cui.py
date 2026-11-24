@@ -258,13 +258,13 @@ class CursesEditLine(object):
     def draw(self, prompt=None):
         if not prompt:
             prompt = self.prompt
-        (h, w) = self.win.getmaxyx()
+        h, w = self.win.getmaxyx()
         if (len(prompt) + len(self.content)) // w + self.starty >= h - 1:
             self.win.scroll(1)
             self.starty -= 1
             if self.starty < 0:
                 raise RuntimeError("Input too long; aborting")
-        (y, x) = (self.starty, self.startx)
+        y, x = (self.starty, self.startx)
 
         self.win.move(y, x)
         self.win.clrtobot()

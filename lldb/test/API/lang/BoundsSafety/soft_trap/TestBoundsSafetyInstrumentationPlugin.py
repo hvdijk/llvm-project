@@ -6,7 +6,6 @@ import lldb
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test.decorators import *
 
-
 STOP_REASON_MAX_LEN = 100
 SOFT_TRAP_FUNC_MINIMAL = "__bounds_safety_soft_trap"
 SOFT_TRAP_FUNC_WITH_STR = "__bounds_safety_soft_trap_s"

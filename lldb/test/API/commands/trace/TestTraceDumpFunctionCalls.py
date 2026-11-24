@@ -25,8 +25,7 @@ class TestTraceDumpInfo(TraceIntelPTTestCaseBase):
 
         self.expect(
             "thread trace dump function-calls 1 -J",
-            substrs=[
-                """[
+            substrs=["""[
   {
     "tracedSegments": [
       {
@@ -35,19 +34,16 @@ class TestTraceDumpInfo(TraceIntelPTTestCaseBase):
       }
     ]
   }
-]"""
-            ],
+]"""],
         )
 
         # We test first some code without function call
         self.expect(
             "thread trace dump function-calls 1",
-            substrs=[
-                """thread #1: tid = 3842849
+            substrs=["""thread #1: tid = 3842849
 
 [call tree #0]
-a.out`main + 4 at main.cpp:2 to 4:0  [3, 26]"""
-            ],
+a.out`main + 4 at main.cpp:2 to 4:0  [3, 26]"""],
         )
 
     def testFunctionCallsWithErrors(self):
@@ -61,21 +57,18 @@ a.out`main + 4 at main.cpp:2 to 4:0  [3, 26]"""
         # We expect that tracing errors appear as a different tree
         self.expect(
             "thread trace dump function-calls 2",
-            substrs=[
-                """thread #2: tid = 3497496
+            substrs=["""thread #2: tid = 3497496
 
 [call tree #0]
 m.out`foo() + 65 at multi_thread.cpp:12:21 to 12:21  [4, 19524]
 
 [call tree #1]
-<tracing errors>  [19526, 19526]"""
-            ],
+<tracing errors>  [19526, 19526]"""],
         )
 
         self.expect(
             "thread trace dump function-calls 2 -J",
-            substrs=[
-                """[
+            substrs=["""[
   {
     "tracedSegments": [
       {
@@ -92,27 +85,23 @@ m.out`foo() + 65 at multi_thread.cpp:12:21 to 12:21  [4, 19524]
       }
     ]
   }
-]"""
-            ],
+]"""],
         )
 
         self.expect(
             "thread trace dump function-calls 3",
-            substrs=[
-                """thread #3: tid = 3497497
+            substrs=["""thread #3: tid = 3497497
 
 [call tree #0]
 m.out`bar() + 30 at multi_thread.cpp:19:3 to 20:6  [5, 61831]
 
 [call tree #1]
-<tracing errors>  [61833, 61833]"""
-            ],
+<tracing errors>  [61833, 61833]"""],
         )
 
         self.expect(
             "thread trace dump function-calls 3 -J",
-            substrs=[
-                """[
+            substrs=["""[
   {
     "tracedSegments": [
       {
@@ -129,8 +118,7 @@ m.out`bar() + 30 at multi_thread.cpp:19:3 to 20:6  [5, 61831]
       }
     ]
   }
-]"""
-            ],
+]"""],
         )
 
     @skipIfNoIntelPT
@@ -145,20 +133,17 @@ m.out`bar() + 30 at multi_thread.cpp:19:3 to 20:6  [5, 61831]
         self.expect("c")
         self.expect(
             "thread trace dump function-calls",
-            substrs=[
-                """[call tree #0]
+            substrs=["""[call tree #0]
 a.out`main + 8 at inline.cpp:15:7 to 16:14  [2, 6]
   a.out`foo(int) at inline.cpp:8:16 to 9:15  [7, 14]
     a.out`foo(int) + 22 [inlined] mult(int, int) at inline.cpp:2:7 to 5:10  [15, 22]
   a.out`foo(int) + 49 at inline.cpp:9:15 to 12:1  [23, 27]
-a.out`main + 25 at inline.cpp:16:14 to 16:14  [28, 28]"""
-            ],
+a.out`main + 25 at inline.cpp:16:14 to 16:14  [28, 28]"""],
         )
 
         self.expect(
             "thread trace dump function-calls -J",
-            substrs=[
-                """[
+            substrs=["""[
   {
     "tracedSegments": [
       {
@@ -191,8 +176,7 @@ a.out`main + 25 at inline.cpp:16:14 to 16:14  [28, 28]"""
       }
     ]
   }
-]"""
-            ],
+]"""],
         )
 
     @skipIfNoIntelPT
@@ -207,20 +191,17 @@ a.out`main + 25 at inline.cpp:16:14 to 16:14  [28, 28]"""
         self.expect("c")
         self.expect(
             "thread trace dump function-calls",
-            substrs=[
-                """[call tree #0]
+            substrs=["""[call tree #0]
 a.out`main
   a.out`foo(int)
     a.out`foo(int) + 36 [inlined] mult(int, int) + 14 at inline.cpp:4:5 to 5:10  [2, 6]
   a.out`foo(int) + 49 at inline.cpp:9:15 to 12:1  [7, 11]
-a.out`main + 25 at inline.cpp:16:14 to 16:14  [12, 12]"""
-            ],
+a.out`main + 25 at inline.cpp:16:14 to 16:14  [12, 12]"""],
         )
 
         self.expect(
             "thread trace dump function-calls -J",
-            substrs=[
-                """[
+            substrs=["""[
   {
     "untracedPrefixSegment": {
       "nestedCall": {
@@ -249,8 +230,7 @@ a.out`main + 25 at inline.cpp:16:14 to 16:14  [12, 12]"""
       }
     ]
   }
-]"""
-            ],
+]"""],
         )
 
     def testMultifileFunctionCalls(self):
@@ -273,8 +253,7 @@ a.out`main + 25 at inline.cpp:16:14 to 16:14  [12, 12]"""
         )
         self.expect(
             "thread trace dump function-calls",
-            substrs=[
-                """thread #1: tid = 815455
+            substrs=["""thread #1: tid = 815455
 
 [call tree #0]
 a.out`main + 15 at main.cpp:10 to 10:0  [3, 3]
@@ -293,14 +272,12 @@ a.out`main + 55 at main.cpp:14 to 16:0  [31, 37]
       libfoo.so`symbol stub for: bar() to <+0>  [43, 43]
         libbar.so`bar() at bar.cpp:1 to 4:0  [44, 52]
     libfoo.so`foo() + 13 at foo.cpp:4 to 6:0  [53, 60]
-a.out`main + 68 at main.cpp:16 to 16:0  [61, 63]"""
-            ],
+a.out`main + 68 at main.cpp:16 to 16:0  [61, 63]"""],
         )
 
         self.expect(
             "thread trace dump function-calls -J",
-            substrs=[
-                """[
+            substrs=["""[
   {
     "tracedSegments": [
       {
@@ -393,6 +370,5 @@ a.out`main + 68 at main.cpp:16 to 16:0  [61, 63]"""
       }
     ]
   }
-]"""
-            ],
+]"""],
         )

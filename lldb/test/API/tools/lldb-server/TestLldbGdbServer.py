@@ -22,6 +22,7 @@ from lldbsuite.test.lldbtest import *
 from lldbsuite.test.lldbdwarf import *
 from lldbsuite.test import lldbutil, lldbplatformutil
 
+
 # On Linux systems with Yama ptrace_scope = 1 there is a race condition when the
 # debugee enables tracing. See https://github.com/llvm/llvm-project/issues/161510.
 @skipIfLinux
@@ -618,7 +619,7 @@ class LldbGdbServerTestCase(
 
         # Gather register info entries.
         reg_infos = self.parse_register_info_packets(context)
-        (pc_lldb_reg_index, pc_reg_info) = self.find_pc_reg_info(reg_infos)
+        pc_lldb_reg_index, pc_reg_info = self.find_pc_reg_info(reg_infos)
         self.assertIsNotNone(pc_lldb_reg_index)
         self.assertIsNotNone(pc_reg_info)
 
@@ -865,7 +866,7 @@ class LldbGdbServerTestCase(
         self.assertGreater(len(gpr_reg_infos), 0)
 
         # Write flipped bit pattern of existing value to each register.
-        (successful_writes, failed_writes) = self.flip_all_bits_in_each_register_value(
+        successful_writes, failed_writes = self.flip_all_bits_in_each_register_value(
             gpr_reg_infos, endian
         )
         self.trace(

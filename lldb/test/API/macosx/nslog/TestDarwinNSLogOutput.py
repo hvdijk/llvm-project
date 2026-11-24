@@ -6,7 +6,6 @@ These tests are currently only supported when running against Darwin
 targets.
 """
 
-
 import lldb
 import platform
 import re
@@ -118,7 +117,7 @@ class DarwinNSLogOutputTestCase(TestBase):
         self.runCmd("process continue")
         self.expect(expect_regexes)
 
-    @skipIfAsan # avoid dealing with pexpect timeout flakyness on bots
+    @skipIfAsan  # avoid dealing with pexpect timeout flakyness on bots
     @skipIf(oslist=["linux"], archs=["arm$", "aarch64"])
     @requireDarwin
     @skipIfRemote  # this test is currently written using lldb commands & assumes running on local system
@@ -134,7 +133,7 @@ class DarwinNSLogOutputTestCase(TestBase):
         self.assertGreater(len(self.child.match.groups()), 0)
         self.assertEqual("This is a message from NSLog", self.child.match.group(1))
 
-    @skipIfAsan # avoid dealing with pexpect timeout flakyness on bots
+    @skipIfAsan  # avoid dealing with pexpect timeout flakyness on bots
     @skipIf(oslist=["linux"], archs=["arm$", "aarch64"])
     @requireDarwin
     @skipIfRemote  # this test is currently written using lldb commands & assumes running on local system

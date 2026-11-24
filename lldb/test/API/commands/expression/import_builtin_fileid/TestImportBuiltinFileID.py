@@ -4,7 +4,6 @@ SourceLocation ends up with a FileID that is a built-in we need to copy that
 buffer over correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

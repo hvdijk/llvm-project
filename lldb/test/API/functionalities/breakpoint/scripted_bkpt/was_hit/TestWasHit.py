@@ -56,7 +56,7 @@ class TestWasHit(TestBase):
         self.assertTrue(bkpt.IsValid(), "Found the right breakpoint")
 
         # Now continue.  We should hit locations 1, 3 and 4:
-        (target, process, thread, bkpt) = lldbutil.run_to_breakpoint_do_run(
+        target, process, thread, bkpt = lldbutil.run_to_breakpoint_do_run(
             self, target, bkpt
         )
         # This location should be bkpt_no.1:

@@ -13,6 +13,7 @@ from lldbsuite.test.tools.lldb_dap.types import (
     StoppedEvent,
 )
 
+
 @skipIfTargetDoesNotSupportSharedLibraries()
 class TestDAP_logpoints(DAPTestCaseBase):
     def setUp(self):

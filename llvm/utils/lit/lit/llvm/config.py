@@ -322,7 +322,7 @@ class LLVMConfig:
         output, _ = self.get_process_output([config_path] + arguments)
         lines = output.split("\n")
 
-        for (feature_line, (_, patterns)) in zip(lines, features):
+        for feature_line, (_, patterns) in zip(lines, features):
             # We should have either a callable or a dictionary.  If it's a
             # dictionary, grep each key against the output and use the value if
             # it matches.  If it's a callable, it does the entire translation.
@@ -330,7 +330,7 @@ class LLVMConfig:
                 features_to_add = patterns(feature_line)
                 self.config.available_features.update(features_to_add)
             else:
-                for (re_pattern, feature) in patterns.items():
+                for re_pattern, feature in patterns.items():
                     if re.search(re_pattern, feature_line):
                         self.config.available_features.add(feature)
 
@@ -485,7 +485,7 @@ class LLVMConfig:
         # to automatically get the messages and pass them into lit.
         errc_messages = getattr(self.config, "errc_messages", "")
         if len(errc_messages) != 0:
-            (errc_enoent, errc_eisdir, errc_einval, errc_eacces) = errc_messages.split(
+            errc_enoent, errc_eisdir, errc_einval, errc_eacces = errc_messages.split(
                 ";"
             )
             self.config.substitutions.append(("%errc_ENOENT", "'" + errc_enoent + "'"))
@@ -806,7 +806,7 @@ class LLVMConfig:
 
         # FIXME: Find nicer way to prohibit this.
         def prefer(this, to):
-            return '''\"*** Do not use '%s' in tests, use '%s'. ***\"''' % (to, this)
+            return """\"*** Do not use '%s' in tests, use '%s'. ***\"""" % (to, this)
 
         self.config.substitutions.append((" clang ", prefer("%clang", "clang")))
         self.config.substitutions.append(
@@ -828,13 +828,13 @@ class LLVMConfig:
             (" clang -cc1 ", prefer("%clang_cc1", "clang -cc1"))
         )
         self.config.substitutions.append(
-            (" %clang-cc1 ", '''\"*** invalid substitution, use '%clang_cc1'. ***\"''')
+            (" %clang-cc1 ", """\"*** invalid substitution, use '%clang_cc1'. ***\"""")
         )
         self.config.substitutions.append(
-            (" %clang-cpp ", '''\"*** invalid substitution, use '%clang_cpp'. ***\"''')
+            (" %clang-cpp ", """\"*** invalid substitution, use '%clang_cpp'. ***\"""")
         )
         self.config.substitutions.append(
-            (" %clang-cl ", '''\"*** invalid substitution, use '%clang_cl'. ***\"''')
+            (" %clang-cl ", """\"*** invalid substitution, use '%clang_cl'. ***\"""")
         )
 
     def use_lld(self, additional_tool_dirs=[], required=True, use_installed=False):

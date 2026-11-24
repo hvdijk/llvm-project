@@ -28,7 +28,7 @@ class StepAvoidsRegexTestCase(TestBase):
     def test_step_avoid_regex(self):
         """Tests stepping into a function which matches the avoid regex"""
         self.build()
-        (_, _, self.thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, self.thread, _ = lldbutil.run_to_source_breakpoint(
             self, "main", lldb.SBFileSpec("main.cpp")
         )
 

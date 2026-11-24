@@ -2,7 +2,6 @@
 Test watchpoint list, enable, disable, and delete commands.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

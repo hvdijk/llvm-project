@@ -1,6 +1,5 @@
 """Test that types defined in shared libraries work correctly."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

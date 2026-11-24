@@ -2,7 +2,6 @@
 Check if changing Format on an SBValue correctly propagates that new format to children as it should
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

@@ -78,7 +78,7 @@ class TestVTableValue(TestBase):
     @skipUnlessPlatform(["linux", "macosx"])
     def test_base_class_ptr(self):
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Shape is Rectangle", lldb.SBFileSpec("main.cpp")
         )
 
@@ -119,7 +119,7 @@ class TestVTableValue(TestBase):
     @skipUnlessPlatform(["linux", "macosx"])
     def test_overwrite_vtable(self):
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "At the end", lldb.SBFileSpec("main.cpp")
         )
 

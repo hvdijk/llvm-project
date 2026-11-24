@@ -76,7 +76,7 @@ class LLDBTestResult(unittest.TextTestResult):
         self.indentation = " " * (counterWidth + 2)
         # This counts from 1 .. suite.countTestCases().
         self.counter = 0
-        (width, height) = LLDBTestResult.getTerminalSize()
+        width, height = LLDBTestResult.getTerminalSize()
 
     def _config_string(self, test):
         compiler = getattr(test, "getCompiler", None)
@@ -201,10 +201,10 @@ class LLDBTestResult(unittest.TextTestResult):
 
     def hardMarkAsSkipped(self, test):
         getattr(test, test._testMethodName).__func__.__unittest_skip__ = True
-        getattr(
-            test, test._testMethodName
-        ).__func__.__unittest_skip_why__ = UnsupportedReason(
-            "test case does not fall in any category of interest for this run"
+        getattr(test, test._testMethodName).__func__.__unittest_skip_why__ = (
+            UnsupportedReason(
+                "test case does not fall in any category of interest for this run"
+            )
         )
 
     def countUnsupported(self):

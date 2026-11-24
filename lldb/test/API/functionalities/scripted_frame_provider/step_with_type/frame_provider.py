@@ -1,5 +1,5 @@
 """
-This frame provider just adds a step plan.  We use it to ensure that the 
+This frame provider just adds a step plan.  We use it to ensure that the
 scripted frames can change the step behavior of the frame.
 """
 

@@ -72,13 +72,13 @@ if __name__ == "__main__":
     print("\n")
 
     print("Top 10 remarks by pass:")
-    for (passname, count) in sorted(
+    for passname, count in sorted(
         bypass.items(), key=operator.itemgetter(1), reverse=True
     )[:10]:
         print("  {:30s} {:2.0f}%".format(passname, count * 100.0 / total))
 
     print("\nTop 10 remarks:")
-    for (name, count) in sorted(
-        byname.items(), key=operator.itemgetter(1), reverse=True
-    )[:10]:
+    for name, count in sorted(byname.items(), key=operator.itemgetter(1), reverse=True)[
+        :10
+    ]:
         print("  {:30s} {:2.0f}%".format(name, count * 100.0 / total))

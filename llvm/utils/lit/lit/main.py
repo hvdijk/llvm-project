@@ -48,9 +48,7 @@ def main(builtin_params={}):
         maxIndividualTestTime=opts.maxIndividualTestTime,
     )
 
-    discovered_tests = lit.discovery.find_tests_for_inputs(
-        lit_config, opts.test_paths
-    )
+    discovered_tests = lit.discovery.find_tests_for_inputs(lit_config, opts.test_paths)
     if not discovered_tests:
         sys.stderr.write("error: did not discover any tests for provided path(s)\n")
         sys.exit(2)
@@ -69,7 +67,6 @@ def main(builtin_params={}):
         )
         print(" ".join(sorted(features)))
         sys.exit(0)
-
 
     determine_order(discovered_tests, opts.order)
 
@@ -100,7 +97,7 @@ def main(builtin_params={}):
     # When running multiple shards, don't include skipped tests in the xunit
     # output since merging the files will result in duplicates.
     if opts.shard:
-        (run, shards) = opts.shard
+        run, shards = opts.shard
         selected_tests = filter_by_shard(selected_tests, run, shards, lit_config)
         if not selected_tests:
             sys.stderr.write(
@@ -371,7 +368,7 @@ def print_summary(total_tests, tests_by_code, quiet, elapsed):
     max_label_len = max(len(label) for label, _ in groups)
     max_count_len = max(len(str(count)) for _, count in groups)
 
-    for (label, count) in groups:
+    for label, count in groups:
         label = label.ljust(max_label_len)
         count = str(count).rjust(max_count_len)
         print("  %s: %s (%.2f%%)" % (label, count, float(count) / total_tests * 100))

@@ -5,7 +5,7 @@ import re, string, sys, os, time, math
 
 DEBUG = 0
 
-(tp, exp) = ("compile", "exec")
+tp, exp = ("compile", "exec")
 
 
 def parse(file):

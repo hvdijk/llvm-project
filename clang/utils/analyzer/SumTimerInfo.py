@@ -6,6 +6,7 @@ Script to Summarize statistics in the scan-build output.
 Statistics are enabled by passing '-internal-stats' option to scan-build
 (or '-analyzer-stats' to the analyzer).
 """
+
 import sys
 
 if __name__ == "__main__":
@@ -56,11 +57,8 @@ if __name__ == "__main__":
         if "The # of times we inlined a call" in line:
             s = line.split()
             num_inlined_call_sites = num_inlined_call_sites + int(s[0])
-        if (
-            "The # of times we split the path due \
-                to imprecise dynamic dispatch info"
-            in line
-        ):
+        if "The # of times we split the path due \
+                to imprecise dynamic dispatch info" in line:
             s = line.split()
             num_bifurcated_call_sites = num_bifurcated_call_sites + int(s[0])
         if ")  Total" in line:

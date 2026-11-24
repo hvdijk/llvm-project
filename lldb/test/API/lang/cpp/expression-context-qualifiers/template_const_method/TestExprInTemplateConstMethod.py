@@ -11,7 +11,7 @@ class TestCase(TestBase):
     )
     def test(self):
         self.build()
-        (_, process, _, _) = lldbutil.run_to_source_breakpoint(
+        _, process, _, _ = lldbutil.run_to_source_breakpoint(
             self, "Break: const_method begin", lldb.SBFileSpec("main.cpp")
         )
 

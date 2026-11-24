@@ -75,7 +75,7 @@ class TestFrameProviderStepping(TestBase):
     def common_startup(self, provider_class, stacked_provider_class=None):
         self.build()
 
-        (target, _, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, _, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to step", self.source
         )
 

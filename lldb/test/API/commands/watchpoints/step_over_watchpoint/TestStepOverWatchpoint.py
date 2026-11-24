@@ -1,6 +1,5 @@
 """Test stepping over watchpoints and instruction stepping past watchpoints."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,7 +2,6 @@
 Test that --allow-jit=false does disallow JITting:
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -28,7 +27,7 @@ class TestAllowJIT(TestBase):
         self.expr_options_test()
 
     def expr_cmd_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -45,7 +44,7 @@ class TestAllowJIT(TestBase):
         )
 
     def expr_options_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

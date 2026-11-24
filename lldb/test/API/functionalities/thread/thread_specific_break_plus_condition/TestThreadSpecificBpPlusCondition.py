@@ -3,7 +3,6 @@ Test that we obey thread conditioned breakpoints and expression
 conditioned breakpoints simultaneously
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

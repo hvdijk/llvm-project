@@ -15,7 +15,7 @@ class TestObjCFromCppFramesWithoutDebugInfo(TestBase):
 
     def test(self):
         self.build(debug_info="none")
-        (_, process, _, _) = lldbutil.run_to_name_breakpoint(self, "main")
+        _, process, _, _ = lldbutil.run_to_name_breakpoint(self, "main")
 
         self.assertState(process.GetState(), lldb.eStateStopped)
 

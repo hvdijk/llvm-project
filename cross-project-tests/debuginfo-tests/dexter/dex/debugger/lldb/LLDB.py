@@ -4,8 +4,7 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-"""Interface for communicating with the LLDB debugger via its python interface.
-"""
+"""Interface for communicating with the LLDB debugger via its python interface."""
 
 import os
 import shlex
@@ -195,7 +194,7 @@ class LLDB(DebuggerBase):
         launch_info.SetArguments(cmdline, True)
         error = self._interface.SBError()
         self._process = self._target.Launch(launch_info, error)
-        
+
         if error.Fail():
             raise DebuggerException(error.GetCString())
         if not os.path.exists(self._target.executable.fullpath):
@@ -205,7 +204,7 @@ class LLDB(DebuggerBase):
         if self._process.GetNumThreads() != 1:
             raise DebuggerException("multiple threads not supported")
         self._thread = self._process.GetThreadAtIndex(0)
-        
+
         num_stopped_threads = 0
         for thread in self._process:
             if thread.GetStopReason() == self._interface.eStopReasonBreakpoint:

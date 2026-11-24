@@ -1,6 +1,5 @@
 """Test settings and readings of program variables."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

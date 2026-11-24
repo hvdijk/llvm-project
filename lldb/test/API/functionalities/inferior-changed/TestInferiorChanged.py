@@ -1,6 +1,5 @@
 """Test lldb reloads the inferior after it was changed during the session."""
 
-
 import time
 import lldb
 from lldbsuite.test.decorators import *

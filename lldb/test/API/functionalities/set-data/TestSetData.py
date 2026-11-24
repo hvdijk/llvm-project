@@ -2,7 +2,6 @@
 Set the contents of variables and registers using raw data
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

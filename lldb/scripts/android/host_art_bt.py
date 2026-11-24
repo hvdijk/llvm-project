@@ -276,15 +276,21 @@ def host_art_bt(debugger, command, result, internal_dict):
                 ]:
                     prettified_frames.append(
                         {
-                            "function": frame.GetSymbol().GetName()
-                            if frame.GetSymbol()
-                            else None,
-                            "file": str(frame.GetLineEntry().GetFileSpec())
-                            if frame.GetLineEntry()
-                            else None,
-                            "line": frame.GetLineEntry().GetLine()
-                            if frame.GetLineEntry()
-                            else -1,
+                            "function": (
+                                frame.GetSymbol().GetName()
+                                if frame.GetSymbol()
+                                else None
+                            ),
+                            "file": (
+                                str(frame.GetLineEntry().GetFileSpec())
+                                if frame.GetLineEntry()
+                                else None
+                            ),
+                            "line": (
+                                frame.GetLineEntry().GetLine()
+                                if frame.GetLineEntry()
+                                else -1
+                            ),
                         }
                     )
 

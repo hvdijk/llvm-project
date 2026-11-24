@@ -128,7 +128,7 @@ class TestFrameVar(TestBase):
 
         # We have to set a named breakpoint because we don't have any debug info
         # because we deleted the main.o file.
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(self, "main")
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(self, "main")
         error_strings = [
             'debug map object file "',
             'main.o" containing debug info does not exist, debug info will not be loaded',
@@ -158,7 +158,7 @@ class TestFrameVar(TestBase):
         # We have to set a named breakpoint because we don't have any debug info
         # because we deleted the main.o file since the mod times don't match
         # and debug info won't be loaded
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(self, "main")
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(self, "main")
 
         error_strings = [
             'debug map object file "',
@@ -184,7 +184,7 @@ class TestFrameVar(TestBase):
         # We have to set a named breakpoint because we don't have any debug info
         # because we deleted the main.o file since the mod times don't match
         # and debug info won't be loaded
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(self, "main")
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(self, "main")
         error_strings = [
             "no variable information is available in debug info for this compile unit"
         ]
@@ -212,7 +212,7 @@ class TestFrameVar(TestBase):
         # We have to set a named breakpoint because we don't have any debug info
         # because we deleted the main.o file since the mod times don't match
         # and debug info won't be loaded
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(self, "main")
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(self, "main")
         error_strings = [
             'unable to locate .dwo debug file "',
             'main.dwo" for skeleton DIE 0x',
@@ -243,7 +243,7 @@ class TestFrameVar(TestBase):
         # We have to set a named breakpoint because we don't have any debug info
         # because we deleted the main.o file since the mod times don't match
         # and debug info won't be loaded
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(self, "main")
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(self, "main")
         error_strings = [
             'unable to load object file for .dwo debug file "'
             'main.dwo" for unit DIE 0x',

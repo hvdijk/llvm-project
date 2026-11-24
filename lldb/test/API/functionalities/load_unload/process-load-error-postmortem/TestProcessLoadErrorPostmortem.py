@@ -21,7 +21,7 @@ class ProcessLoadErrorPostmortemTestCase(TestBase):
         exe = self.getBuildArtifact("a.out")
         core = self.getBuildArtifact("process.core")
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.c")
         )
 

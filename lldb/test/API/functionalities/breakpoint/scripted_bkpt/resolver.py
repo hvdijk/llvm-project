@@ -51,6 +51,7 @@ class Resolver:
     def get_short_help(self):
         return "I am a python breakpoint resolver"
 
+
 class ResolverModuleDepth(Resolver):
     def __get_depth__(self):
         return lldb.eSearchDepthModule

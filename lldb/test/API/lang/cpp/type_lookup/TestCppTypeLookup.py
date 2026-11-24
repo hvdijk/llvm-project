@@ -2,7 +2,6 @@
 Test that we can lookup types correctly in the expression parser
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -27,7 +26,7 @@ class TestCppTypeLookup(TestBase):
         """
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.cpp")
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

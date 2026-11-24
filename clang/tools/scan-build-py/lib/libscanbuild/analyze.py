@@ -2,13 +2,13 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-""" This module implements the 'scan-build' command API.
+"""This module implements the 'scan-build' command API.
 
 To run the static analyzer against a build is done in multiple steps:
 
  -- Intercept: capture the compilation command during the build,
  -- Analyze:   run the analyzer against the captured commands,
- -- Report:    create a cover report from the analyzer outputs.  """
+ -- Report:    create a cover report from the analyzer outputs."""
 
 import re
 import os
@@ -540,7 +540,7 @@ def report_failure(opts):
     error = "crash" if opts["exit_code"] < 0 else "other_error"
     # Create preprocessor output file name. (This is blindly following the
     # Perl implementation.)
-    (handle, name) = tempfile.mkstemp(
+    handle, name = tempfile.mkstemp(
         suffix=extension(), prefix="clang_" + error + "_", dir=destination()
     )
     os.close(handle)
@@ -591,13 +591,13 @@ def run_analyzer(opts, continuation=report_failure):
     def target():
         """Creates output file name for reports."""
         if opts["output_format"] in {"plist", "plist-html", "plist-multi-file"}:
-            (handle, name) = tempfile.mkstemp(
+            handle, name = tempfile.mkstemp(
                 prefix="report-", suffix=".plist", dir=opts["output_dir"]
             )
             os.close(handle)
             return name
         elif opts["output_format"] in {"sarif", "sarif-html"}:
-            (handle, name) = tempfile.mkstemp(
+            handle, name = tempfile.mkstemp(
                 prefix="result-", suffix=".sarif", dir=opts["output_dir"]
             )
             os.close(handle)

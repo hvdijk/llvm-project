@@ -22,8 +22,7 @@ from libcxx.header_information import (
 )
 
 for header in public_headers:
-    print(
-        f"""\
+    print(f"""\
 //--- {header}.compile.pass.cpp
 {lit_header_undeprecations.get(header, '')}
 
@@ -198,5 +197,4 @@ static_assert(__builtin_strcmp(STRINGIFY(max), STRINGIFY(SYSTEM_RESERVED_NAME)) 
 static_assert(__builtin_strcmp(STRINGIFY(move), STRINGIFY(SYSTEM_RESERVED_NAME)) == 0, "");
 static_assert(__builtin_strcmp(STRINGIFY(erase), STRINGIFY(SYSTEM_RESERVED_NAME)) == 0, "");
 static_assert(__builtin_strcmp(STRINGIFY(refresh), STRINGIFY(SYSTEM_RESERVED_NAME)) == 0, "");
-"""
-    )
+""")

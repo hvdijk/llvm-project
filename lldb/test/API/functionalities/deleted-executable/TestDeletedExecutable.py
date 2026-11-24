@@ -2,7 +2,6 @@
 Test process attach when executable was deleted.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

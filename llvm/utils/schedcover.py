@@ -49,7 +49,7 @@ def display():
         sys.stdout.write(", {}".format(model))
     sys.stdout.write(os.linesep)
 
-    for (instr, mapping) in ordered_table:
+    for instr, mapping in ordered_table:
         sys.stdout.write(instr)
         for model in ordered_models:
             if model in mapping and mapping[model] is not None:

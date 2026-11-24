@@ -15,17 +15,14 @@ config.name = "ORC-RT"
 config.test_format = lit.formats.ShTest()
 config.test_source_root = os.path.dirname(__file__)
 config.test_exec_root = os.path.join(config.orc_rt_obj_root, "test", "regression")
-config.suffixes = [
-    ".test"
-]
+config.suffixes = [".test"]
 
 # Regression test-support tools live under test/tools.
 test_tools_dir = os.path.join(config.orc_rt_obj_root, "test", "tools")
 
 llvm_config.with_environment(
-    "PATH",
-    os.path.join(config.orc_rt_obj_root, "tools", "ogre"),
-    append_path=True)
+    "PATH", os.path.join(config.orc_rt_obj_root, "tools", "ogre"), append_path=True
+)
 llvm_config.with_environment("PATH", test_tools_dir, append_path=True)
 
 llvm_config.use_default_substitutions()
@@ -179,6 +176,7 @@ def normalise_machine(machine):
         "x64": "x86_64",
     }.get(arch, arch)
 
+
 # Probe the compiled-in logging configuration from orc-rt-log-check and
 # expose it as lit features, so logging tests can gate on the build's backend
 # and on which levels are actually emitted:
@@ -192,6 +190,7 @@ def add_logging_features():
     levels = run_test_tool("orc-rt-log-check", "--print-enabled-levels")
     for level in levels.split():
         config.available_features.add("orc-rt-log-level-" + level.lower())
+
 
 add_logging_features()
 

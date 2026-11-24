@@ -3,7 +3,6 @@
 import os, sys, subprocess
 from android_common import *
 
-
 here = os.path.abspath(os.path.dirname(sys.argv[0]))
 android_run = os.path.join(here, "android_run.py")
 

@@ -1,6 +1,7 @@
 """Script to exit 0 on the first run, and non-0 on subsequent
 runs. This demonstrates a flaky interestingness test.
 """
+
 import sys
 import pathlib
 

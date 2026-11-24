@@ -8,9 +8,7 @@ class TestCommandParser(Base):
         """Test indentation handling"""
         filename = self.getBuildArtifact("test_file.cpp")
         with open(filename, "w") as f:
-            f.write(
-                textwrap.dedent(
-                    """\
+            f.write(textwrap.dedent("""\
                     int q;
                     int w; //% first break
                     int e;
@@ -19,9 +17,7 @@ class TestCommandParser(Base):
                     //%   continuing indented
                       //% not indented
                     int t; //% third break
-                    """
-                )
-            )
+                    """))
         p = CommandParser()
         p.parse_source_files([filename])
 

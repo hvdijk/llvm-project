@@ -9,7 +9,6 @@ from lldbsuite.test import lldbtest, lldbutil
 from lldbsuite.test.decorators import *
 from lldbsuite.test_event.build_exception import BuildError
 
-
 SKELETON_DEBUGINFO_SIZE = 602
 MAIN_DWO_DEBUGINFO_SIZE = 385
 FOO_DWO_DEBUGINFO_SIZE = 380
@@ -37,7 +36,7 @@ class TestDebugInfoSize(lldbtest.TestBase):
 
     @add_test_categories(["dwo"])
     def test_dwo(self):
-        (exe, main_dwo, foo_dwo) = self.get_output_from_yaml()
+        exe, main_dwo, foo_dwo = self.get_output_from_yaml()
 
         # Make sure dwo files exist
         self.assertTrue(os.path.exists(main_dwo), f'Make sure "{main_dwo}" file exists')
@@ -62,7 +61,7 @@ class TestDebugInfoSize(lldbtest.TestBase):
 
     @add_test_categories(["dwo"])
     def test_only_load_skeleton_debuginfo(self):
-        (exe, main_dwo, foo_dwo) = self.get_output_from_yaml()
+        exe, main_dwo, foo_dwo = self.get_output_from_yaml()
 
         # REMOVE one of the dwo files
         os.unlink(main_dwo)
@@ -84,7 +83,7 @@ class TestDebugInfoSize(lldbtest.TestBase):
 
     @add_test_categories(["dwo"])
     def test_load_partial_dwos(self):
-        (exe, main_dwo, foo_dwo) = self.get_output_from_yaml()
+        exe, main_dwo, foo_dwo = self.get_output_from_yaml()
 
         # REMOVE one of the dwo files
         os.unlink(main_dwo)
@@ -108,7 +107,7 @@ class TestDebugInfoSize(lldbtest.TestBase):
 
     @add_test_categories(["dwo"])
     def test_dwos_loaded_symbols_on_demand(self):
-        (exe, main_dwo, foo_dwo) = self.get_output_from_yaml()
+        exe, main_dwo, foo_dwo = self.get_output_from_yaml()
 
         # Make sure dwo files exist
         self.assertTrue(os.path.exists(main_dwo), f'Make sure "{main_dwo}" file exists')

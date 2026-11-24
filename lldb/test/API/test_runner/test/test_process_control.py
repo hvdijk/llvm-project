@@ -11,7 +11,6 @@ within the LLDB test suite.
 Tests the process_control module.
 """
 
-
 # System imports.
 import os
 import os.path

@@ -60,8 +60,7 @@ def get_standard_mode_threshold(header):
 
 
 for header in headers:
-    print(
-        f"""\
+    print(f"""\
 //--- {header}.pass.cpp
 {lit_header_undeprecations.get(header, '')}
 
@@ -188,5 +187,4 @@ int main(int, char**)  {{
   return 0;
 }}
 
-"""
-    )
+""")

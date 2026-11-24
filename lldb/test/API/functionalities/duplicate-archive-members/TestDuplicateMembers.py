@@ -1,6 +1,5 @@
 """Test breaking inside functions defined within a BSD archive file libfoo.a."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

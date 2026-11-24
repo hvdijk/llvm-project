@@ -895,7 +895,7 @@ class TestCase(TestBase):
         # error when we run to main and try to get variables
         os.unlink(main_obj)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(self, "main")
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(self, "main")
 
         # Get stats and verify we had errors.
         stats = self.get_stats()
@@ -1363,14 +1363,14 @@ class TestCase(TestBase):
         main_exe = self.getBuildArtifact("a.out")
         second_exe = self.getBuildArtifact("second.out")
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp"), None, "a.out"
         )
         debugger_stats1 = self.get_stats()
         self.assertIsNotNone(self.find_module_in_metrics(main_exe, debugger_stats1))
         self.assertIsNone(self.find_module_in_metrics(second_exe, debugger_stats1))
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("second.cpp"), None, "second.out"
         )
         debugger_stats2 = self.get_stats()

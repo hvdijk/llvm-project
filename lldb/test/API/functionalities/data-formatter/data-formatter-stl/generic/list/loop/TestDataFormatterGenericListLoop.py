@@ -3,7 +3,6 @@ Test that the debugger handles loops in std::list (which can appear as a result 
 corruption).
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

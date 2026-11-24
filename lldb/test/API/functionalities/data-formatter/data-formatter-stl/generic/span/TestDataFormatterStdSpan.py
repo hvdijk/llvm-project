@@ -48,7 +48,7 @@ class StdSpanDataFormatterTestCase(TestBase):
 
     def do_test(self):
         """Test that std::span variables are formatted correctly when printed."""
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp", False)
         )
 
@@ -164,7 +164,7 @@ class StdSpanDataFormatterTestCase(TestBase):
 
     def do_test_ref_and_ptr(self):
         """Test that std::span is correctly formatted when passed by ref and ptr"""
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to check by ref", lldb.SBFileSpec("main.cpp", False)
         )
 

@@ -103,14 +103,12 @@ for command in args.script:
             if not process or error.fail:
                 state = process.GetState()
                 print("State = %d" % state)
-                print(
-                    """
+                print("""
 ERROR: Could not launch process.
 NOTE: There are several reasons why this may happen:
   * Root needs to run "DevToolsSecurity --enable".
   * Older versions of lldb cannot launch more than one process simultaneously.
-"""
-                )
+""")
                 sys.exit(1)
 
         elif re.match("^b|(break)$", cmd[0]) and len(cmd) == 2:

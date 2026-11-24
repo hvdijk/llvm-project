@@ -2,7 +2,6 @@
 Test calling a function that waits a while, and make sure the timeout option to expr works.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -24,7 +23,7 @@ class ExprCommandWithTimeoutsTestCase(TestBase):
         """Test calling std::String member function."""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "stop here in main.", self.main_source_spec
         )
 

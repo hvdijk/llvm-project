@@ -25,7 +25,7 @@ class TestOrderedSet(TestBase):
     def run_tests(self):
         src_file = "main.m"
         src_file_spec = lldb.SBFileSpec(src_file)
-        (target, process, thread, main_breakpoint) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, main_breakpoint = lldbutil.run_to_source_breakpoint(
             self, "break here", src_file_spec, exe_name="a.out"
         )
         frame = thread.GetSelectedFrame()

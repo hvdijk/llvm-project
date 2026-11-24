@@ -52,8 +52,7 @@ class MyResponder(MockGDBServerResponder):
                 """<?xml version="1.0"?>
                 <library-list-svr4 version="1.0">
                   <library name="%s" lm="0xdeadbeef" l_addr="0xef0000" l_ld="0xdeadbeef"/>
-                </library-list-svr4>"""
-                % self._library_name,
+                </library-list-svr4>""" % self._library_name,
                 False,
             )
         else:

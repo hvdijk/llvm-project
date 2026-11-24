@@ -20,7 +20,6 @@ from pygments.formatters import HtmlFormatter
 import optpmap
 import optrecord
 
-
 desc = """Generate HTML output to visualize optimization records from the YAML files
 generated with -fsave-optimization-record and -fdiagnostics-show-hotness.
 
@@ -73,9 +72,7 @@ class SourceFileRenderer:
 <html>
 <h1>Unable to locate file {}</h1>
 </html>
-            """.format(
-                    filename
-                ),
+            """.format(filename),
                 file=self.stream,
             )
 
@@ -104,7 +101,7 @@ class SourceFileRenderer:
             )
             html_highlighted = html_highlighted.replace("</pre></div>", "")
 
-        for (linenum, html_line) in enumerate(html_highlighted.split("\n"), start=1):
+        for linenum, html_line in enumerate(html_highlighted.split("\n"), start=1):
             print(
                 """
 <tr>
@@ -112,9 +109,7 @@ class SourceFileRenderer:
 <td></td>
 <td></td>
 <td><div class="highlight"><pre>{html_line}</pre></div></td>
-</tr>""".format(
-                    **locals()
-                ),
+</tr>""".format(**locals()),
                 file=self.stream,
             )
 
@@ -146,9 +141,7 @@ class SourceFileRenderer:
 <div class="full-info" style="display:none;">
   <div class="col-left"><pre style="display:inline">{}</pre></div>
   <div class="expanded col-left"><pre>{}</pre></div>
-</div>""".format(
-                indent, "\n".join(lines[1:])
-            )
+</div>""".format(indent, "\n".join(lines[1:]))
         else:
             expand_link = ""
             expand_message = ""
@@ -161,9 +154,7 @@ class SourceFileRenderer:
 <td class=\"column-entry-{r.color}\">{r.PassWithDiffPrefix}</td>
 <td><pre style="display:inline">{indent}</pre><span class=\"column-entry-yellow\">{expand_link} {message}&nbsp;</span>{expand_message}</td>
 <td class=\"column-entry-yellow\">{inlining_context}</td>
-</tr>""".format(
-                **locals()
-            ),
+</tr>""".format(**locals()),
             file=self.stream,
         )
 
@@ -208,9 +199,7 @@ function toggleExpandedMessage(e) {{
 <th style="width: 15%">Inline Context</td>
 </tr>
 </thead>
-<tbody>""".format(
-                os.path.basename(self.filename)
-            ),
+<tbody>""".format(os.path.basename(self.filename)),
             file=self.stream,
         )
         self.render_source_lines(self.source_stream, line_remarks)
@@ -244,9 +233,7 @@ class IndexRenderer:
 <td class=\"column-entry-{odd}\">{r.RelativeHotness}</td>
 <td class=\"column-entry-{odd}\">{escaped_name}</td>
 <td class=\"column-entry-{r.color}\">{r.PassWithDiffPrefix}</td>
-</tr>""".format(
-                **locals()
-            ),
+</tr>""".format(**locals()),
             file=self.stream,
         )
 

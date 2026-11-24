@@ -190,7 +190,7 @@ def diagnose_unwind(debugger, command, exe_ctx, result, internal_dict):
     command_args = shlex.split(command)
     parser = create_diagnose_unwind_options()
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
     target = exe_ctx.target
@@ -260,7 +260,7 @@ def diagnose_unwind(debugger, command, exe_ctx, result, internal_dict):
                 print("")
                 print("Simple stack walk algorithm:")
                 print("")
-                (module_list, address_list) = simple_backtrace(debugger)
+                module_list, address_list = simple_backtrace(debugger)
                 if module_list and module_list is not None:
                     modules_seen += module_list
                 if address_list and address_list is not None:

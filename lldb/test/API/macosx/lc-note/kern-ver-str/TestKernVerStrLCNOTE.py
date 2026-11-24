@@ -1,6 +1,5 @@
 """Test that corefiles with an LC_NOTE "kern ver str" load command is used."""
 
-
 import os
 import re
 import subprocess

@@ -1,6 +1,5 @@
 """Test custom import command to import files by path."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

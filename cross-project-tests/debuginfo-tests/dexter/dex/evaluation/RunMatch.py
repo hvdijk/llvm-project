@@ -4,8 +4,7 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-"""Classes for matching observed debugger output to script expectations.
-"""
+"""Classes for matching observed debugger output to script expectations."""
 
 # For each command, there is a set of metrics that can be generated. Metrics across multiple identical commands can be
 # aggregated, and each individual metric can be expressed in a scalar form that is considered "better" as it either
@@ -29,6 +28,7 @@ from dex.evaluation.Metrics import (
 from dex.evaluation.StateMatch import StateMatchContext, get_state_match
 from dex.test_script import DexterScript, Scope
 from dex.test_script.Nodes import Expect, ExpectAll, Line, Step
+
 
 class DebuggerStepMatch:
     """Class used to record the match between a DexterScript and a StepIR, including the state match, determining which

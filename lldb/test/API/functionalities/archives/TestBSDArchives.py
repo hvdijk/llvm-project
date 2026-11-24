@@ -1,6 +1,5 @@
 """Test breaking inside functions defined within a BSD archive file libfoo.a."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -110,7 +109,7 @@ class BSDArchivesTestCase(TestBase):
         # loaded and we should see an error when trying to read varibles.
         os.unlink(libfoo_path)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(
             self, "a", bkpt_module=exe
         )
 
@@ -198,7 +197,7 @@ class BSDArchivesTestCase(TestBase):
             substrs=["Breakpoint 1: where = a.out`a, address ="],
         )
         # Break at a() should fail
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(
             self, "a", bkpt_module=exe
         )
         error_strings = [
@@ -209,7 +208,7 @@ class BSDArchivesTestCase(TestBase):
         self.check_frame_variable_errors(thread, error_strings)
 
         # Break at b() should succeed
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(
             self, "b", bkpt_module=exe
         )
         self.expect(
@@ -243,7 +242,7 @@ class BSDArchivesTestCase(TestBase):
         os.utime(a_path, None)
         self.build(make_targets=["libfoo.a"])
 
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(
             self, "a", bkpt_module=exe
         )
 

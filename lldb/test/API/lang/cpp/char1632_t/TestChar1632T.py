@@ -3,7 +3,6 @@
 Test that the C++11 support for char16_t and char32_t works correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -10,6 +10,7 @@ import lit.TestingConfig
 import lit.util
 from lit.DiffUpdater import diff_test_updater
 
+
 # LitConfig must be a new style class for properties to work
 class LitConfig:
     """LitConfig - Configuration data for a 'lit' test runner instance, shared

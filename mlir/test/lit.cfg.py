@@ -372,6 +372,7 @@ if config.enable_python_stable_abi:
 if config.expensive_checks:
     config.available_features.add("expensive_checks")
 
+
 def have_host_jit_feature_support(feature_name):
     mlir_runner_exe = lit.util.which("mlir-runner", config.mlir_tools_dir)
 

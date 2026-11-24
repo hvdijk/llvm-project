@@ -2,6 +2,7 @@
 Test that the expression evaluator can access members of nested classes even if
 the parents of the nested classes were imported from another compilation unit.
 """
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -12,7 +13,7 @@ class TestNestedClassWithParentInAnotherCU(TestBase):
     def test_nested_class_with_parent_in_another_cu(self):
         self.main_source_file = lldb.SBFileSpec("main.cpp")
         self.build()
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// break here", self.main_source_file
         )
         frame = thread.GetSelectedFrame()

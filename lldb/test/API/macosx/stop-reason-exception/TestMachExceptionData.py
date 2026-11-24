@@ -2,7 +2,6 @@
 Test that we get the type code and subcode for MachExceptions
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -19,7 +18,7 @@ class TestMachExceptionData(TestBase):
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.c")
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

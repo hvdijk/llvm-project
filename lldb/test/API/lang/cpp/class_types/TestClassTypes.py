@@ -1,6 +1,5 @@
 """Test breakpoint on a class constructor; and variable list the this object."""
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

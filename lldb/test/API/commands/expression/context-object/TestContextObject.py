@@ -14,7 +14,7 @@ class ContextObjectTestCase(TestBase):
         """Tests expression evaluation in context of an object."""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
         frame = thread.GetFrameAtIndex(0)

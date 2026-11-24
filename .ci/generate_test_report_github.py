@@ -7,7 +7,6 @@ import argparse
 
 import generate_test_report_lib
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("return_code", help="The build's return code.", type=int)

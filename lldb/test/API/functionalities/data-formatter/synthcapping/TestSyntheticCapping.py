@@ -2,7 +2,6 @@
 Check for an issue where capping does not work because the Target pointer appears to be changing behind our backs
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -6,7 +6,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 """Command for specifying an expected set of values for a particular watch."""
 
-
 from dex.command.commands.DexExpectWatchBase import DexExpectWatchBase
 
 

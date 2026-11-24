@@ -2,7 +2,6 @@
 Test that an alias can reference other aliases without crashing.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import skipIfWasm
 from lldbsuite.test.lldbtest import *

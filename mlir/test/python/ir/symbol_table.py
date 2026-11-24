@@ -19,17 +19,13 @@ def run(f):
 def testSymbolTableInsert():
     with Context() as ctx:
         ctx.allow_unregistered_dialects = True
-        m1 = Module.parse(
-            """
+        m1 = Module.parse("""
       func.func private @foo()
-      func.func private @bar()"""
-        )
-        m2 = Module.parse(
-            """
+      func.func private @bar()""")
+        m2 = Module.parse("""
       func.func private @qux()
       func.func private @foo()
-      "foo.bar"() : () -> ()"""
-        )
+      "foo.bar"() : () -> ()""")
 
         symbol_table = SymbolTable(m1.operation)
 
@@ -97,15 +93,13 @@ def testSymbolTableInsert():
 @run
 def testSymbolTableRAUW():
     with Context() as ctx:
-        m = Module.parse(
-            """
+        m = Module.parse("""
       func.func private @foo() {
         call @bar() : () -> ()
         return
       }
       func.func private @bar()
-      """
-        )
+      """)
         foo, bar = list(m.operation.regions[0].blocks[0].operations)[0:2]
 
         # Do renaming just within `foo`.
@@ -135,13 +129,11 @@ def testSymbolTableRAUW():
 @run
 def testSymbolTableVisibility():
     with Context() as ctx:
-        m = Module.parse(
-            """
+        m = Module.parse("""
       func.func private @foo() {
         return
       }
-      """
-        )
+      """)
         foo = m.operation.regions[0].blocks[0].operations[0]
         # CHECK: Existing visibility: StringAttr("private")
         print(f"Existing visibility: {repr(SymbolTable.get_visibility(foo))}")
@@ -154,14 +146,12 @@ def testSymbolTableVisibility():
 @run
 def testWalkSymbolTables():
     with Context() as ctx:
-        m = Module.parse(
-            """
+        m = Module.parse("""
       module @outer {
         module @inner{
         }
       }
-      """
-        )
+      """)
 
         def callback(symbol_table_op, uses_visible):
             print(f"SYMBOL TABLE: {uses_visible}: {symbol_table_op}")

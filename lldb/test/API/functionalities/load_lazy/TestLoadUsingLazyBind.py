@@ -2,7 +2,6 @@
 Test that SBProcess.LoadImageUsingPaths uses RTLD_LAZY
 """
 
-
 import os
 import shutil
 import lldb
@@ -38,7 +37,7 @@ class LoadUsingLazyBind(TestBase):
         shutil.copy(libt2_1, libt2_0)
 
         # Launch a process and break
-        (target, process, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp"), extra_images=["t1"]
         )
 

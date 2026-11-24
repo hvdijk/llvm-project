@@ -21,8 +21,7 @@ class TestTraceLoad(TraceIntelPTTestCaseBase):
     def testAllSchemas(self):
         self.expect(
             "trace schema all",
-            substrs=[
-                """{
+            substrs=["""{
   "type": "intel-pt",
   "cpuInfo": {
     // CPU information gotten from, for example, /proc/cpuinfo.
@@ -31,6 +30,5 @@ class TestTraceLoad(TraceIntelPTTestCaseBase):
     "family": integer,
     "model": integer,
     "stepping": integer
-  },"""
-            ],
+  },"""],
         )

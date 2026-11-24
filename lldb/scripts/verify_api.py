@@ -14,7 +14,7 @@ def extract_exe_symbol_names(arch, exe_path, match_str):
         exe_path,
         match_str,
     )
-    (command_exit_status, command_output) = subprocess.getstatusoutput(command)
+    command_exit_status, command_output = subprocess.getstatusoutput(command)
     if command_exit_status == 0:
         if command_output:
             return command_output[0:-1].split("'\n")
@@ -71,7 +71,7 @@ def verify_api(all_args):
         dest="libraries",
         help="Specify one or more libraries that will contain all needed APIs for the executables.",
     )
-    (options, args) = parser.parse_args(all_args)
+    options, args = parser.parse_args(all_args)
 
     api_external_symbols = list()
     if options.archs:

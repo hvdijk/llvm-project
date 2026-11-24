@@ -9,6 +9,7 @@ from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
 import random
 
+
 # See also: https://github.com/llvm/llvm-project/issues/37721
 @skip(bugnumber="https://github.com/llvm/llvm-project/issues/24104")
 class EventAPITestCase(TestBase):
@@ -311,6 +312,7 @@ class EventAPITestCase(TestBase):
         If test_shadow is true, we also check that the shadow listener only
         receives events AFTER the primary listener does."""
         import stop_hook
+
         # Waiting on the shadow listener shouldn't have events yet because
         # we haven't fetched them for the primary listener yet:
         event = lldb.SBEvent()

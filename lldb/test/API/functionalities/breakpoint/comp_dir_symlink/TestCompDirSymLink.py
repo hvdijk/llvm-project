@@ -2,13 +2,11 @@
 Test breakpoint command with AT_comp_dir set to symbolic link.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
-
 
 _EXE_NAME = "CompDirSymLink"  # Must match Makefile
 _SRC_FILE = "relative.cpp"

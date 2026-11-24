@@ -27,7 +27,7 @@ class ConsecutiveWatchpointsTestCase(TestBase):
         """Test watchpoint that covers a large region of memory."""
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.c")
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", self.main_source_file
         )
 

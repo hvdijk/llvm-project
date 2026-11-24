@@ -2,7 +2,6 @@
 Test the lldb platform Python API.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,7 +2,6 @@
 Test that SBProcess.LoadImageUsingPaths works correctly.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *
@@ -47,7 +46,7 @@ class LoadUsingPathsTestCase(TestBase):
         # The directory with the dynamic library we did not link to.
         path_dir = os.path.join(self.getBuildDir(), "hidden")
 
-        (target, process, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "Break here to do the load using paths", lldb.SBFileSpec("main.cpp")
         )
         error = lldb.SBError()

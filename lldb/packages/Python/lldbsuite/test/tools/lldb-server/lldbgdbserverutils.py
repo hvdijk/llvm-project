@@ -1,5 +1,4 @@
-"""Module for supporting unit testing of the lldb-server debug monitor exe.
-"""
+"""Module for supporting unit testing of the lldb-server debug monitor exe."""
 
 import binascii
 import os
@@ -15,6 +14,7 @@ from textwrap import dedent
 import shutil
 import select
 import random
+
 
 def _get_support_exe(basename):
     support_dir = lldb.SBHostOS.GetLLDBPath(lldb.ePathTypeSupportExecutableDir)
@@ -251,7 +251,7 @@ def parse_reg_info_response(response_packet):
     for kv in response_packet.split(";"):
         if len(kv) < 1:
             continue
-        (key, val) = kv.split(":")
+        key, val = kv.split(":")
         values[key] = val
 
     return values
@@ -998,15 +998,13 @@ class Server(object):
         return output
 
     def __str__(self):
-        return dedent(
-            """\
+        return dedent("""\
             server '{}' on '{}'
             _receive_buffer: {}
             _normal_queue: {}
             _output_queue: {}
             _accumulated_output: {}
-            """
-        ).format(
+            """).format(
             self._proc,
             self._sock,
             self._receive_buffer,
@@ -1152,7 +1150,7 @@ else:
             pass
 
         def read(self, size, timeout):
-            (readers, _, _) = select.select([self._fd], [], [], timeout)
+            readers, _, _ = select.select([self._fd], [], [], timeout)
             if self._fd not in readers:
                 raise TimeoutError
             return os.read(self._fd, size)

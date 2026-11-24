@@ -2,7 +2,7 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-""" This module is responsible to capture the compiler invocation of any
+"""This module is responsible to capture the compiler invocation of any
 build process. The result of that should be a compilation database.
 
 This implementation is using the LD_PRELOAD or DYLD_INSERT_LIBRARIES
@@ -17,7 +17,7 @@ files shall be placed. This parameter is passed as an environment variable.
 The module also implements compiler wrappers to intercept the compiler calls.
 
 The module implements the build command execution and the post-processing of
-the output files, which will condensates into a compilation database. """
+the output files, which will condensates into a compilation database."""
 
 import sys
 import os

@@ -13,7 +13,7 @@ class TestCase(TestBase):
 
     def do_test(self):
         """Test `frame variable` output for `std::shared_ptr` types."""
-        (_, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        _, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 

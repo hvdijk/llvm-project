@@ -15,7 +15,7 @@ class CompileUnitAPITestCase(TestBase):
         """Exercise some SBCompileUnit APIs."""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.c")
         )
         self.assertTrue(target, VALID_TARGET)

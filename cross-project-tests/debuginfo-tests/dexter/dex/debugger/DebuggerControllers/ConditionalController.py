@@ -6,7 +6,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 """Conditional Controller Class for DExTer.-"""
 
-
 import os
 import time
 from collections import defaultdict
@@ -23,6 +22,7 @@ from dex.debugger.DebuggerBase import DebuggerBase
 from dex.utils.Exceptions import DebuggerException
 from dex.utils.Timeout import Timeout
 from dex.dextIR import LocIR
+
 
 class BreakpointRange:
     """A range of breakpoints and a set of conditions.

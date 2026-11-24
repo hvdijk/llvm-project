@@ -87,7 +87,7 @@ class GlobalModuleCacheTestCase(TestBase):
         self.copy_to_main(one_print_path, main_c_path)
         self.build(dictionary={"C_SOURCES": main_c_path, "EXE": "a.out"})
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", main_filespec
         )
 

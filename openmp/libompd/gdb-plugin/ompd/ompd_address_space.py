@@ -77,7 +77,7 @@ class ompd_address_space(object):
         more = 1
         while more > 0:
             tup = ompdModule.call_ompd_enumerate_icvs(self.addr_space, current)
-            (current, next_icv, next_scope, more) = tup
+            current, next_icv, next_scope, more = tup
             self.icv_map[next_icv] = (current, next_scope, self.scope_map[next_scope])
         print("Initialized ICV map successfully for checking OMP API values.")
 
@@ -432,7 +432,7 @@ class ompd_address_space(object):
         if verbose:
             if self.states is None:
                 self.enumerate_states()
-            for (thread_num, thread_ptid) in sorted(list_tids):
+            for thread_num, thread_ptid in sorted(list_tids):
                 if thread_num in self.threads:
                     try:
                         print(
@@ -463,7 +463,7 @@ class ompd_address_space(object):
 
             while more > 0:
                 tup = ompdModule.call_ompd_enumerate_states(self.addr_space, current)
-                (next_state, next_state_name, more) = tup
+                next_state, next_state_name, more = tup
 
                 self.states[next_state] = next_state_name
                 current = next_state

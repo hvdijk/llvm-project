@@ -2,7 +2,6 @@
 Test getting return-values correctly when stepping out
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

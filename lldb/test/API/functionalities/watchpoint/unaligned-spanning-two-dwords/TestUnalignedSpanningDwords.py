@@ -5,7 +5,6 @@ need to be implemented with a hardware watchpoint on both
 doublewords.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -36,7 +35,7 @@ class UnalignedWatchpointTestCase(TestBase):
         """Test a watchpoint that is handled by two hardware watchpoint registers."""
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.c")
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", self.main_source_file
         )
 

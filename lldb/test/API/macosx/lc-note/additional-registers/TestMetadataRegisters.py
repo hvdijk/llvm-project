@@ -77,7 +77,7 @@ class TestMetadataRegisters(TestBase):
         wrapping_metadata_corefile = self.getBuildArtifact("wrapping-metadata.core")
         add_lcnote = self.getBuildArtifact("add-lcnote")
 
-        (target, process, t, bp) = lldbutil.run_to_source_breakpoint(
+        target, process, t, bp = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.c")
         )
 

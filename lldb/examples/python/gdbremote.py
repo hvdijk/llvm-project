@@ -218,7 +218,7 @@ def start_gdb_log(debugger, command, result, dict):
         default=False,
     )
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
 
@@ -311,7 +311,7 @@ def stop_gdb_log(debugger, command, result, dict):
         default=False,
     )
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
     options.colors = TerminalColors(options.color)
@@ -868,7 +868,7 @@ def cmd_vCont(options, cmd, args):
         got_other_threads = 0
         s = ""
         for thread_action in args[1:].split(";"):
-            (short_action, thread) = thread_action.split(":", 1)
+            short_action, thread = thread_action.split(":", 1)
             tid = int(thread, 16)
             if short_action == "c":
                 action = "continue"
@@ -931,7 +931,7 @@ def rsp_vCont(options, cmd, cmd_args, rsp):
 
 
 def cmd_vAttach(options, cmd, args):
-    (extra_command, args) = args.split(";")
+    extra_command, args = args.split(";")
     if extra_command:
         print("%s%s(%s)" % (cmd, extra_command, args))
     else:
@@ -1689,7 +1689,7 @@ def parse_gdb_log(file, options):
             last_time = curr_time
         # else:
         #     print line
-    (average, std_dev) = calculate_mean_and_standard_deviation(all_packet_times)
+    average, std_dev = calculate_mean_and_standard_deviation(all_packet_times)
     if average and std_dev:
         print(
             "%u packets with average packet time of %f and standard deviation of %f"
@@ -1788,7 +1788,7 @@ if __name__ == "__main__":
         default=False,
     )
     try:
-        (options, args) = parser.parse_args(sys.argv[1:])
+        options, args = parser.parse_args(sys.argv[1:])
     except:
         print("error: argument error")
         sys.exit(1)

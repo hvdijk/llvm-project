@@ -10,7 +10,6 @@ import re
 from hdrgen.symbol import Symbol
 from hdrgen.type import Type
 
-
 # These are the keywords that appear in C type syntax but are not part of the
 # include file name.  This is all of the modifiers, qualifiers, and base types,
 # but not "struct".

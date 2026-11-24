@@ -181,10 +181,8 @@ class TestTraceStartStop(TraceIntelPTTestCaseBase):
         self.expect("n")
         self.expect(
             "thread trace dump instructions",
-            substrs=[
-                """0x0000000000400511    movl   $0x0, -0x4(%rbp)
-    no more data"""
-            ],
+            substrs=["""0x0000000000400511    movl   $0x0, -0x4(%rbp)
+    no more data"""],
         )
         # process stopping should stop the thread
         self.expect("process trace stop")
@@ -246,41 +244,35 @@ class TestTraceStartStop(TraceIntelPTTestCaseBase):
         self.expect("n")
         self.expect(
             "thread trace dump instructions -f",
-            patterns=[
-                rf"""thread #1: tid = .*
+            patterns=[rf"""thread #1: tid = .*
   a.out`main \+ 4 at main.cpp:2
-    2: {ADDRESS_REGEX}    movl"""
-            ],
+    2: {ADDRESS_REGEX}    movl"""],
         )
 
         # We can reconstruct the instructions up to the second line
         self.expect("n")
         self.expect(
             "thread trace dump instructions -f",
-            patterns=[
-                rf"""thread #1: tid = .*
+            patterns=[rf"""thread #1: tid = .*
   a.out`main \+ 4 at main.cpp:2
     2: {ADDRESS_REGEX}    movl .*
   a.out`main \+ 11 at main.cpp:4
     4: {ADDRESS_REGEX}    movl .*
     6: {ADDRESS_REGEX}    jmp  .* ; <\+28> at main.cpp:4
     8: {ADDRESS_REGEX}    cmpl .*
-    10: {ADDRESS_REGEX}    jle  .* ; <\+20> at main.cpp:5"""
-            ],
+    10: {ADDRESS_REGEX}    jle  .* ; <\+20> at main.cpp:5"""],
         )
 
         self.expect(
             "thread trace dump instructions",
-            patterns=[
-                rf"""thread #1: tid = .*
+            patterns=[rf"""thread #1: tid = .*
   a.out`main \+ 32 at main.cpp:4
     10: {ADDRESS_REGEX}    jle  .* ; <\+20> at main.cpp:5
     8: {ADDRESS_REGEX}    cmpl .*
     6: {ADDRESS_REGEX}    jmp  .* ; <\+28> at main.cpp:4
     4: {ADDRESS_REGEX}    movl .*
   a.out`main \+ 4 at main.cpp:2
-    2: {ADDRESS_REGEX}    movl .* """
-            ],
+    2: {ADDRESS_REGEX}    movl .* """],
         )
 
         # We stop tracing
@@ -299,20 +291,16 @@ class TestTraceStartStop(TraceIntelPTTestCaseBase):
         self.expect("n")
         self.expect(
             "thread trace dump instructions -f",
-            patterns=[
-                rf"""thread #1: tid = .*
+            patterns=[rf"""thread #1: tid = .*
   a.out`main \+ 20 at main.cpp:5
-    2: {ADDRESS_REGEX}    xorl"""
-            ],
+    2: {ADDRESS_REGEX}    xorl"""],
         )
 
         self.expect(
             "thread trace dump instructions",
-            patterns=[
-                rf"""thread #1: tid = .*
+            patterns=[rf"""thread #1: tid = .*
   a.out`main \+ 20 at main.cpp:5
-    2: {ADDRESS_REGEX}    xorl"""
-            ],
+    2: {ADDRESS_REGEX}    xorl"""],
         )
 
         self.expect("c")
@@ -338,8 +326,6 @@ class TestTraceStartStop(TraceIntelPTTestCaseBase):
         self.expect("si")
         self.expect(
             "thread trace dump instructions -c 1",
-            patterns=[
-                rf"""thread #1: tid = .*
-  a.out`main \+ 11 at main.cpp:4"""
-            ],
+            patterns=[rf"""thread #1: tid = .*
+  a.out`main \+ 11 at main.cpp:4"""],
         )

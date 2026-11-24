@@ -15,7 +15,7 @@ class TestSynthesizedPropertyAccessor(TestBase):
     def test(self):
         self.build()
 
-        (target, _, _, _) = lldbutil.run_to_source_breakpoint(
+        target, _, _, _ = lldbutil.run_to_source_breakpoint(
             self, "return f.fooProp", lldb.SBFileSpec("main.m")
         )
 

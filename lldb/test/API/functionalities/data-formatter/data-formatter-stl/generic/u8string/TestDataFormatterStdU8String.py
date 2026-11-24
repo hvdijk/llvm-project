@@ -3,7 +3,6 @@
 Test std::u8string summary.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

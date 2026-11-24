@@ -2,7 +2,7 @@
 DTLTO local serial distributor.
 
 This script parses the Distributed ThinLTO (DTLTO) JSON file and serially
-executes the specified code generation tool on the local host to perform each 
+executes the specified code generation tool on the local host to perform each
 backend compilation job. This simple functional distributor is intended to be
 used for integration tests.
 

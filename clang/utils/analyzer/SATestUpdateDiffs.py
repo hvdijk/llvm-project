@@ -3,6 +3,7 @@
 """
 Update reference results for static analyzer.
 """
+
 import SATestBuild
 from ProjectMap import ProjectInfo, ProjectMap
 

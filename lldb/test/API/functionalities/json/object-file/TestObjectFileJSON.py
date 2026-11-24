@@ -105,9 +105,9 @@ class TestObjectFileJSON(TestBase):
                     "type": "container",
                     "address": 0,
                     "size": 0x100000000,
-                    "flags": 0x101
-              },
-              {
+                    "flags": 0x101,
+                },
+                {
                     "user_id": 0x200,
                     "name": "__TEXT",
                     "type": "container",
@@ -134,20 +134,20 @@ class TestObjectFileJSON(TestBase):
                             "name": "__fake",
                             "address": TEXT_file_addr + 1 * text_size,
                             "size": text_size,
-                            "fake": True
+                            "fake": True,
                         },
                         {
                             "name": "__encrypted",
                             "address": TEXT_file_addr + 2 * text_size,
                             "size": text_size,
-                            "encrypted": True
+                            "encrypted": True,
                         },
                         {
                             "name": "__tls",
                             "address": TEXT_file_addr + 2 * text_size,
                             "size": text_size,
-                            "thread_specific": True
-                        }
+                            "thread_specific": True,
+                        },
                     ],
                 },
                 {
@@ -247,16 +247,18 @@ class TestObjectFileJSON(TestBase):
 
         # Verify the user_ids and flags are set correctly since there is no API
         # for this on lldb.SBSection
-        self.expect("target modules dump sections c.json",
-            substrs = [
+        self.expect(
+            "target modules dump sections c.json",
+            substrs=[
                 "0x0000000000000100 container              [0x0000000000000000-0x0000000100000000)  ---  0x00000000 0x00000000 0x00000101 c.json.__PAGEZERO",
                 "0x0000000000000200 container              [0x0000000100000000-0x0000000100000222)  r-x  0x00000000 0x00000222 0x00000202 c.json.__TEXT",
                 "0x0000000000000001 code                   [0x0000000100000000-0x0000000100000020)  r-x  0x00000000 0x00000000 0x00000000 c.json.__TEXT.__text",
                 "0x0000000000000002 code                   [0x0000000100000020-0x0000000100000040)  ---  0x00000000 0x00000000 0x00000000 c.json.__TEXT.__fake",
                 "0x0000000000000003 code                   [0x0000000100000040-0x0000000100000060)  ---  0x00000000 0x00000000 0x00000000 c.json.__TEXT.__encrypted",
                 "0x0000000000000004 code                   [0x0000000100000040-0x0000000100000060)  ---  0x00000000 0x00000000 0x00000000 c.json.__TEXT.__tls",
-                "0x0000000000000005 data                   [0x0000000100001000-0x0000000100001333)  rw-  0x00001000 0x00000333 0x00000303 c.json.__DATA"
-            ])
+                "0x0000000000000005 data                   [0x0000000100001000-0x0000000100001333)  rw-  0x00001000 0x00000333 0x00000303 c.json.__DATA",
+            ],
+        )
 
         error = target.SetSectionLoadAddress(TEXT_section, TEXT_file_addr + slide)
         self.assertSuccess(error)

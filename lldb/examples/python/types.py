@@ -172,7 +172,7 @@ def verify_type(target, options, type):
     print(type)
     typename = type.GetName()
     # print 'type: %s' % (typename)
-    (end_offset, padding) = verify_type_recursive(target, options, type, None, 0, 0, 0)
+    end_offset, padding = verify_type_recursive(target, options, type, None, 0, 0, 0)
     byte_size = type.GetByteSize()
     # if end_offset < byte_size:
     #     last_member_padding = byte_size - end_offset
@@ -244,7 +244,7 @@ def verify_type_recursive(
                     )
 
             if member_is_class_or_struct:
-                (prev_end_offset, padding) = verify_type_recursive(
+                prev_end_offset, padding = verify_type_recursive(
                     target,
                     options,
                     member_canonical_type,
@@ -306,7 +306,7 @@ def check_padding_command(debugger, command, exe_ctx, result, internal_dict):
     command_args = shlex.split(command)
     parser = create_types_options(True)
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         # if you don't handle exceptions, passing an incorrect argument to the OptionParser will cause LLDB to exit
         # (courtesy of OptParse dealing with argument errors by throwing SystemExit)
@@ -380,7 +380,7 @@ if __name__ == "__main__":
     parser = create_types_options(False)
 
     # try:
-    (options, args) = parser.parse_args(sys.argv[1:])
+    options, args = parser.parse_args(sys.argv[1:])
     # except:
     #     print "error: option parsing failed"
     #     sys.exit(1)

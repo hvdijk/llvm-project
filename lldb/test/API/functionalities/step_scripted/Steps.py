@@ -130,9 +130,9 @@ class StepReportsStopOthers:
 
     def should_stop(self, event):
         self.thread_plan.SetPlanComplete(True)
-        StepReportsStopOthers.stop_mode_dict[
-            self.key
-        ] = self.thread_plan.GetStopOthers()
+        StepReportsStopOthers.stop_mode_dict[self.key] = (
+            self.thread_plan.GetStopOthers()
+        )
         return True
 
     def should_step(self):

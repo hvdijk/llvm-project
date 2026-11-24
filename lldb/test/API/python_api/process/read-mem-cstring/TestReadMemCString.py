@@ -1,6 +1,5 @@
 """Test reading c-strings from memory via SB API."""
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *
@@ -24,7 +23,7 @@ class TestReadMemCString(TestBase):
         self.main_source_spec = lldb.SBFileSpec(self.main_source_path)
         self.exe = self.getBuildArtifact("read-mem-cstring")
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "breakpoint here", self.main_source_spec, None, self.exe
         )
 

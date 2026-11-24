@@ -15,18 +15,14 @@ def run(f):
 @run
 def testEncodingAttr1D():
     with Context() as ctx:
-        parsed = Attribute.parse(
-            textwrap.dedent(
-                """\
+        parsed = Attribute.parse(textwrap.dedent("""\
                 #sparse_tensor.encoding<{
                     map = (d0) -> (d0 : compressed),
                     posWidth = 16,
                     crdWidth = 32,
                     explicitVal = 1.0 : f64
                 }>\
-            """
-            )
-        )
+            """))
         # CHECK: #sparse_tensor.encoding<{ map = (d0) -> (d0 : compressed), posWidth = 16, crdWidth = 32, explicitVal = 1.000000e+00 : f64 }>
         print(parsed)
 
@@ -69,18 +65,14 @@ def testEncodingAttr1D():
 @run
 def testEncodingAttrStructure():
     with Context() as ctx:
-        parsed = Attribute.parse(
-            textwrap.dedent(
-                """\
+        parsed = Attribute.parse(textwrap.dedent("""\
                 #sparse_tensor.encoding<{
                     map = (d0, d1) -> (d0 : dense, d1 floordiv 4 : dense,
                     d1 mod 4 : structured[2, 4]),
                     posWidth = 16,
                     crdWidth = 32,
                 }>\
-            """
-            )
-        )
+            """))
         # CHECK: #sparse_tensor.encoding<{ map = (d0, d1) -> (d0 : dense, d1 floordiv 4 : dense, d1 mod 4 : structured[2, 4]), posWidth = 16, crdWidth = 32 }>
         print(parsed)
 
@@ -160,17 +152,13 @@ def testEncodingAttrStructure():
 @run
 def testEncodingAttr2D():
     with Context() as ctx:
-        parsed = Attribute.parse(
-            textwrap.dedent(
-                """\
+        parsed = Attribute.parse(textwrap.dedent("""\
                 #sparse_tensor.encoding<{
                     map = (d0, d1) -> (d1 : dense, d0 : compressed),
                     posWidth = 8,
                     crdWidth = 32,
                 }>\
-            """
-            )
-        )
+            """))
         # CHECK: #sparse_tensor.encoding<{ map = (d0, d1) -> (d1 : dense, d0 : compressed), posWidth = 8, crdWidth = 32 }>
         print(parsed)
 
@@ -206,19 +194,13 @@ def testEncodingAttr2D():
 @run
 def testEncodingAttrOnTensorType():
     with Context() as ctx, Location.unknown():
-        encoding = st.EncodingAttr(
-            Attribute.parse(
-                textwrap.dedent(
-                    """\
+        encoding = st.EncodingAttr(Attribute.parse(textwrap.dedent("""\
                     #sparse_tensor.encoding<{
                         map = (d0) -> (d0 : compressed),
                         posWidth = 64,
                         crdWidth = 32,
                     }>\
-                """
-                )
-            )
-        )
+                """)))
         tt = RankedTensorType.get((1024,), F32Type.get(), encoding=encoding)
         # CHECK: tensor<1024xf32, #sparse_tensor.encoding<{ map = (d0) -> (d0 : compressed), posWidth = 64, crdWidth = 32 }>>
         print(tt)

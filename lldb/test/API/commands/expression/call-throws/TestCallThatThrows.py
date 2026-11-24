@@ -2,7 +2,6 @@
 Test calling a function that throws an ObjC exception, make sure that it doesn't propagate the exception.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -33,7 +32,7 @@ class ExprCommandWithThrowTestCase(TestBase):
 
     def call_function(self):
         """Test calling function that throws."""
-        (target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "I am about to throw.", self.main_source_spec
         )
 

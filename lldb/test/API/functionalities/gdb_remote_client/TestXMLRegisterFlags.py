@@ -1,4 +1,4 @@
-""" Check that register fields found in target XML are properly processed.
+"""Check that register fields found in target XML are properly processed.
 
 These tests make XML out of string substitution. This can lead to some strange
 failures. Check that the final XML is valid and each child is indented more than
@@ -42,18 +42,14 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def setup_register_test(self, registers):
         self.setup_multidoc_test(
             # This *must* begin with the opening tag, leading whitespace is not allowed.
-            {
-                "target.xml": dedent(
-                    """\
+            {"target.xml": dedent("""\
             <?xml version="1.0"?>
               <target version="1.0">
                 <architecture>aarch64</architecture>
                 <feature name="org.gnu.gdb.aarch64.core">
                   {}
                 </feature>
-            </target>"""
-                ).format(registers)
-            }
+            </target>""").format(registers)}
         )
 
     def setup_flags_test(self, flags):
@@ -67,9 +63,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""".format(
-                flags
-            )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""".format(flags)
         )
 
     @skipIfXmlSupportMissing
@@ -81,14 +75,12 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfXmlSupportMissing
     @skipIfRemote
     def test_unsupported_flags_size_stays_raw(self):
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="flags24" size="3">
             <field name="field" start="0" end="0"/>
           </flags>
           <reg name="flags24" regnum="0" bitsize="24" type="flags24"/>
-          <reg name="pc" bitsize="64"/>"""
-        )
+          <reg name="pc" bitsize="64"/>""")
 
         self.expect("register read flags24", substrs=["flags24 = 0x777777"])
         self.expect("register read flags24", matching=False, substrs=["field ="])
@@ -109,10 +101,8 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfXmlSupportMissing
     @skipIfRemote
     def test_multiple_fields_sorted(self):
-        self.setup_flags_test(
-            """<field name="SP" start="0" end="0"/>
-                                 <field name="EL" start="1" end="2"/>"""
-        )
+        self.setup_flags_test("""<field name="SP" start="0" end="0"/>
+                                 <field name="EL" start="1" end="2"/>""")
 
         # Fields should be sorted with MSB on the left.
         self.expect("register read cpsr", substrs=["(EL = 3, SP = 1)"])
@@ -170,8 +160,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfRemote
     def test_little_endian_target_order(self):
         # We are using little endian AArch64 here.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
            <flags id="cpsr_flags" size="4">
              <field name="lsb" start="0" end="0"/>
              <field name="msb" start="31" end="31"/>
@@ -182,8 +171,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
            </flags>
            <reg name="pc" bitsize="64"/>
            <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-           <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+           <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         # If lldb used the wrong byte ordering for the value for printing fields,
         # these field values would flip. Since the top and bottom bits of 0x7 and 0xE
@@ -204,10 +192,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfLLVMTargetMissing("SystemZ")
     def test_big_endian_target_order(self):
         # s390x/SystemZ is big endian.
-        self.setup_multidoc_test(
-            {
-                "target.xml": dedent(
-                    """\
+        self.setup_multidoc_test({"target.xml": dedent("""\
               <?xml version="1.0"?>
               <target version="1.0">
                 <architecture>s390x</architecture>
@@ -224,10 +209,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
                   <reg name="fpc" bitsize="32" type="fpc_flags"/>
                   <reg name="pswa" bitsize="64"/>
                 </feature>
-              </target>"""
-                )
-            }
-        )
+              </target>""")})
 
         # If we did not swap correctly, these fields would show as 1s when run on
         # a little endian host.
@@ -244,8 +226,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfXmlSupportMissing
     @skipIfRemote
     def test_many_flag_sets(self):
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="4">
             <field name="correct" start="0" end="0"/>
           </flags>
@@ -257,8 +238,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect(
             "register read cpsr x0",
@@ -277,8 +257,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
         # This is because we assign the types to registers as we go. If we allowed
         # the later flag set, it would destroy the first definition, making the
         # pointer to the flags invalid.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="4">
             <field name="correct" start="0" end="0"/>
           </flags>
@@ -286,19 +265,16 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
             <field name="incorrect" start="0" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register read cpsr", substrs=["(correct = 1)"])
 
     @skipIfXmlSupportMissing
     @skipIfRemote
     def test_missing_flags(self):
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <reg name="pc" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         # Register prints with default formatting only if we can't find the
         # flags type.
@@ -310,8 +286,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_flags_invalid_size(self):
         # We're not using the size for anything yet so just check that we handle
         # it not being a positive integer.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="???">
             <field name="A" start="0" end="0"/>
           </flags>
@@ -322,8 +297,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
             <field name="C" start="0" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         # Only the final set has a valid size, use that.
         self.expect("register read cpsr", substrs=["(C = 1)"])
@@ -332,14 +306,12 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfRemote
     def test_flags_unknown_attribute(self):
         # Unknown attributes on flags or field are ignored.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="4" stuff="abcd">
             <field name="A" start="0" abcd="???" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register read cpsr", substrs=["(A = 1)"])
 
@@ -348,8 +320,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_flags_required_attributes(self):
         # flags must have an id and size so the flags with "C" is the only valid one
         # here.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags size="4">
             <field name="A" start="0" end="0"/>
           </flags>
@@ -360,8 +331,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
             <field name="C" start="0" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register read cpsr", substrs=["(C = 1)"])
 
@@ -370,14 +340,12 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_flags_register_size_mismatch(self):
         # If the size of the flag set found does not match the size of the
         # register, we discard the flags.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="8">
             <field name="C" start="0" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register read cpsr", substrs=["(C = 1)"], matching=False)
 
@@ -386,15 +354,13 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_flags_set_even_if_format_set(self):
         # lldb also sends "format". If that is set, we should still read the
         # flags type.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="4">
             <field name="B" start="0" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"
-            format="example"/>"""
-        )
+            format="example"/>""")
 
         self.expect("register read cpsr", substrs=["(B = 1)"])
 
@@ -403,15 +369,13 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_flags_set_even_if_encoding_set(self):
         # lldb also sends "encoding". If that is set, we should still read the
         # flags type.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="4">
             <field name="B" start="0" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"
-            encoding="example"/>"""
-        )
+            encoding="example"/>""")
 
         self.expect("register read cpsr", substrs=["(B = 1)"])
 
@@ -419,15 +383,13 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfRemote
     def test_flags_set_even_if_encoding_and_format_set(self):
         # As above but both encoding and format are set.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="4">
             <field name="B" start="0" end="0"/>
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"
-            encoding="example" format="example"/>"""
-        )
+            encoding="example" format="example"/>""")
 
         self.expect("register read cpsr", substrs=["(B = 1)"])
 
@@ -490,16 +452,13 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
             {
                 # The formatting is very specific here. lldb doesn't like leading
                 # spaces, and nested tags must be indented more than their parent.
-                "target.xml": dedent(
-                    """\
+                "target.xml": dedent("""\
                <?xml version="1.0"?>
                <target version="1.0">
                  <architecture>aarch64</architecture>
                  <xi:include href="core.xml"/>
-               </target>"""
-                ),
-                "core.xml": dedent(
-                    """\
+               </target>"""),
+                "core.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="org.gnu.gdb.aarch64.core">
                   <flags id="cpsr_flags" size="4">
@@ -509,8 +468,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
                   <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
                   <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>
                 </feature>
-            """
-                ),
+            """),
             }
         )
 
@@ -521,17 +479,14 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_xml_includes_multiple(self):
         self.setup_multidoc_test(
             {
-                "target.xml": dedent(
-                    """\
+                "target.xml": dedent("""\
                <?xml version="1.0"?>
                <target version="1.0">
                  <architecture>aarch64</architecture>
                  <xi:include href="core.xml"/>
                  <xi:include href="core-2.xml"/>
-               </target>"""
-                ),
-                "core.xml": dedent(
-                    """\
+               </target>"""),
+                "core.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="org.gnu.gdb.aarch64.core">
                   <flags id="x0_flags" size="8">
@@ -539,10 +494,8 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
                   </flags>
                   <reg name="pc" bitsize="64"/>
                   <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-                </feature>"""
-                ),
-                "core-2.xml": dedent(
-                    """\
+                </feature>"""),
+                "core-2.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="org.gnu.gdb.aarch64.system">
                   <flags id="cpsr_flags" size="4">
@@ -550,8 +503,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
                   </flags>
                   <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>
                 </feature>
-            """
-                ),
+            """),
             }
         )
 
@@ -562,8 +514,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_xml_type_ids_scoped_to_feature(self):
         self.setup_multidoc_test(
             {
-                "target.xml": dedent(
-                    """\
+                "target.xml": dedent("""\
                 <?xml version="1.0"?>
                 <target version="1.0">
                   <architecture>aarch64</architecture>
@@ -592,8 +543,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
                   <feature name="feature.c">
                     <reg name="pc" bitsize="64" type="shared_flags"/>
                   </feature>
-                </target>"""
-                ),
+                </target>"""),
             }
         )
 
@@ -606,18 +556,15 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_xml_type_kinds_scoped_to_included_feature(self):
         self.setup_multidoc_test(
             {
-                "target.xml": dedent(
-                    """\
+                "target.xml": dedent("""\
                <?xml version="1.0"?>
                <target version="1.0">
                  <architecture>aarch64</architecture>
                  <xi:include href="core.xml"/>
                  <xi:include href="core-2.xml"/>
-               </target>"""
-                ),
+               </target>"""),
                 # Type IDs are local to the feature that defines them.
-                "core.xml": dedent(
-                    """\
+                "core.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="org.gnu.gdb.aarch64.core">
                   <enum id="shared_type" size="8">
@@ -629,10 +576,8 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
                   </flags>
                   <reg name="pc" bitsize="64"/>
                   <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-                </feature>"""
-                ),
-                "core-2.xml": dedent(
-                    """\
+                </feature>"""),
+                "core-2.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="org.gnu.gdb.aarch64.system">
                   <flags id="shared_type" size="4">
@@ -641,8 +586,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
                   <reg name="cpsr" regnum="33" bitsize="32"
                        type="shared_type"/>
                 </feature>
-            """
-                ),
+            """),
             }
         )
 
@@ -711,15 +655,13 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfRemote
     def test_enum_type_not_found(self):
         """Check that lldb uses the default format if we don't find the enum type."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="cpsr_flags" size="4">
             <field name="E" start="0" end="0" type="some_enum"/>
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register read cpsr", patterns=[r"\(E = 1\)$"])
 
@@ -728,8 +670,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_enum_duplicated_evalue(self):
         """Check that lldb only uses the last instance of a evalue for each
         value."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="abc" value="1"/>
             <evalue name="def" value="1"/>
@@ -740,8 +681,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register info cpsr", patterns=["E: 1 = def, 2 = geh$"])
         self.expect("register read cpsr", patterns=[r"\(E = def \| geh\)$"])
@@ -751,8 +691,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_enum_duplicated(self):
         """Check that lldb only uses the last instance of enums with the same
         id."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="abc" value="1"/>
           </enum>
@@ -764,8 +703,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register info cpsr", patterns=["E: 1 = def$"])
         self.expect("register read cpsr", patterns=[r"\(E = def\)$"])
@@ -775,8 +713,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_enum_use_first_valid(self):
         """Check that lldb uses the first enum that parses correctly and ignores
         the rest."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4"/>
           <enum size="4">
             <evalue name="invalid" value="1"/>
@@ -792,8 +729,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register info cpsr", patterns=["E: 1 = valid$"])
 
@@ -808,8 +744,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
         # would probably not care or leave it up to us, and I think it's not a
         # useful thing to allow.
 
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="" value="1"/>
             <evalue name="valid" value="2"/>
@@ -819,8 +754,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register info cpsr", patterns=["E: 2 = valid$"])
 
@@ -828,8 +762,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfRemote
     def test_evalue_invalid_value(self):
         """Check that lldb ignores evalues with an invalid value."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="negative_dec" value="-1"/>
             <evalue name="negative_hex" value="-0x1"/>
@@ -847,8 +780,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect(
             "register info cpsr", patterns=["E: 1 = dec, 2 = hex, 3 = octal, 4 = bin$"]
@@ -859,8 +791,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_evalue_out_of_range(self):
         """Check that lldb will not use an enum type if one of its evalues
         exceeds the size of the field it is applied to."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="A" value="0"/>
             <evalue name="B" value="2"/>
@@ -870,8 +801,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         # The whole eunm is rejected even if just 1 value is out of range.
         self.expect("register info cpsr", patterns=["E: 0 = "], matching=False)
@@ -880,8 +810,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfRemote
     def test_enum_ignore_unknown_attributes(self):
         """Check that lldb ignores unknown attributes on an enum or evalue."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4" foo=\"bar\">
             <evalue name="valid" value="1" colour=\"red"/>
           </enum>
@@ -890,8 +819,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register info cpsr", patterns=["E: 1 = valid$"])
 
@@ -899,8 +827,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     @skipIfRemote
     def test_evalue_required_attributes(self):
         """Check that lldb rejects any evalue missing a name and/or value."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="foo"/>
             <evalue value="1"/>
@@ -912,8 +839,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect("register info cpsr", patterns=["E: 1 = valid$"])
 
@@ -922,8 +848,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
     def test_evalue_name_xml_reserved_characters(self):
         """Check that lldb converts reserved character replacements like &amp;
         when found in evalue names."""
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="A&amp;"  value="0"/>
             <evalue name="B&quot;" value="1"/>
@@ -936,8 +861,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         self.expect(
             "register info cpsr",
@@ -950,8 +874,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
         """Check that lldb ignores enums whose values would not fit into
         their field."""
 
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="4">
             <evalue name="A" value="0"/>
             <evalue name="B" value="1"/>
@@ -965,8 +888,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
         # some_enum can apply to foo
         self.expect(
@@ -981,8 +903,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
         """Check that lldb can handle an evalue for a field up to 64 bits
         in size and anything greater is ignored."""
 
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="8">
             <evalue name="min" value="0"/>
             <evalue name="max" value="0xffffffffffffffff"/>
@@ -993,8 +914,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-          <reg name="cpsr" regnum="33" bitsize="32"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32"/>""")
 
         self.expect(
             "register info x0", patterns=["foo: 0 = min, 18446744073709551615 = max$"]
@@ -1006,16 +926,14 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
         """Check that lldb ignores any field > 64 bits. We can't handle those
         correctly."""
 
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <flags id="x0_flags" size="8">
             <field name="invalid" start="0" end="64"/>
             <field name="valid" start="0" end="63"/>
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-          <reg name="cpsr" regnum="33" bitsize="32"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32"/>""")
 
         self.expect(
             "register info x0", substrs=["| 63-0  |\n" "|-------|\n" "| valid |"]
@@ -1027,8 +945,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
         """Check that an enum can be reused by many fields, and fields of many
         registers."""
 
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="some_enum" size="8">
             <evalue name="valid" value="1"/>
           </enum>
@@ -1042,15 +959,10 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32" type="cpsr_flags"/>""")
 
-        expected_info = [
-            dedent(
-                """\
-             f2, f1: 1 = valid$"""
-            )
-        ]
+        expected_info = [dedent("""\
+             f2, f1: 1 = valid$""")]
         self.expect("register info x0", patterns=expected_info)
 
         self.expect("register info cpsr", patterns=expected_info)
@@ -1067,8 +979,7 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
 
         # It's unlikely anyone would do this intentionally but it is allowed by
         # the protocol spec so we have to cope with it.
-        self.setup_register_test(
-            """\
+        self.setup_register_test("""\
           <enum id="foo_enum" size="8">
             <evalue name="foo_0" value="1"/>
           </enum>
@@ -1081,19 +992,14 @@ class TestXMLRegisterTypeFlags(GDBRemoteTestBase):
           </flags>
           <reg name="pc" bitsize="64"/>
           <reg name="x0" regnum="0" bitsize="64" type="x0_flags"/>
-          <reg name="cpsr" regnum="33" bitsize="32"/>"""
-        )
+          <reg name="cpsr" regnum="33" bitsize="32"/>""")
 
         self.expect(
             "register info x0",
-            patterns=[
-                dedent(
-                    """\
+            patterns=[dedent("""\
              foo: 1 = foo_1
 
-             foo: 1 = foo_0$"""
-                )
-            ],
+             foo: 1 = foo_0$""")],
         )
 
         self.expect("register read x0", patterns=[r"\(foo = foo_1, foo = foo_0\)$"])

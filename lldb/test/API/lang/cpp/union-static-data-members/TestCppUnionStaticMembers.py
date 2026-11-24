@@ -2,6 +2,7 @@
 Tests that frame variable and expr work for
 C++ unions and their static data members.
 """
+
 import lldb
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test.decorators import *
@@ -15,7 +16,7 @@ class CppUnionStaticMembersTestCase(TestBase):
         for union with static data members"""
         self.build()
 
-        (target, process, main_thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, main_thread, _ = lldbutil.run_to_source_breakpoint(
             self, "return 0", lldb.SBFileSpec("main.cpp")
         )
 
@@ -38,7 +39,7 @@ class CppUnionStaticMembersTestCase(TestBase):
         for union static data members"""
         self.build()
 
-        (target, process, main_thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, main_thread, _ = lldbutil.run_to_source_breakpoint(
             self, "return 0", lldb.SBFileSpec("main.cpp")
         )
 
@@ -58,7 +59,7 @@ class CppUnionStaticMembersTestCase(TestBase):
         namespaces"""
         self.build()
 
-        (target, process, main_thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, main_thread, _ = lldbutil.run_to_source_breakpoint(
             self, "return 0", lldb.SBFileSpec("main.cpp")
         )
 

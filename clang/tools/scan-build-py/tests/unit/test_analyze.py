@@ -153,25 +153,25 @@ class RunAnalyzerTest(unittest.TestCase):
 
     def test_run_analyzer(self):
         content = "int div(int n, int d) { return n / d; }"
-        (result, fwds, _) = RunAnalyzerTest.run_analyzer(content, False)
+        result, fwds, _ = RunAnalyzerTest.run_analyzer(content, False)
         self.assertEqual(None, fwds)
         self.assertEqual(0, result["exit_code"])
 
     def test_run_analyzer_crash(self):
         content = "int div(int n, int d) { return n / d }"
-        (result, fwds, _) = RunAnalyzerTest.run_analyzer(content, False)
+        result, fwds, _ = RunAnalyzerTest.run_analyzer(content, False)
         self.assertEqual(None, fwds)
         self.assertEqual(1, result["exit_code"])
 
     def test_run_analyzer_crash_and_forwarded(self):
         content = "int div(int n, int d) { return n / d }"
-        (_, fwds, _) = RunAnalyzerTest.run_analyzer(content, True)
+        _, fwds, _ = RunAnalyzerTest.run_analyzer(content, True)
         self.assertEqual(1, fwds["exit_code"])
         self.assertTrue(len(fwds["error_output"]) > 0)
 
     def test_run_analyzer_with_sarif(self):
         content = "int div(int n, int d) { return n / d; }"
-        (result, fwds, output_files) = RunAnalyzerTest.run_analyzer(
+        result, fwds, output_files = RunAnalyzerTest.run_analyzer(
             content, False, output_format="sarif"
         )
         self.assertEqual(None, fwds)

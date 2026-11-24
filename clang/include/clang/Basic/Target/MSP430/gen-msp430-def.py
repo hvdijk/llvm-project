@@ -33,6 +33,7 @@ register addresses than the other 32 bit multiplier.
 
 [1]: https://www.ti.com/tool/MSP430-GCC-OPENSOURCE#downloads
 """
+
 import csv
 import sys
 

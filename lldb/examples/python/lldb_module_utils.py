@@ -45,7 +45,7 @@ class DumpLineTables:
         command_args = shlex.split(command)
 
         try:
-            (options, args) = self.parser.parse_args(command_args)
+            options, args = self.parser.parse_args(command_args)
         except:
             # if you don't handle exceptions, passing an incorrect argument to the OptionParser will cause LLDB to exit
             # (courtesy of OptParse dealing with argument errors by throwing SystemExit)
@@ -148,7 +148,7 @@ path when setting breakpoints.
         command_args = shlex.split(command)
 
         try:
-            (options, args) = self.parser.parse_args(command_args)
+            options, args = self.parser.parse_args(command_args)
         except:
             # if you don't handle exceptions, passing an incorrect argument to the OptionParser will cause LLDB to exit
             # (courtesy of OptParse dealing with argument errors by throwing SystemExit)

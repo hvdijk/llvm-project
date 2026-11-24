@@ -20,7 +20,7 @@ class TestBreakOnLambdaCapture(TestBase):
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.cpp")
 
-        (target, process, main_thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, main_thread, _ = lldbutil.run_to_source_breakpoint(
             self, "First break", self.main_source_file
         )
 

@@ -39,6 +39,7 @@
 # END.
 
 import sys
+
 sys.path.append(sys.argv[1])
 from libcxx.header_information import (
     lit_header_undeprecations,
@@ -46,24 +47,20 @@ from libcxx.header_information import (
 )
 
 for header in public_headers:
-    print(
-        f"""\
+    print(f"""\
 //--- {header}.compile.pass.cpp
 // RUN: %{{cxx}} %s %{{flags}} %{{compile_flags}} -fmodules -fcxx-modules -fmodules-cache-path=%t -fsyntax-only
 
 {lit_header_undeprecations.get(header, '')}
 
 #include <{header}>
-"""
-    )
+""")
 
-print(
-    f"""\
+print(f"""\
 //--- import_std.compile.pass.mm
 // RUN: %{{cxx}} %s %{{flags}} %{{compile_flags}} -fmodules -fcxx-modules -fmodules-cache-path=%t -fsyntax-only
 
 // REQUIRES: clang-modules-build
 
 @import std;
-"""
-)
+""")

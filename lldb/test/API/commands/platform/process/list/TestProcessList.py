@@ -2,7 +2,6 @@
 Test process list.
 """
 
-
 import os
 import lldb
 import shutil

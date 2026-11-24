@@ -43,6 +43,7 @@ parser.add_argument("--checks", help="check glob to run", default="*")
 parser.add_argument("--verbose", help="log clangd output", action="store_true")
 args = parser.parse_args()
 
+
 # Use the preprocessor to extract the list of previously-fast checks.
 def read_old_fast(path):
     text = subprocess.check_output(
@@ -61,6 +62,7 @@ def read_old_fast(path):
 
 old_fast = list(read_old_fast(args.target)) if os.path.exists(args.target) else []
 print(f"Old fast checks: {old_fast}", file=sys.stderr)
+
 
 # Runs clangd --check --check-tidy-time.
 # Yields (check, percent-overhead) pairs.

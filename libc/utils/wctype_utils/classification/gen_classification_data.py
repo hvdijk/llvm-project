@@ -315,13 +315,11 @@ const uint16_t LEVEL1[LEVEL1_SIZE] = {
                 if j + 1 < len(level1):
                     f.write(",")
             f.write("\n")
-        f.write(
-            """};
+        f.write("""};
 
 // Level 2 table: blocks of 256 property flags
 const uint8_t LEVEL2[LEVEL2_SIZE] = {
-"""
-        )
+""")
         for i in range(0, len(level2), 11):
             f.write("    ")
             for j in range(i, min(i + 11, len(level2))):
@@ -329,9 +327,7 @@ const uint8_t LEVEL2[LEVEL2_SIZE] = {
                 if j + 1 < len(level2):
                     f.write(", ")
             f.write("\n")
-        f.write(
-            """};
+        f.write("""};
 
 } // namespace LIBC_NAMESPACE_DECL
-"""
-        )
+""")

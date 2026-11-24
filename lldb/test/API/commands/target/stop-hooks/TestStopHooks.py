@@ -2,7 +2,6 @@
 Test stop hook functionality
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *
@@ -37,7 +36,7 @@ class TestStopHooks(TestBase):
     def test_stop_hooks_one_shot(self):
         """Test that a one-shot stop hook runs at the next stop, and that LLDB
         then deletes it."""
-        (target, process, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -66,7 +65,7 @@ class TestStopHooks(TestBase):
     def test_stop_hooks_one_shot_votes_to_continue(self):
         """Test that a one-shot stop hook still votes on continuing at the stop
         where it runs."""
-        (target, process, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -87,7 +86,7 @@ class TestStopHooks(TestBase):
         self.expect("target stop-hook list", substrs=["No stop hooks."])
 
     def step_out_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -112,7 +111,7 @@ class TestStopHooks(TestBase):
         interp.HandleCommand("target stop-hook add -o 'expr g_var++' -I false", result)
         self.assertTrue(result.Succeeded(), "Set the target stop hook")
 
-        (target, process, thread, first_bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, first_bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -154,7 +153,7 @@ class TestStopHooks(TestBase):
         interp.HandleCommand("target stop-hook add -o 'expr g_var++'", result)
         self.assertTrue(result.Succeeded(), "Set the target stop hook")
 
-        (target, process, thread, first_bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, first_bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

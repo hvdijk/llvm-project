@@ -31,7 +31,7 @@ class StepThroughTrampolineWithSymbol(TestBase):
             f"{self.MOLD_STYLE_SYMBOL_NAME} should have been stripped by ObjectFileELF",
         )
 
-        (_target, _process, thread, _bkpt) = lldbutil.run_to_source_breakpoint(
+        _target, _process, thread, _bkpt = lldbutil.run_to_source_breakpoint(
             self,
             "// Set a breakpoint here",
             lldb.SBFileSpec("main.c"),

@@ -943,7 +943,7 @@ def find_variable(debugger, command, exe_ctx, result, internal_dict):
         default=False,
     )
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
 
@@ -971,7 +971,7 @@ def ptr_refs(debugger, command, exe_ctx, result, internal_dict):
     command_args = shlex.split(command)
     parser = get_ptr_refs_options()
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
 
@@ -1073,7 +1073,7 @@ def cstr_refs(debugger, command, exe_ctx, result, internal_dict):
     command_args = shlex.split(command)
     parser = get_cstr_refs_options()
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
 
@@ -1177,7 +1177,7 @@ def malloc_info(debugger, command, exe_ctx, result, internal_dict):
     command_args = shlex.split(command)
     parser = get_malloc_info_options()
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
     malloc_info_impl(exe_ctx, result, options, args)
@@ -1283,13 +1283,10 @@ thread_stack_t stacks[NUM_STACKS];""" % (
             process.target.GetStackRedZoneSize(),
         )
         for stack_dict in stack_dicts:
-            result += (
-                """
+            result += """
 stacks[%(index)u].tid  = 0x%(tid)x;
 stacks[%(index)u].base = 0x%(base)x;
-stacks[%(index)u].size = 0x%(size)x;"""
-                % stack_dict
-            )
+stacks[%(index)u].size = 0x%(size)x;""" % stack_dict
         return result
     else:
         return ""
@@ -1334,17 +1331,12 @@ def get_sections_ranges_struct(process):
         result = """
 #define NUM_SEGMENTS %u
 typedef struct segment_range_t { uint64_t base; uint32_t size; } segment_range_t;
-segment_range_t segments[NUM_SEGMENTS];""" % (
-            segment_dicts_len,
-        )
+segment_range_t segments[NUM_SEGMENTS];""" % (segment_dicts_len,)
         for idx, segment_dict in enumerate(segment_dicts):
             segment_dict["index"] = idx
-            result += (
-                """
+            result += """
 segments[%(index)u].base = 0x%(base)x;
-segments[%(index)u].size = 0x%(size)x;"""
-                % segment_dict
-            )
+segments[%(index)u].size = 0x%(size)x;""" % segment_dict
         return result
     else:
         return ""
@@ -1369,7 +1361,7 @@ def objc_refs(debugger, command, exe_ctx, result, internal_dict):
     command_args = shlex.split(command)
     parser = get_objc_refs_options()
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
 

@@ -58,6 +58,7 @@ MIR_FUNC_RE = re.compile(
 # previous match in the tool output.
 MIR_FILTER_GAP_MARKER = "; UTC-MIR-FILTER-GAP"
 
+
 def filter_mir_body(body, filters):
     """Filter a MIR function body while keeping the generated checks correct.
 

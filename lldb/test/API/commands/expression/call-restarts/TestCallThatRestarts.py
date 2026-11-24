@@ -2,7 +2,6 @@
 Test calling a function that hits a signal set to auto-restart, make sure the call completes.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -45,7 +44,7 @@ class ExprCommandThatRestartsTestCase(TestBase):
         )
 
     def call_function(self):
-        (target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here in main.", self.main_source_spec
         )
 

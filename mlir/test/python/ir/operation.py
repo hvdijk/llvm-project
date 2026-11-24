@@ -268,14 +268,12 @@ def testBlockArgumentList():
 def testOperationOperands():
     with Context() as ctx:
         ctx.allow_unregistered_dialects = True
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @f1(%arg0: i32) {
         %0 = "test.producer"() : () -> i64
         "test.consumer"(%arg0, %0) : (i32, i64) -> ()
         return
-      }"""
-        )
+      }""")
         func_op = module.body.operations[0]
         entry_block = func_op.regions[0].blocks[0]
         consumer = entry_block.operations[1]
@@ -310,8 +308,7 @@ def testOperationOperands():
 def testOperationOperandsSlice():
     with Context() as ctx:
         ctx.allow_unregistered_dialects = True
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @f1() {
         %0 = "test.producer0"() : () -> i64
         %1 = "test.producer1"() : () -> i64
@@ -320,8 +317,7 @@ def testOperationOperandsSlice():
         %4 = "test.producer4"() : () -> i64
         "test.consumer"(%0, %1, %2, %3, %4) : (i64, i64, i64, i64, i64) -> ()
         return
-      }"""
-        )
+      }""")
         func = module.body.operations[0]
         entry_block = func.regions[0].blocks[0]
         consumer = entry_block.operations[5]
@@ -368,16 +364,14 @@ def testOperationOperandsSlice():
 def testOperationOperandsSet():
     with Context() as ctx, Location.unknown(ctx):
         ctx.allow_unregistered_dialects = True
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @f1() {
         %0 = "test.producer0"() : () -> i64
         %1 = "test.producer1"() : () -> i64
         %2 = "test.producer2"() : () -> i64
         "test.consumer"(%0) : (i64) -> ()
         return
-      }"""
-        )
+      }""")
         func = module.body.operations[0]
         entry_block = func.regions[0].blocks[0]
         producer1 = entry_block.operations[1]
@@ -481,14 +475,12 @@ def testOperationWithRegion():
         # accessing op1.
         # TODO: Also verify accessing the terminator once both parents are nulled
         # out.
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @f1(%arg0: i32) -> i32 {
         %1 = "custom.addi"(%arg0, %arg0) : (i32, i32) -> i32
         return %1 : i32
       }
-    """
-        )
+    """)
         func = module.body.operations[0]
         entry_block = func.regions[0].blocks[0]
         ip = InsertionPoint.at_block_begin(entry_block)
@@ -565,14 +557,12 @@ def testOperationResultList():
 def testOperationResultListSlice():
     with Context() as ctx:
         ctx.allow_unregistered_dialects = True
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @f1() {
         "some.op"() : () -> (i1, i2, i3, i4, i5)
         return
       }
-    """
-        )
+    """)
         func = module.body.operations[0]
         entry_block = func.regions[0].blocks[0]
         producer = entry_block.operations[0]
@@ -852,14 +842,12 @@ def testOperationPrint():
 def testKnownOpView():
     with Context(), Location.unknown():
         Context.current.allow_unregistered_dialects = True
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       %1 = "custom.f32"() : () -> f32
       %2 = "custom.f32"() : () -> f32
       %3 = arith.addf %1, %2 : f32
       %4 = arith.constant 0 : i32
-    """
-        )
+    """)
         print(module)
 
         # addf should map to a known OpView class in the arithmetic dialect.
@@ -926,13 +914,11 @@ def testFailedGenericOperationCreationReportsError():
 def testSingleResultProperty():
     with Context(), Location.unknown():
         Context.current.allow_unregistered_dialects = True
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       "custom.no_result"() : () -> ()
       %0:2 = "custom.two_result"() : () -> (f32, f32)
       %1 = "custom.one_result"() : () -> f32
-    """
-        )
+    """)
         print(module)
 
     try:
@@ -1148,12 +1134,10 @@ def testOperationLoc():
 def testModuleMerge():
     with Context():
         m1 = Module.parse("func.func private @foo()")
-        m2 = Module.parse(
-            """
+        m2 = Module.parse("""
       func.func private @bar()
       func.func private @qux()
-    """
-        )
+    """)
         foo = m1.body.operations[0]
         bar = m2.body.operations[0]
         qux = m2.body.operations[1]
@@ -1675,8 +1659,7 @@ def testGetParentOfType():
 @run
 def test_get_ops_of_type():
     with Context(), Location.unknown():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
     module {
       func.func @f() {
         func.return
@@ -1685,8 +1668,7 @@ def test_get_ops_of_type():
         func.return
       }
     }
-  """
-        )
+  """)
 
         # CHECK: get_ops_of_type func.func count: 2
         results = get_ops_of_type(module, func.FuncOp)

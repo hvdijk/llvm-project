@@ -9,8 +9,7 @@ class MyResponder(MockGDBServerResponder):
     def qXferRead(self, obj, annex, offset, length):
         if annex == "target.xml":
             return (
-                dedent(
-                    """\
+                dedent("""\
                 <?xml version="1.0"?>
                   <target version="1.0">
                     <architecture>aarch64</architecture>
@@ -50,8 +49,7 @@ class MyResponder(MockGDBServerResponder):
                       <reg name="pc" bitsize="64"/>
                     </feature>
                   </target>
-                """
-                ),
+                """),
                 False,
             )
         else:

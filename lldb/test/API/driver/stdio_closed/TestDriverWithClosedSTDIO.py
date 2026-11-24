@@ -3,7 +3,6 @@ Test that if you exec lldb with the stdio file handles
 closed, it is able to exit without hanging.
 """
 
-
 import lldb
 import os
 import sys
@@ -15,6 +14,7 @@ if os.name != "nt":
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test.decorators import *
+
 
 class TestDriverWithClosedSTDIO(TestBase):
     # If your test case doesn't stress debug info, then

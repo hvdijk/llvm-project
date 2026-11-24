@@ -2,7 +2,6 @@
 Test calling an expression without a target.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -56,7 +56,7 @@ class GenericDequeDataFormatterTestCase(TestBase):
         )
 
     def do_test(self):
-        (_, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        _, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -149,7 +149,7 @@ class GenericDequeDataFormatterTestCase(TestBase):
 
     def do_test_ref_and_ptr(self):
         """Test formatting of std::deque& and std::deque*"""
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "stop here", lldb.SBFileSpec("main.cpp", False)
         )
 

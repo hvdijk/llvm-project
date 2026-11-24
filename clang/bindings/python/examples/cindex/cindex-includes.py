@@ -22,7 +22,7 @@ def main():
 
     parser = OptionParser("usage: %prog [options] {filename} [clang-args*]")
     parser.disable_interspersed_args()
-    (opts, args) = parser.parse_args()
+    opts, args = parser.parse_args()
     if len(args) == 0:
         parser.error("invalid number arguments")
 

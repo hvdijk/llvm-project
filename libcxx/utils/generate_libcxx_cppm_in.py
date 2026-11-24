@@ -21,8 +21,7 @@ def write_file(module):
     with open(
         libcxx_root / "modules" / f"{module}.cppm.in", "w", encoding="utf-8"
     ) as module_cpp_in:
-        module_cpp_in.write(
-            """\
+        module_cpp_in.write("""\
 // -*- C++ -*-
 //===----------------------------------------------------------------------===//
 //
@@ -42,13 +41,11 @@ module;
 
 // The headers of Table 24: C++ library headers [tab:headers.cpp]
 // and the headers of Table 25: C++ headers for C library facilities [tab:headers.cpp.c]
-"""
-        )
+""")
         for header in sorted(module_headers if module == "std" else module_c_headers):
             module_cpp_in.write(f"#include <{header}>\n")
 
-        module_cpp_in.write(
-            """
+        module_cpp_in.write("""
 // *** Headers not yet available ***
 //
 // This validation is mainly to catch when a new header is added but adding the
@@ -58,36 +55,29 @@ module;
 // into thinking that libc++ provides the header.
 //
 #ifndef _WIN32
-"""
-        )
+""")
         for header in sorted(headers_not_available):
-            module_cpp_in.write(
-                f"""\
+            module_cpp_in.write(f"""\
 #  if __has_include(<{header}>)
 #    error "please update the header information for <{header}> in headers_not_available in utils/libcxx/header_information.py"
 #  endif // __has_include(<{header}>)
-"""
-            )
+""")
 
-        module_cpp_in.write(
-            f"""#endif // _WIN32
+        module_cpp_in.write(f"""#endif // _WIN32
 
 export module {module};
 {'export import std;' if module == 'std.compat' else ''}
 
 {'@LIBCXX_MODULE_STD_INCLUDE_SOURCES@' if module == 'std' else ''}
-{'@LIBCXX_MODULE_STD_COMPAT_INCLUDE_SOURCES@' if module == 'std.compat' else ''}"""
-        )
+{'@LIBCXX_MODULE_STD_COMPAT_INCLUDE_SOURCES@' if module == 'std.compat' else ''}""")
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2 or (sys.argv[1] != "std" and sys.argv[1] != "std.compat"):
-        sys.stderr.write(
-            f"""\
+        sys.stderr.write(f"""\
 Usage:
 {os.path.basename(__file__)} (std|std.compat)
-"""
-        )
+""")
         sys.exit(1)
 
     write_file(sys.argv[1])

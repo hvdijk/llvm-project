@@ -202,14 +202,12 @@ def get_pdl_pattern_fold():
 def test_pdl_register_function(module_):
     load_myint_dialect()
 
-    module_ = Module.parse(
-        """
+    module_ = Module.parse("""
         %c0 = "myint.constant"() { value = 2 }: () -> (i32)
         %c1 = "myint.constant"() { value = 3 }: () -> (i32)
         %x = "myint.add"(%c0, %c1): (i32, i32) -> (i32)
         "myint.add"(%x, %c1): (i32, i32) -> (i32)
-        """
-    )
+        """)
 
     frozen = get_pdl_pattern_fold()
     apply_patterns_and_fold_greedily(module_, frozen)
@@ -223,8 +221,7 @@ def test_pdl_register_function(module_):
 def test_pdl_register_function_constraint(module_):
     load_myint_dialect()
 
-    module_ = Module.parse(
-        """
+    module_ = Module.parse("""
         func.func @f(%x : i32) -> i32 {
             %c0 = "myint.constant"() { value = 1 }: () -> (i32)
             %c1 = "myint.constant"() { value = -1 }: () -> (i32)
@@ -233,8 +230,7 @@ def test_pdl_register_function_constraint(module_):
             %c = "myint.add"(%b, %a): (i32, i32) -> (i32)
             func.return %c : i32
         }
-        """
-    )
+        """)
 
     frozen = get_pdl_pattern_fold()
     apply_patterns_and_fold_greedily(module_, frozen)
@@ -311,14 +307,12 @@ def get_pdl_pattern_expand():
 def test_pdl_register_function_expand(module_):
     load_myint_dialect()
 
-    module_ = Module.parse(
-        """
+    module_ = Module.parse("""
         func.func @f() -> i32 {
           %0 = "myint.constant"() { value = 5 }: () -> (i32)
           return %0 : i32
         }
-        """
-    )
+        """)
 
     frozen = get_pdl_pattern_expand()
     apply_patterns_and_fold_greedily(module_, frozen)

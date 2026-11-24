@@ -1,5 +1,5 @@
-""" Check that registers written to memory for expression evaluation are
-    written using the target's endian not the host's.
+"""Check that registers written to memory for expression evaluation are
+written using the target's endian not the host's.
 """
 
 from enum import Enum
@@ -52,16 +52,14 @@ class TestXMLRegisterFlags(GDBRemoteTestBase):
         }[endian]
 
         self.server.responder = Responder(
-            dedent(
-                f"""\
+            dedent(f"""\
             <?xml version="1.0"?>
               <target version="1.0">
                 <architecture>{architecture}</architecture>
                 <feature>
                   <reg name="{pc_reg_name}" bitsize="64"/>
                 </feature>
-            </target>"""
-            ),
+            </target>"""),
             endian,
         )
 
@@ -70,9 +68,7 @@ class TestXMLRegisterFlags(GDBRemoteTestBase):
         obj_path = self.getBuildArtifact("main.o")
         yaml_path = self.getBuildArtifact(yaml_file)
         with open(yaml_path, "w") as f:
-            f.write(
-                dedent(
-                    f"""\
+            f.write(dedent(f"""\
                 --- !ELF
                 FileHeader:
                   Class:    ELFCLASS64
@@ -80,9 +76,7 @@ class TestXMLRegisterFlags(GDBRemoteTestBase):
                   Type:     ET_REL
                   Machine:  {machine}
                 ...
-                """
-                )
-            )
+                """))
         self.yaml2obj(yaml_path, obj_path)
         target = self.dbg.CreateTarget(obj_path)
 

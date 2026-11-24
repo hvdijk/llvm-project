@@ -24,6 +24,7 @@ import multiprocessing
 import argparse
 import platform
 
+
 # Define a function which extracts a list of pairs of (symbols, is_def) from a
 # library using llvm-nm becuase it can work both with regular and bitcode files.
 # We use subprocess.Popen and yield a symbol at a time instead of using
@@ -354,7 +355,7 @@ def extract_symbols(arg):
     llvm_nm_path, should_keep_symbol, calling_convention_decoration, lib = arg
     symbol_defs = dict()
     symbol_refs = set()
-    for (symbol, is_def) in nm_get_symbols(llvm_nm_path, lib):
+    for symbol, is_def in nm_get_symbols(llvm_nm_path, lib):
         symbol = should_keep_symbol(symbol, calling_convention_decoration)
         if symbol:
             if is_def:
@@ -486,9 +487,7 @@ if __name__ == "__main__":
     max_workers = (
         8
         if platform.system() == "AIX"
-        else min(60, os.cpu_count() or 1)
-        if os.name == "nt"
-        else (os.cpu_count() or 1)
+        else min(60, os.cpu_count() or 1) if os.name == "nt" else (os.cpu_count() or 1)
     )
     num_workers = max(1, min(max_workers, len(libs)))
     pool = multiprocessing.Pool(num_workers)
@@ -517,7 +516,7 @@ if __name__ == "__main__":
     # Merge everything into a single dict
     symbol_defs = dict()
     symbol_refs = set()
-    for (this_lib_defs, this_lib_refs) in libs_symbols:
+    for this_lib_defs, this_lib_refs in libs_symbols:
         for k, v in list(this_lib_defs.items()):
             symbol_defs[k] = v + symbol_defs.setdefault(k, 0)
         for sym in list(this_lib_refs):

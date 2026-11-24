@@ -2,7 +2,6 @@
 Test option and argument definitions in parsed script commands
 """
 
-
 import sys
 import os
 import lldb
@@ -32,7 +31,7 @@ class ParsedCommandTestCase(TestBase):
             if elem[0] == "+":
                 substrs.append(elem[1:])
             else:
-                (short_opt, type, long_opt) = elem
+                short_opt, type, long_opt = elem
                 substrs.append(f"-{short_opt} <{type}> ( --{long_opt} <{type}> )")
 
         self.expect("help " + cmd_name, substrs=substrs)

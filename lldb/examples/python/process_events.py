@@ -246,7 +246,7 @@ def main(argv):
         default=False,
     )
     try:
-        (options, args) = parser.parse_args(argv)
+        options, args = parser.parse_args(argv)
     except:
         return
 

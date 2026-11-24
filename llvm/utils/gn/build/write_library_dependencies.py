@@ -5,7 +5,6 @@ import os
 import re
 import sys
 
-
 # FIXME: This should get outputs from gn.
 OUTPUT = """struct AvailableComponent {
     /// The name of the component.

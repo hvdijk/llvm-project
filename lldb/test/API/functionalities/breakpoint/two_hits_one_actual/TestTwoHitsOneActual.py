@@ -1,5 +1,5 @@
 """
-Test that if we hit a breakpoint on two threads at the 
+Test that if we hit a breakpoint on two threads at the
 same time, one of which passes the condition, one not,
 we only have a breakpoint stop reason for the one that
 passed the condition.
@@ -26,7 +26,7 @@ class TestTwoHitsOneActual(TestBase):
     def sample_test(self):
         """You might use the test implementation in several ways, say so here."""
 
-        (target, process, main_thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, main_thread, _ = lldbutil.run_to_source_breakpoint(
             self, "Set bkpt here to get started", self.main_source_file
         )
         # This is working around a separate bug.  If you hit a breakpoint and

@@ -19,7 +19,6 @@ import logging
 import os
 import re
 
-
 # ===-----------------------------------------------------------------------===#
 # These data structures represent a deserialized ExplodedGraph.
 # ===-----------------------------------------------------------------------===#
@@ -395,9 +394,11 @@ class ExplodedNode:
         self.node_id = self.points[-1].node_id
         self.state = ProgramState(
             json_node["state_id"],
-            json_node["program_state"]
-            if json_node["program_state"] is not None
-            else None,
+            (
+                json_node["program_state"]
+                if json_node["program_state"] is not None
+                else None
+            ),
         )
 
         assert self.node_name() == node_id
@@ -602,9 +603,11 @@ class DotDumpVisitor:
                 % (
                     self._make_sloc(p.loc),
                     color,
-                    "%s (%s)" % (p.stmt_kind, p.cast_kind)
-                    if p.cast_kind is not None
-                    else p.stmt_kind,
+                    (
+                        "%s (%s)" % (p.stmt_kind, p.cast_kind)
+                        if p.cast_kind is not None
+                        else p.stmt_kind
+                    ),
                     p.stmt_id,
                     stmt_color,
                     p.stmt_point_kind,

@@ -364,7 +364,7 @@ def main():
         ),
     )
 
-    (options, args) = parser.parse_args(sys.argv[1:])
+    options, args = parser.parse_args(sys.argv[1:])
 
     if options.interactive:
         archives = []
@@ -508,7 +508,7 @@ or whose modification times don't match in the debug map of an executable."""
         command_args = shlex.split(command)
 
         try:
-            (options, args) = self.parser.parse_args(command_args)
+            options, args = self.parser.parse_args(command_args)
         except:
             result.SetError("option parsing failed")
             return
@@ -550,7 +550,7 @@ or whose modification times don't match in the debug map of an executable."""
                             print("%s" % (path), end=" ", file=result)
                         print_mtime_error(result, dmap_mtime, actual_mtime)
                 elif path[-1] == ")":
-                    (archive_path, object_name) = path[0:-1].split("(")
+                    archive_path, object_name = path[0:-1].split("(")
                     if not archive_path and not object_name:
                         num_errors += 1
                         if options.errors:

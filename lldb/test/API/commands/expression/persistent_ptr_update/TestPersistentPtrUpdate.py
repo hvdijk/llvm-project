@@ -2,7 +2,6 @@
 Test that we can have persistent pointer variables
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

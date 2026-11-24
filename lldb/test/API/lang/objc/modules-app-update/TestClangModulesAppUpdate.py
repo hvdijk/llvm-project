@@ -11,22 +11,18 @@ class TestClangModuleAppUpdate(TestBase):
     @add_test_categories(["gmodules"])
     def test_rebuild_app_modules_untouched(self):
         with open(self.getBuildArtifact("module.modulemap"), "w") as f:
-            f.write(
-                """
+            f.write("""
                     module Foo { header "f.h" }
-                    """
-            )
+                    """)
         with open(self.getBuildArtifact("f.h"), "w") as f:
-            f.write(
-                """
+            f.write("""
                     @import ObjectiveC;
                     @interface Foo : NSObject {
                        int i;
                     }
                     +(instancetype)init;
                     @end
-                    """
-            )
+                    """)
 
         mod_cache = self.getBuildArtifact("private-module-cache")
         import os

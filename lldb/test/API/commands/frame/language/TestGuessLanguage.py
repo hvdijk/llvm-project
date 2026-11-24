@@ -2,7 +2,6 @@
 Test the SB API SBFrame::GuessLanguage.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *

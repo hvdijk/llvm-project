@@ -53,16 +53,14 @@ def testCustomPass():
         pdl_module = make_pdl_module()
         frozen = PDLModule(pdl_module).freeze()
 
-        module = ModuleOp.parse(
-            r"""
+        module = ModuleOp.parse(r"""
             module {
               func.func @add(%a: i64, %b: i64) -> i64 {
                 %sum = arith.addi %a, %b : i64
                 return %sum : i64
               }
             }
-        """
-        )
+        """)
 
         def custom_pass_1(op, pass_):
             print("hello from pass 1!!!", file=sys.stderr)

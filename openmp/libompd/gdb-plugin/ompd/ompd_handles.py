@@ -191,7 +191,7 @@ class ompd_thread(object):
     def get_state(self):
         """Returns tuple with OMPD state (long) and wait_id, in case the thread is in a
         waiting state. Helper function for 'ompd threads' command."""
-        (state, wait_id) = ompdModule.call_ompd_get_state(self.thread_handle)
+        state, wait_id = ompdModule.call_ompd_get_state(self.thread_handle)
         return (state, wait_id)
 
     def __del__(self):

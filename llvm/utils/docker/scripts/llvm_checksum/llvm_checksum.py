@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-""" A small program to compute checksums of LLVM checkout.
-"""
+"""A small program to compute checksums of LLVM checkout."""
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function

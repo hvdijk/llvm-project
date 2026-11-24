@@ -13,7 +13,7 @@ class TestFrameVarDILLiterals(TestBase):
 
     def test_literals(self):
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", lldb.SBFileSpec("main.cpp")
         )
 

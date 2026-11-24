@@ -1,4 +1,4 @@
-""" Tests SBType.IsTypeComplete on Objective-C types. """
+"""Tests SBType.IsTypeComplete on Objective-C types."""
 
 import lldb
 from lldbsuite.test.decorators import *

@@ -2,7 +2,6 @@
 Test that apropos env doesn't crash trying to touch the process plugin command
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

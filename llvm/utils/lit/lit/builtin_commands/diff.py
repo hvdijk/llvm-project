@@ -344,5 +344,6 @@ def main(argv):
     out = getattr(sys.stdout, "buffer", sys.stdout)
     sys.exit(run(argv, sys.stdin.buffer, out, sys.stderr.buffer, os.getcwd()))
 
+
 if __name__ == "__main__":
     main(sys.argv)

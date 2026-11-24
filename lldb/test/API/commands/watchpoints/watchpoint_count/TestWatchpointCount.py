@@ -14,7 +14,7 @@ class TestWatchpointCount(TestBase):
     )
     def test_watchpoint_count(self):
         self.build()
-        (_, process, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, process, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "patatino", lldb.SBFileSpec("main.c")
         )
         frame = thread.GetFrameAtIndex(0)

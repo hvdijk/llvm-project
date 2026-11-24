@@ -2,6 +2,7 @@
 contains benchmarks for both mlir sparse tensor dialect and numpy so that they
 can be compared against each other.
 """
+
 import ctypes
 import numpy as np
 import os

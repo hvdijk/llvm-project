@@ -2,7 +2,6 @@
 Test displayed value of a vector variable while doing watchpoint operations
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

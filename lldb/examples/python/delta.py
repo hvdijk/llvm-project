@@ -77,7 +77,7 @@ def parse_time_log_args(command_args):
         default=False,
     )
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
     for log_file in args:

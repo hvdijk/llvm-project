@@ -2,7 +2,6 @@
 Make sure FindTypes finds struct types with the struct prefix.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

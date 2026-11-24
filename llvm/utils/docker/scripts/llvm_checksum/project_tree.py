@@ -1,5 +1,5 @@
-"""Contains helper functions to compute checksums for LLVM checkouts.
-"""
+"""Contains helper functions to compute checksums for LLVM checkouts."""
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function

@@ -12,7 +12,6 @@ from __future__ import print_function
 from itertools import product
 from string import Template
 
-
 llvm_type_to_ptx_load_type = {
     "i8": "b8",
     "i16": "b16",

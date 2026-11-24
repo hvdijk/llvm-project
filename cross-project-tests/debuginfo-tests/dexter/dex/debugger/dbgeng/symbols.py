@@ -591,8 +591,8 @@ class Symbols(object):
 
     def get_exefile_module(self):
         all_modules = self.get_all_modules()
-        reduce_func = (
-            lambda x, y: y if y.Flags & DebugModuleFlags.DEBUG_MODULE_EXE_MODULE else x
+        reduce_func = lambda x, y: (
+            y if y.Flags & DebugModuleFlags.DEBUG_MODULE_EXE_MODULE else x
         )
         main_module = reduce(reduce_func, all_modules, None)
         if main_module is None:

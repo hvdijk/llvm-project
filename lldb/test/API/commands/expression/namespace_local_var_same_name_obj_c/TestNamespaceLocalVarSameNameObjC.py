@@ -9,7 +9,7 @@ class TestNamespaceLocalVarSameNameObjC(TestBase):
     def test_namespace_local_var_same_name_obj_c(self):
         self.build()
 
-        (self.target, self.process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, self.process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("util.mm", False)
         )
 

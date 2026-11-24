@@ -3,7 +3,6 @@ Test that we can step through the stubs implementing the
 Darwin linker's lazy_library feature.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 import lldbsuite.test.lldbutil as lldbutil
@@ -21,7 +20,7 @@ class TestStepThroughLazyLibrary(TestBase):
         self.lazy_test()
 
     def lazy_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here", self.main_source_file
         )
 

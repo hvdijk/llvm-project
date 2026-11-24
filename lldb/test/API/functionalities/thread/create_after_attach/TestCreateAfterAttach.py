@@ -2,7 +2,6 @@
 Test thread creation after process attach.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,7 +2,6 @@
 Test that the save_crashlog command functions
 """
 
-
 import os
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
@@ -24,7 +23,7 @@ class TestSaveCrashlog(TestBase):
         self.save_crashlog()
 
     def save_crashlog(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "I was called", self.main_source_file
         )
 

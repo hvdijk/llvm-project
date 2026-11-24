@@ -361,7 +361,17 @@ class UndefGetFormatHelper(FormatHelper):
         filtered_files = []
         for path in changed_files:
             _, ext = os.path.splitext(path)
-            if ext in (".cpp", ".c", ".h", ".hpp", ".hxx", ".cxx", ".inc", ".cppm", ".ll"):
+            if ext in (
+                ".cpp",
+                ".c",
+                ".h",
+                ".hpp",
+                ".hxx",
+                ".cxx",
+                ".inc",
+                ".cppm",
+                ".ll",
+            ):
                 filtered_files.append(path)
         return filtered_files
 

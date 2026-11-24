@@ -1,6 +1,5 @@
 """Test that anonymous structs/unions are transparent to member access"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

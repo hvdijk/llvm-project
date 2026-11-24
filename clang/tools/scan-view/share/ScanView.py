@@ -376,11 +376,8 @@ class ScanViewRequestHandler(SimpleHTTPRequestHandler):
         c = self.get_report_context(report)
         if c.reportSource is None:
             reportingFor = "Report Crashes > "
-            fileBug = (
-                """\
-<a href="/report_crashes">File Bug</a> > """
-                % locals()
-            )
+            fileBug = """\
+<a href="/report_crashes">File Bug</a> > """ % locals()
         else:
             reportingFor = '<a href="/%s">Report %s</a> > ' % (c.reportSource, report)
             fileBug = '<a href="/report/%s">File Bug</a> > ' % report
@@ -396,8 +393,7 @@ class ScanViewRequestHandler(SimpleHTTPRequestHandler):
             statusClass = "SubmitFail"
             statusName = "Failed"
 
-        result = (
-            """
+        result = """
 <head>
   <title>Bug Submission</title>
   <link rel="stylesheet" type="text/css" href="/scanview.css" />
@@ -435,9 +431,7 @@ Submit</h3>
 <hr>
 <a href="/">Return to Summary</a>
 </body>
-</html>"""
-            % locals()
-        )
+</html>""" % locals()
         return self.send_string(result)
 
     def send_open_report(self, report):
@@ -590,8 +584,7 @@ Line: %s
                 [o.getHTML(r, title, getConfigOption) for o in r.getParameters()]
             )
             display = ("none", "")[selected]
-            reporterOptions.append(
-                """\
+            reporterOptions.append("""\
 <tr id="%sReporterOptions" style="display:%s">
   <td class="form_label">%s Options</td>
   <td class="form_value">
@@ -600,9 +593,7 @@ Line: %s
     </table>
   </td>
 </tr>
-"""
-                % (r.getName(), display, r.getName(), options)
-            )
+""" % (r.getName(), display, r.getName(), options))
         reporterSelections = "\n".join(reporterSelections)
         reporterOptionsDivs = "\n".join(reporterOptions)
         reportersArray = "[%s]" % (
@@ -611,14 +602,8 @@ Line: %s
 
         if c.files:
             fieldSize = min(5, len(c.files))
-            attachFileOptions = "\n".join(
-                [
-                    """\
-<option value="%d" selected>%s</option>"""
-                    % (i, v)
-                    for i, v in enumerate(c.files)
-                ]
-            )
+            attachFileOptions = "\n".join(["""\
+<option value="%d" selected>%s</option>""" % (i, v) for i, v in enumerate(c.files)])
             attachFileRow = """\
 <tr>
   <td class="form_label">Attach:</td>
@@ -635,8 +620,7 @@ Line: %s
         else:
             attachFileRow = ""
 
-        result = (
-            """<html>
+        result = """<html>
 <head>
   <title>File Bug</title>
   <link rel="stylesheet" type="text/css" href="/scanview.css" />
@@ -707,9 +691,7 @@ File Bug</h3>
 %(extraIFrame)s
 
 </body>
-</html>"""
-            % locals()
-        )
+</html>""" % locals()
 
         return self.send_string(result)
 

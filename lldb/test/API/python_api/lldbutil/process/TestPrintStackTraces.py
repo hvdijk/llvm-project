@@ -2,7 +2,6 @@
 Test SBprocess and SBThread APIs with printing of the stack traces using lldbutil.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -13,7 +12,7 @@ class ThreadsStackTracesTestCase(TestBase):
     def test_stack_traces(self):
         """Test SBprocess and SBThread APIs with printing of the stack traces."""
         self.build()
-        (_, process, _, _) = lldbutil.run_to_source_breakpoint(
+        _, process, _, _ = lldbutil.run_to_source_breakpoint(
             self, "// BREAK HERE", lldb.SBFileSpec("main.cpp")
         )
         stacktraces = lldbutil.print_stacktraces(process, string_buffer=True)

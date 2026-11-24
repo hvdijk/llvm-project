@@ -1,6 +1,7 @@
 """
 Test value with a template specialization type.
 """
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -50,7 +50,7 @@ class TestSuspendedThreadHandling(TestBase):
         return bp
 
     def suspended_thread_test(self):
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to get things going", self.main_source_file
         )
 

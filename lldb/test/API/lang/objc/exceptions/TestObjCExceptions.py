@@ -3,7 +3,6 @@
 Test lldb Obj-C exception support.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,7 +2,6 @@
 Test that stop hooks fire on core load (first stop)
 """
 
-
 import lldb
 import os
 from lldbsuite.test.decorators import *

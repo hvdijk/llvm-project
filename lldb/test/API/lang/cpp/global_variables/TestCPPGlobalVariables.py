@@ -1,6 +1,5 @@
 """Test that C++ global variables can be inspected by name and also their mangled name."""
 
-
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
@@ -14,7 +13,7 @@ class GlobalVariablesCppTestCase(TestBase):
     def test(self):
         self.build()
 
-        (target, _, _, _) = lldbutil.run_to_source_breakpoint(
+        target, _, _, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set break point at this line.", self.source
         )
 
@@ -81,7 +80,7 @@ class GlobalVariablesCppTestCase(TestBase):
     def test_access_by_mangled_name(self):
         self.build()
 
-        (target, _, _, _) = lldbutil.run_to_source_breakpoint(
+        target, _, _, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set break point at this line.", self.source
         )
 

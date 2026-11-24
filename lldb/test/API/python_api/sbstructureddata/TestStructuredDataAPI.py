@@ -2,13 +2,13 @@
 Test some SBStructuredData API.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
 
 import json
+
 
 class TestStructuredDataAPI(TestBase):
     NO_DEBUG_INFO_TESTCASE = True

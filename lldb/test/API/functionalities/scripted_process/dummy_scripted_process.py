@@ -27,6 +27,7 @@ class DummyStopHook:
         sp = exe_ctx.process.GetScriptedImplementation()
         sp.handled_stop = True
 
+
 class DummyScriptedProcess(ScriptedProcess):
     memory = None
 

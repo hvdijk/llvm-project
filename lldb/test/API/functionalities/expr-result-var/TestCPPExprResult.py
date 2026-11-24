@@ -3,7 +3,6 @@ Test the reuse of  C++ result variables, particularly making sure
 that the dynamic typing is preserved.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -60,7 +59,7 @@ class TestCPPResultVariables(TestBase):
         else:
             self.build(dictionary={"CFLAGS_EXTRAS": "-DVIRTUAL=''"})
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

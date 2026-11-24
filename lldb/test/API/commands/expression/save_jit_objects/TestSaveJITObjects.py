@@ -2,7 +2,6 @@
 Test that LLDB can emit JIT objects when the appropriate setting is enabled
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *
@@ -28,7 +27,7 @@ class SaveJITObjectsTestCase(TestBase):
         src_file = "main.c"
         src_file_spec = lldb.SBFileSpec(src_file)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break", src_file_spec
         )
 

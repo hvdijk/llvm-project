@@ -2,7 +2,6 @@
 Test that we page getting a long backtrace on more than one thread
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -32,7 +31,7 @@ class TestThreadBacktracePage(TestBase):
         # that hit the breakpoint, and continue till the second thread hits
         # the breakpoint:
 
-        (breakpoint_threads, other_threads) = ([], [])
+        breakpoint_threads, other_threads = ([], [])
         lldbutil.sort_stopped_threads(
             self.process,
             breakpoint_threads=breakpoint_threads,
@@ -146,7 +145,7 @@ class TestThreadBacktracePage(TestBase):
         # that hit the breakpoint, and continue till the second thread hits
         # the breakpoint:
 
-        (breakpoint_threads, other_threads) = ([], [])
+        breakpoint_threads, other_threads = ([], [])
         lldbutil.sort_stopped_threads(
             self.process,
             breakpoint_threads=breakpoint_threads,

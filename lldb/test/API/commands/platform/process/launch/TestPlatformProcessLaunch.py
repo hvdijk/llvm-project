@@ -27,14 +27,10 @@ class ProcessLaunchTestCase(TestBase):
 
         stdio_log = lldbutil.read_file_on_target(self, outfile)
         self.assertEqual(
-            dedent(
-                """\
+            dedent("""\
             Got 1 argument(s).
             [0]: {}
-            """.format(
-                    exe
-                )
-            ),
+            """.format(exe)),
             stdio_log,
         )
 
@@ -47,17 +43,13 @@ class ProcessLaunchTestCase(TestBase):
 
         stdio_log = lldbutil.read_file_on_target(self, outfile)
         self.assertEqual(
-            dedent(
-                """\
+            dedent("""\
             Got 4 argument(s).
             [0]: {}
             [1]: A
             [2]: B
             [3]: C
-            """.format(
-                    exe
-                )
-            ),
+            """.format(exe)),
             stdio_log,
         )
 
@@ -70,15 +62,11 @@ class ProcessLaunchTestCase(TestBase):
 
         stdio_log = lldbutil.read_file_on_target(self, outfile)
         self.assertEqual(
-            dedent(
-                """\
+            dedent("""\
             Got 3 argument(s).
             [0]: {}
             [1]: D
             [2]: E
-            """.format(
-                    exe
-                )
-            ),
+            """.format(exe)),
             stdio_log,
         )

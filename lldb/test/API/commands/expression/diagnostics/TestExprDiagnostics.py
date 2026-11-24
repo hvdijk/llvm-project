@@ -20,7 +20,7 @@ class ExprDiagnosticsTestCase(TestBase):
         """Test that the source and caret positions LLDB prints are correct"""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
         frame = thread.GetFrameAtIndex(0)
@@ -165,7 +165,7 @@ candidate function not viable: requires single argument 'x', but 2 arguments wer
     def test_source_locations_from_objc_modules(self):
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
         frame = thread.GetFrameAtIndex(0)
@@ -188,7 +188,7 @@ candidate function not viable: requires single argument 'x', but 2 arguments wer
         """Test the error reporting in the API"""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
         frame = thread.GetFrameAtIndex(0)
@@ -204,7 +204,7 @@ candidate function not viable: requires single argument 'x', but 2 arguments wer
         """Test the structured diagnostics data"""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
 
@@ -284,7 +284,7 @@ candidate function not viable: requires single argument 'x', but 2 arguments wer
         """Test the error reporting for missing locations"""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
         self.ci.HandleCommand(

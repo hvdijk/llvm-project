@@ -10,14 +10,12 @@ how this invocation of the test suite should be run.
 # System modules
 import os
 
-
 # Third-party modules
 from typing import Optional
 import unittest
 
 # LLDB Modules
 import lldbsuite
-
 
 # The test suite.
 suite = unittest.TestSuite()

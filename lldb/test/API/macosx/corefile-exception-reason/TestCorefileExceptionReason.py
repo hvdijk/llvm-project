@@ -18,7 +18,7 @@ class TestCorefileExceptionReason(TestBase):
     def test(self):
         corefile = self.getBuildArtifact("process.core")
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 

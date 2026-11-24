@@ -62,13 +62,11 @@ def testSubViewAccessors():
 @run
 def testCustomBuidlers():
     with Context() as ctx, Location.unknown(ctx):
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @f1(%arg0: memref<?x?xf32>, %arg1: index, %arg2: index) {
         return
       }
-    """
-        )
+    """)
         f = module.body.operations[0]
         func_body = f.regions[0].blocks[0]
         with InsertionPoint.at_block_terminator(func_body):

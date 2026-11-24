@@ -317,9 +317,7 @@ def gen_operand_kind_enum_attr(operand_kind):
     if kind_name == "Capability":
         # Special treatment for capability cases: we need to sort them topologically
         # because a capability can refer to another via the 'implies' field.
-        kind_cases = toposort_capabilities(
-            operand_kind["enumerants"]
-        )
+        kind_cases = toposort_capabilities(operand_kind["enumerants"])
     else:
         kind_cases = [
             (case["enumerant"], case["value"]) for case in operand_kind["enumerants"]
@@ -687,9 +685,7 @@ def get_description(text, appendix):
     return fmt_str.format(text=text, appendix=appendix)
 
 
-def get_op_definition(
-    instruction, opname, doc, existing_info, settings
-):
+def get_op_definition(instruction, opname, doc, existing_info, settings):
     """Generates the TableGen op definition for the given SPIR-V instruction.
 
     Arguments:

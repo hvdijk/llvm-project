@@ -38,7 +38,7 @@ def update_test(ti: common.TestInfo):
             common.warn("Skipping unparsable RUN line: " + l)
             continue
 
-        (llc_cmd, filecheck_cmd) = tuple([cmd.strip() for cmd in l.split("|", 1)])
+        llc_cmd, filecheck_cmd = tuple([cmd.strip() for cmd in l.split("|", 1)])
         common.verify_filecheck_prefixes(filecheck_cmd)
 
         if not llc_cmd.startswith("llc "):

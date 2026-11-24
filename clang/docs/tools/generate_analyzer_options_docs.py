@@ -9,7 +9,6 @@ import re
 import sys
 import textwrap
 
-
 # The following code implements a trivial parser for the narrow subset of C++
 # which is used in AnalyzerOptions.def. This supports the following features:
 # - ignores preprocessor directives, even if they are continued with \ at EOL
@@ -22,6 +21,7 @@ import textwrap
 
 class TT(Enum):
     "Token type enum."
+
     number = auto()
     ident = auto()
     string = auto()
@@ -127,6 +127,7 @@ MacroCall = namedtuple("MacroCall", "name args")
 
 class State(Enum):
     "States of the state machine used for parsing the macro calls."
+
     init = auto()
     after_ident = auto()
     before_arg = auto()

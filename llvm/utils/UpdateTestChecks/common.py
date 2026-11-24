@@ -2589,7 +2589,7 @@ def filter_globals_according_to_preference(
             add(x)
 
     for i, line in global_val_lines_w_index:
-        (var, refs) = extract(line, nameless_value)
+        var, refs = extract(line, nameless_value)
         contains_refs_to[var] = refs
     for var, check_key in global_vars_seen:
         if check_key != nameless_value.check_key:

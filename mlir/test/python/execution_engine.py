@@ -41,13 +41,11 @@ def run(f):
 # CHECK-LABEL: TEST: testCapsule
 def testCapsule():
     with Context():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 llvm.func @none() {
   llvm.return
 }
-    """
-        )
+    """)
         execution_engine = ExecutionEngine(module)
         execution_engine_capsule = execution_engine._CAPIPtr
         # CHECK: mlir.execution_engine.ExecutionEngine._CAPIPtr
@@ -66,11 +64,9 @@ run(testCapsule)
 def testInvalidModule():
     with Context():
         # Builtin function
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
     func.func @foo() { return }
-    """
-        )
+    """)
         # CHECK: error: cannot be converted to LLVM IR: missing `LLVMTranslationDialectInterface` registration for dialect for op: func.func
         # CHECK: Got RuntimeError:  Failure while creating the ExecutionEngine.
         try:
@@ -94,13 +90,11 @@ def lowerToLLVM(module):
 # CHECK-LABEL: TEST: testInvokeVoid
 def testInvokeVoid():
     with Context():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 func.func @void() attributes { llvm.emit_c_interface } {
   return
 }
-    """
-        )
+    """)
         execution_engine = ExecutionEngine(lowerToLLVM(module))
         # Nothing to check other than no exception thrown here.
         execution_engine.invoke("void")
@@ -113,14 +107,12 @@ run(testInvokeVoid)
 # CHECK-LABEL: TEST: testInvokeFloatAdd
 def testInvokeFloatAdd():
     with Context():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 func.func @add(%arg0: f32, %arg1: f32) -> f32 attributes { llvm.emit_c_interface } {
   %add = arith.addf %arg0, %arg1 : f32
   return %add : f32
 }
-    """
-        )
+    """)
         execution_engine = ExecutionEngine(lowerToLLVM(module))
         # Prepare arguments: two input floats and one result.
         # Arguments must be passed as pointers.
@@ -146,15 +138,13 @@ def testBasicCallback():
 
     with Context():
         # The module just forwards to a runtime function known as "some_callback_into_python".
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 func.func @add(%arg0: f32, %arg1: i32) -> f32 attributes { llvm.emit_c_interface } {
   %resf = call @some_callback_into_python(%arg0, %arg1) : (f32, i32) -> (f32)
   return %resf : f32
 }
 func.func private @some_callback_into_python(f32, i32) -> f32 attributes { llvm.emit_c_interface }
-    """
-        )
+    """)
         execution_engine = ExecutionEngine(lowerToLLVM(module))
         execution_engine.register_runtime("some_callback_into_python", callback)
 
@@ -185,15 +175,13 @@ def testUnrankedMemRefCallback():
 
     with Context():
         # The module just forwards to a runtime function known as "some_callback_into_python".
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 func.func @callback_memref(%arg0: memref<*xf32>) attributes { llvm.emit_c_interface } {
   call @some_callback_into_python(%arg0) : (memref<*xf32>) -> ()
   return
 }
 func.func private @some_callback_into_python(memref<*xf32>) -> () attributes { llvm.emit_c_interface }
-"""
-        )
+""")
         execution_engine = ExecutionEngine(lowerToLLVM(module))
         execution_engine.register_runtime("some_callback_into_python", callback)
         inp_arr = np.array([[1.0, 2.0], [3.0, 4.0]], np.float32)
@@ -238,15 +226,13 @@ def testRankedMemRefCallback():
 
     with Context():
         # The module just forwards to a runtime function known as "some_callback_into_python".
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 func.func @callback_memref(%arg0: memref<2x2xf32>) attributes { llvm.emit_c_interface } {
   call @some_callback_into_python(%arg0) : (memref<2x2xf32>) -> ()
   return
 }
 func.func private @some_callback_into_python(memref<2x2xf32>) -> () attributes { llvm.emit_c_interface }
-"""
-        )
+""")
         execution_engine = ExecutionEngine(lowerToLLVM(module))
         execution_engine.register_runtime("some_callback_into_python", callback)
         inp_arr = np.array([[1.0, 5.0], [6.0, 7.0]], np.float32)
@@ -311,8 +297,7 @@ def testRankedMemRefWithOffsetCallback():
 
     with Context():
         # The module takes a subview of the argument memref and calls the callback with it
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 func.func @callback_memref(%arg0: memref<5xf32>) attributes {llvm.emit_c_interface} {
   %base_buffer, %offset, %sizes, %strides = memref.extract_strided_metadata %arg0 : memref<5xf32> -> memref<f32>, index, index, index
   %reinterpret_cast = memref.reinterpret_cast %base_buffer to offset: [3], sizes: [2], strides: [1] : memref<f32> to memref<2xf32, strided<[1], offset: 3>>
@@ -321,8 +306,7 @@ func.func @callback_memref(%arg0: memref<5xf32>) attributes {llvm.emit_c_interfa
   return
 }
 func.func private @some_callback_into_python(memref<?xf32, strided<[?], offset: ?>>) attributes {llvm.emit_c_interface}
-"""
-        )
+""")
         execution_engine = ExecutionEngine(lowerToLLVM(module))
         execution_engine.register_runtime("some_callback_into_python", callback)
         inp_arr = np.array([0, 0, 0, 1, 2], np.float32)
@@ -350,8 +334,7 @@ def testUnrankedMemRefWithOffsetCallback():
     with Context():
         # The module takes a subview of the argument memref, casts it to an unranked memref and
         # calls the callback with it.
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 func.func @callback_memref(%arg0: memref<5xf32>) attributes {llvm.emit_c_interface} {
     %base_buffer, %offset, %sizes, %strides = memref.extract_strided_metadata %arg0 : memref<5xf32> -> memref<f32>, index, index, index
     %reinterpret_cast = memref.reinterpret_cast %base_buffer to offset: [3], sizes: [2], strides: [1] : memref<f32> to memref<2xf32, strided<[1], offset: 3>>
@@ -360,8 +343,7 @@ func.func @callback_memref(%arg0: memref<5xf32>) attributes {llvm.emit_c_interfa
     return
 }
 func.func private @some_callback_into_python(memref<*xf32>) attributes {llvm.emit_c_interface}
-"""
-        )
+""")
         execution_engine = ExecutionEngine(lowerToLLVM(module))
         execution_engine.register_runtime("some_callback_into_python", callback)
         inp_arr = np.array([1, 2, 3, 4, 5], np.float32)
@@ -380,8 +362,7 @@ run(testUnrankedMemRefWithOffsetCallback)
 # CHECK-LABEL: TEST: testMemrefAdd
 def testMemrefAdd():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<1xf32>, %arg1: memref<f32>, %arg2: memref<1xf32>) attributes { llvm.emit_c_interface } {
         %0 = arith.constant 0 : index
@@ -391,8 +372,7 @@ def testMemrefAdd():
         memref.store %3, %arg2[%0] : memref<1xf32>
         return
       }
-    } """
-        )
+    } """)
         arg1 = np.array([32.5]).astype(np.float32)
         arg2 = np.array(6).astype(np.float32)
         res = np.array([0]).astype(np.float32)
@@ -422,8 +402,7 @@ run(testMemrefAdd)
 # CHECK-LABEL: TEST: testF16MemrefAdd
 def testF16MemrefAdd():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<1xf16>,
                       %arg1: memref<1xf16>,
@@ -435,8 +414,7 @@ def testF16MemrefAdd():
         memref.store %3, %arg2[%0] : memref<1xf16>
         return
       }
-    } """
-        )
+    } """)
 
         arg1 = np.array([11.0]).astype(np.float16)
         arg2 = np.array([22.0]).astype(np.float16)
@@ -472,8 +450,7 @@ run(testF16MemrefAdd)
 # CHECK-LABEL: TEST: testComplexMemrefAdd
 def testComplexMemrefAdd():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<1xcomplex<f64>>,
                       %arg1: memref<1xcomplex<f64>>,
@@ -485,8 +462,7 @@ def testComplexMemrefAdd():
         memref.store %3, %arg2[%0] : memref<1xcomplex<f64>>
         return
       }
-    } """
-        )
+    } """)
 
         arg1 = np.array([1.0 + 2.0j]).astype(np.complex128)
         arg2 = np.array([3.0 + 4.0j]).astype(np.complex128)
@@ -522,8 +498,7 @@ run(testComplexMemrefAdd)
 # CHECK-LABEL: TEST: testComplexUnrankedMemrefAdd
 def testComplexUnrankedMemrefAdd():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<*xcomplex<f32>>,
                       %arg1: memref<*xcomplex<f32>>,
@@ -538,8 +513,7 @@ def testComplexUnrankedMemrefAdd():
         memref.store %3, %C[%0] : memref<1xcomplex<f32>>
         return
       }
-    } """
-        )
+    } """)
 
         arg1 = np.array([5.0 + 6.0j]).astype(np.complex64)
         arg2 = np.array([7.0 + 8.0j]).astype(np.complex64)
@@ -575,8 +549,7 @@ run(testComplexUnrankedMemrefAdd)
 # CHECK-LABEL: TEST: testBF16Memref
 def testBF16Memref():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<1xbf16>,
                       %arg1: memref<1xbf16>) attributes { llvm.emit_c_interface } {
@@ -585,8 +558,7 @@ def testBF16Memref():
         memref.store %1, %arg1[%0] : memref<1xbf16>
         return
       }
-    } """
-        )
+    } """)
 
         arg1 = np.array([0.5]).astype(bfloat16)
         arg2 = np.array([0.0]).astype(bfloat16)
@@ -617,8 +589,7 @@ else:
 # CHECK-LABEL: TEST: testF8E5M2Memref
 def testF8E5M2Memref():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<1xf8E5M2>,
                       %arg1: memref<1xf8E5M2>) attributes { llvm.emit_c_interface } {
@@ -627,8 +598,7 @@ def testF8E5M2Memref():
         memref.store %1, %arg1[%0] : memref<1xf8E5M2>
         return
       }
-    } """
-        )
+    } """)
 
         arg1 = np.array([0.5]).astype(float8_e5m2)
         arg2 = np.array([0.0]).astype(float8_e5m2)
@@ -659,8 +629,7 @@ else:
 # CHECK-LABEL: TEST: testF8E3M4Memref
 def testF8E3M4Memref():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<1xf8E3M4>,
                       %arg1: memref<1xf8E3M4>) attributes { llvm.emit_c_interface } {
@@ -669,8 +638,7 @@ def testF8E3M4Memref():
         memref.store %1, %arg1[%0] : memref<1xf8E3M4>
         return
       }
-    } """
-        )
+    } """)
 
         arg1 = np.array([0.5]).astype(float8_e3m4)
         arg2 = np.array([0.0]).astype(float8_e3m4)
@@ -701,8 +669,7 @@ else:
 # CHECK-LABEL: TEST: testF8E4M3Memref
 def testF8E4M3Memref():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
     module  {
       func.func @main(%arg0: memref<1xf8E4M3>,
                       %arg1: memref<1xf8E4M3>) attributes { llvm.emit_c_interface } {
@@ -711,8 +678,7 @@ def testF8E4M3Memref():
         memref.store %1, %arg1[%0] : memref<1xf8E4M3>
         return
       }
-    } """
-        )
+    } """)
 
         arg1 = np.array([0.5]).astype(float8_e4m3)
         arg2 = np.array([0.0]).astype(float8_e4m3)
@@ -743,8 +709,7 @@ else:
 # CHECK-LABEL: TEST: testDynamicMemrefAdd2D
 def testDynamicMemrefAdd2D():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
       module  {
         func.func @memref_add_2d(%arg0: memref<2x2xf32>, %arg1: memref<?x?xf32>, %arg2: memref<2x2xf32>) attributes {llvm.emit_c_interface} {
           %c0 = arith.constant 0 : index
@@ -776,8 +741,7 @@ def testDynamicMemrefAdd2D():
           return
         }
       }
-        """
-        )
+        """)
         arg1 = np.random.randn(2, 2).astype(np.float32)
         arg2 = np.random.randn(2, 2).astype(np.float32)
         res = np.random.randn(2, 2).astype(np.float32)
@@ -807,8 +771,7 @@ run(testDynamicMemrefAdd2D)
 # CHECK-LABEL: TEST: testSharedLibLoad
 def testSharedLibLoad():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
       module  {
       func.func @main(%arg0: memref<1xf32>) attributes { llvm.emit_c_interface } {
         %c0 = arith.constant 0 : index
@@ -819,8 +782,7 @@ def testSharedLibLoad():
         return
       }
       func.func private @printMemrefF32(memref<*xf32>) attributes { llvm.emit_c_interface }
-     } """
-        )
+     } """)
         arg0 = np.array([0.0]).astype(np.float32)
 
         arg0_memref_ptr = ctypes.pointer(
@@ -858,8 +820,7 @@ run(testSharedLibLoad)
 # CHECK-LABEL: TEST: testNanoTime
 def testNanoTime():
     with Context():
-        module = Module.parse(
-            """
+        module = Module.parse("""
       module {
       func.func @main() attributes { llvm.emit_c_interface } {
         %now = call @nanoTime() : () -> i64
@@ -872,8 +833,7 @@ def testNanoTime():
       }
       func.func private @nanoTime() -> i64 attributes { llvm.emit_c_interface }
       func.func private @printMemrefI64(memref<*xi64>) attributes { llvm.emit_c_interface }
-    }"""
-        )
+    }""")
 
         if sys.platform == "win32":
             shared_libs = [
@@ -904,17 +864,13 @@ def testDumpToObjectFile():
 
     try:
         with Context():
-            module = Module.parse(
-                dedent(
-                    """
+            module = Module.parse(dedent("""
                     func.func private @printF32(f32)
                     func.func @main(%arg0: f32) attributes { llvm.emit_c_interface } {
                       call @printF32(%arg0) : (f32) -> ()
                       return
                     }
-                    """
-                )
-            )
+                    """))
 
             execution_engine = ExecutionEngine(
                 lowerToLLVM(module),

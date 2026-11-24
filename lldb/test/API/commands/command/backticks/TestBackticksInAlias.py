@@ -2,7 +2,6 @@
 Test that an alias can contain active backticks
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil
@@ -14,7 +13,7 @@ class TestBackticksInAlias(TestBase):
     def test_backticks_in_alias(self):
         """Test that an alias can contain active backticks."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.c")
         )
         interp = self.dbg.GetCommandInterpreter()

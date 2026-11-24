@@ -2,10 +2,10 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-""" This module is responsible to generate 'index.html' for the report.
+"""This module is responsible to generate 'index.html' for the report.
 
 The input for this step is the output directory, where individual reports
-could be found. It parses those reports and generates 'index.html'. """
+could be found. It parses those reports and generates 'index.html'."""
 
 import re
 import os

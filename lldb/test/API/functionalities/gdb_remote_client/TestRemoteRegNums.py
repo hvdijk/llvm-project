@@ -4,7 +4,6 @@ from lldbsuite.test.decorators import *
 from lldbsuite.test.gdbclientutils import *
 from lldbsuite.test.lldbgdbclient import GDBRemoteTestBase
 
-
 # This test case checks for register number mismatch between lldb and gdb stub.
 # LLDB client assigns register numbers to target xml registers in increasing
 # order starting with regnum = 0, while gdb-remote may specify different regnum

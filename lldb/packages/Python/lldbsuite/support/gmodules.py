@@ -2,7 +2,6 @@
 import os
 import re
 
-
 GMODULES_SUPPORT_MAP = {}
 GMODULES_HELP_REGEX = re.compile(r"\s-gmodules\s")
 

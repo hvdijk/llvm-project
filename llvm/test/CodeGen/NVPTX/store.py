@@ -107,25 +107,21 @@ store_nonatomic_func = Template(
 """
 )
 
-local_atomic_store_func = Template(
-    """define void @${func_name}(${datatype} %val) {
+local_atomic_store_func = Template("""define void @${func_name}(${datatype} %val) {
     %slot = alloca ${datatype}, align ${align}, addrspace(5)
     call void asm sideeffect "", "r"(ptr addrspace(5) %slot)
     store atomic ${volatile_kw}${datatype} %val, ptr addrspace(5) %slot syncscope("${llvm_scope}") ${ordering}, align ${align}
     ret void
 }
-"""
-)
+""")
 
-local_nonatomic_store_func = Template(
-    """define void @${func_name}(${datatype} %val) {
+local_nonatomic_store_func = Template("""define void @${func_name}(${datatype} %val) {
     %slot = alloca ${datatype}, addrspace(5)
     call void asm sideeffect "", "r"(ptr addrspace(5) %slot)
     store ${volatile_kw}${datatype} %val, ptr addrspace(5) %slot
     ret void
 }
-"""
-)
+""")
 
 
 def get_store_func(datatype, addrspace, scope, ordering, volatile):

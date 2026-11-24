@@ -14,8 +14,7 @@ def run(f):
 # CHECK-LABEL: TEST: testParseDpas
 @run
 def testParseDpas():
-    module = Module.parse(
-        """
+    module = Module.parse("""
         func.func @dpas(%a: vector<8x16xf16>, %b: vector<16x16xf16>,
                         %c: vector<8x16xf32>) -> vector<8x16xf32> {
           %0 = xegpu.dpas %a, %b
@@ -24,8 +23,7 @@ def testParseDpas():
             : vector<8x16xf16>, vector<16x16xf16>, vector<8x16xf32> -> vector<8x16xf32>
           return %1 : vector<8x16xf32>
         }
-        """
-    )
+        """)
     assert module.operation.verify()
     function = module.body.operations[0]
     dpas, dpas_acc, return_op = function.body.blocks[0].operations
@@ -44,15 +42,13 @@ def testParseDpas():
 # CHECK-LABEL: TEST: testParseLoadNd
 @run
 def testParseLoadNd():
-    module = Module.parse(
-        """
+    module = Module.parse("""
         func.func @load_nd(%desc: !xegpu.tensor_desc<8x16xf32>) -> vector<8x16xf32> {
           %0 = xegpu.load_nd %desc[0, 0]
             : !xegpu.tensor_desc<8x16xf32> -> vector<8x16xf32>
           return %0 : vector<8x16xf32>
         }
-        """
-    )
+        """)
     assert module.operation.verify()
     function = module.body.operations[0]
     load = function.body.blocks[0].operations[0]

@@ -2,7 +2,6 @@
 Make sure the getting a variable path works and doesn't crash.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *
@@ -81,7 +80,7 @@ class TestVarPath(TestBase):
         )
 
     def do_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Set a breakpoint here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -127,7 +126,7 @@ class TestVarPath(TestBase):
     def test_frame_var_use_dynamic(self):
         """Test `SBFrame.GetValueForVariablePath` return the current value and variable type."""
         self.build()
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set a breakpoint here", lldb.SBFileSpec("main.cpp")
         )
         frame: lldb.SBFrame = thread.GetFrameAtIndex(0)

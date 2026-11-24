@@ -1,4 +1,4 @@
-""" This module implement Dwarf expression opcode parser. """
+"""This module implement Dwarf expression opcode parser."""
 
 import lldb
 

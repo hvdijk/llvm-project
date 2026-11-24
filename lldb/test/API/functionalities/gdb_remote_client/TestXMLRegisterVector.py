@@ -28,18 +28,14 @@ class TestXMLRegisterVector(GDBRemoteTestBase):
 
     def setup_register_test(self, definitions, register_data, architecture="aarch64"):
         return self.setup_multidoc_test(
-            {
-                "target.xml": dedent(
-                    """\
+            {"target.xml": dedent("""\
                 <?xml version="1.0"?>
                 <target version="1.0">
                   <architecture>{}</architecture>
                   <feature name="test.register.vectors">
                     {}
                   </feature>
-                </target>"""
-                ).format(architecture, definitions)
-            },
+                </target>""").format(architecture, definitions)},
             register_data,
         )
 
@@ -208,40 +204,32 @@ class TestXMLRegisterVector(GDBRemoteTestBase):
         second_register = "0000c03f" "00002040" "00006040" "00009040"
         process = self.setup_multidoc_test(
             {
-                "target.xml": dedent(
-                    """\
+                "target.xml": dedent("""\
                 <?xml version="1.0"?>
                 <target version="1.0">
                   <architecture>aarch64</architecture>
                   <xi:include href="first.xml"/>
                   <xi:include href="second.xml"/>
                   <xi:include href="third.xml"/>
-                </target>"""
-                ),
-                "first.xml": dedent(
-                    """\
+                </target>"""),
+                "first.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="feature.first">
                   <vector id="shared" type="ieee_single" count="2"/>
                   <reg name="first" regnum="0" bitsize="64" type="shared"/>
-                </feature>"""
-                ),
-                "second.xml": dedent(
-                    """\
+                </feature>"""),
+                "second.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="feature.second">
                   <vector id="shared" type="ieee_single" count="4"/>
                   <reg name="second" regnum="1" bitsize="128" type="shared"/>
-                </feature>"""
-                ),
-                "third.xml": dedent(
-                    """\
+                </feature>"""),
+                "third.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="feature.third">
                   <reg name="unresolved" regnum="2" bitsize="64" type="shared"/>
                   <reg name="pc" bitsize="64"/>
-                </feature>"""
-                ),
+                </feature>"""),
             },
             first_register + second_register + "00" * 16,
         )

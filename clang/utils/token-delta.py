@@ -265,7 +265,7 @@ def main():
         type=int,
         default=0,
     )
-    (opts, args) = parser.parse_args()
+    opts, args = parser.parse_args()
 
     if len(args) <= 1:
         parser.error("Invalid number of arguments.")

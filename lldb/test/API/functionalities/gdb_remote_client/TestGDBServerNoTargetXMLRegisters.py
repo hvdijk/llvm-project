@@ -43,13 +43,11 @@ class MyResponder(MockGDBServerResponder):
     def qXferRead(self, obj, annex, offset, length):
         if self.has_target_xml and annex == "target.xml":
             return (
-                dedent(
-                    f"""\
+                dedent(f"""\
                     <?xml version="1.0"?>
                     <target version="1.0">
                       <architecture>{self.architecture}</architecture>
-                    </target>"""
-                ),
+                    </target>"""),
                 False,
             )
 

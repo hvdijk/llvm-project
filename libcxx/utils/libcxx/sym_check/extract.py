@@ -9,6 +9,7 @@
 """
 extract - A set of function that extract symbol lists from shared libraries.
 """
+
 import os.path
 from os import environ
 import re

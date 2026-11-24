@@ -40,7 +40,7 @@ class TestDelayInitDependencies(TestBase):
         # This run without arguments will not load libfoo.dylib
         li = lldb.SBLaunchInfo([])
         li.SetWorkingDirectory(self.getBuildDir())
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.c"), li
         )
         for m in target.modules:
@@ -53,7 +53,7 @@ class TestDelayInitDependencies(TestBase):
         li = lldb.SBLaunchInfo([])
         li.SetWorkingDirectory(self.getBuildDir())
         li.SetArguments(["one-argument"], True)
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.c"), li
         )
 

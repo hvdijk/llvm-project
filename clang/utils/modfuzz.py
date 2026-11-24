@@ -158,7 +158,7 @@ def create_module(model, options):
 
     def go(model):
         model.modules[n] = (model.source, model.decls)
-        (model.source, model.decls) = ("", {})
+        model.source, model.decls = ("", {})
 
     options += [lambda model, options: add_import(model, options, n)]
     return go

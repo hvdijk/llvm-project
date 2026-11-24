@@ -699,6 +699,7 @@ if have_ld_plugin_support(config.ld_bfd_executable, "GNU ld"):
 if have_ld_plugin_support(config.gold_executable, "GNU gold"):
     config.available_features.add("gold_linker")
 
+
 def have_ld64_plugin_support():
     if not os.path.exists(
         os.path.join(config.llvm_shlib_dir, "libLTO" + config.llvm_shlib_ext)

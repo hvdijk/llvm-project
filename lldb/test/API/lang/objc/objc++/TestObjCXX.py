@@ -2,7 +2,6 @@
 Make sure that ivars of Objective-C++ classes are visible in LLDB.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

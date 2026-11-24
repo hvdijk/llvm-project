@@ -23,6 +23,7 @@ def get_path_from_clang(args, allow_failure):
     path = lit_config.run_command_cached(clang_cmd, allow_failure, text=True)
     return path.strip(), clang_cmd
 
+
 def find_compiler_libdir():
     """
     Returns the path to library resource directory used
@@ -780,7 +781,7 @@ if config.target_os == "Linux" and not config.android:
             (2, 40),
         ]:
             if (major, minor) >= required:
-                (required_major, required_minor) = required
+                required_major, required_minor = required
                 config.available_features.add(
                     f"glibc-{required_major}.{required_minor}"
                 )
@@ -1011,16 +1012,14 @@ def target_page_size():
         )
         # UNIX (except WASI) and Windows can use mmap.PAGESIZE,
         # attempt to use os.sysconf for other targets.
-        out, err = proc.communicate(
-            b"""
+        out, err = proc.communicate(b"""
 try:
     from mmap import PAGESIZE
     print(PAGESIZE)
 except ImportError:
     from os import sysconf
     print(sysconf("SC_PAGESIZE"))
-"""
-        )
+""")
         return int(out)
     except:
         return 4096

@@ -18,7 +18,7 @@ def stack_frames(debugger, command, exe_ctx, result, internal_dict):
         default=False,
     )
     try:
-        (options, args) = parser.parse_args(command_args)
+        options, args = parser.parse_args(command_args)
     except:
         return
 

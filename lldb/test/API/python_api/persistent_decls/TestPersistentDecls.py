@@ -3,7 +3,6 @@ Test the SBTarget API's to retrieve persistent types
 and values.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import skipIfWasm
@@ -27,7 +26,7 @@ class TestPersistentDecls(TestBase):
         self.values_test()
 
     def types_test(self):
-        (target, _, _, _) = lldbutil.run_to_source_breakpoint(
+        target, _, _, _ = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -80,7 +79,7 @@ class TestPersistentDecls(TestBase):
         self.assertFalse(type.IsValid(), "Type is also invalid.")
 
     def values_test(self):
-        (target, _, _, _) = lldbutil.run_to_source_breakpoint(
+        target, _, _, _ = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

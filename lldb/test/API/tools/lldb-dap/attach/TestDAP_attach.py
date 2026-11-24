@@ -11,6 +11,7 @@ from lldbsuite.test.decorators import *
 from lldbsuite.test.tools.lldb_dap import DAPTestCaseBase
 from lldbsuite.test.tools.lldb_dap.types import *
 
+
 # Often fails on Arm/AArch64 Linux, but not specifically because of the
 # architecture, something in process scheduling can cause a massive (minutes)
 # delay during this test.
@@ -67,7 +68,7 @@ class TestDAP_attach(DAPTestCaseBase):
         self.assertEqual(process_event.body.systemProcessId, proc.pid)
         self.verify_pid(proc)
 
-    @skipIfWindowsAndNoLLDBServer # The in process plugin cannot support this feature.
+    @skipIfWindowsAndNoLLDBServer  # The in process plugin cannot support this feature.
     def test_by_name_waitFor(self):
         """
         Tests waiting for, and attaching to a process by process name that

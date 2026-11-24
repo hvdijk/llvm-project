@@ -2830,9 +2830,7 @@ FileCheck input:
 FileCheck output:
 {3}
 {4}
-""".format(
-            cmd_status, filecheck_cmd, output, cmd_stdout, cmd_stderr
-        )
+""".format(cmd_status, filecheck_cmd, output, cmd_stdout, cmd_stderr)
 
         trace = cmd_status != 0 or traceAlways
         with recording(self, trace) as sbuf:

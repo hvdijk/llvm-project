@@ -258,12 +258,16 @@ class ResultDBReport(Report):
                     tests_data.append(
                         gen_resultdb_test_entry(
                             test_name=micro_full_name,
-                            start_time=micro_test.start
-                            if micro_test.start
-                            else test.result.start,
-                            elapsed_time=micro_test.elapsed
-                            if micro_test.elapsed
-                            else test.result.elapsed,
+                            start_time=(
+                                micro_test.start
+                                if micro_test.start
+                                else test.result.start
+                            ),
+                            elapsed_time=(
+                                micro_test.elapsed
+                                if micro_test.elapsed
+                                else test.result.elapsed
+                            ),
                             test_output=micro_test.output,
                             result_code=micro_test.code,
                             is_expected=not micro_test.code.isFailure,

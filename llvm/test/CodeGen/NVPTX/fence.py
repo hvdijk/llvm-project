@@ -3,14 +3,12 @@
 from string import Template
 from itertools import product
 
-fence_func = Template(
-    """
+fence_func = Template("""
 define void @fence_${ordering}_${ptx_scope}() {
     fence syncscope(\"${llvm_scope}\") ${ordering}
     ret void
 }
-"""
-)
+""")
 
 run_statement = Template(
     """; RUN: llc < %s -march=nvptx64 -mcpu=sm_${sm} -mattr=+ptx${ptx} | FileCheck %s --check-prefix=SM${sm}

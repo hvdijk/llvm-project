@@ -1,6 +1,5 @@
 """Test that lldb can create a skinny corefile, and load all available libraries correctly."""
 
-
 import os
 import re
 import subprocess
@@ -99,7 +98,7 @@ class TestSkinnyCorefile(TestBase):
         # Launch a live process with a.out, libto-be-removed.dylib,
         # libpresent.dylib all in their original locations, create
         # a corefile at the breakpoint.
-        (target, process, t, bp) = lldbutil.run_to_source_breakpoint(
+        target, process, t, bp = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("present.c")
         )
 

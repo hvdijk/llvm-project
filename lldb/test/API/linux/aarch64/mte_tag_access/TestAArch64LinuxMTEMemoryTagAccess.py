@@ -3,7 +3,6 @@ Test "memory tag read" and "memory tag write" commands
 on AArch64 Linux with MTE.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -26,7 +26,7 @@ class TestDyldWithMultipleRDebug(TestBase):
         # Run to a breakpoint in main.cpp to ensure we can hit breakpoints
         # in the main executable. Setting breakpoints by file and line ensures
         # that the main executable was loaded correctly by the dynamic loader
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", lldb.SBFileSpec("main.cpp"), extra_images=["testlib"]
         )
         # Set breakpoints both on shared library function to ensure that

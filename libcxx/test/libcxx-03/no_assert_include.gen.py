@@ -23,8 +23,7 @@ for header in public_headers:
     if header == "cassert":
         continue
 
-    print(
-        f"""\
+    print(f"""\
 //--- {header}.compile.pass.cpp
 {lit_header_undeprecations.get(header, '')}
 
@@ -33,5 +32,4 @@ for header in public_headers:
 #ifdef assert
 # error "Do not include cassert or assert.h in standard header files"
 #endif
-"""
-    )
+""")

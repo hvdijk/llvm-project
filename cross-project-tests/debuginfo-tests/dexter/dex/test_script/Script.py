@@ -79,6 +79,7 @@ class LabelDict:
     def get_labels(self, file: str) -> FileLabels:
         return FileLabels(file, self.file_to_labels_to_lines[file])
 
+
 class Scope:
     """Helper class used to simplify queries about the context of a Node in the Dexter Script. The context for a given
     Node consists of some base context information in the root of the script, and then all Where nodes in the parent
@@ -273,6 +274,7 @@ class DexterScript:
         if not self.label_dict.has_labels(file):
             self.label_dict.set_labels_from_file(self.context, file, self.base_dir)
         return self.label_dict.get_labels(file)
+
 
 # Helper function to apply a line offset to the errors reported by YAML while loading, to account for the YAML documents
 # being embedded in part of a file.

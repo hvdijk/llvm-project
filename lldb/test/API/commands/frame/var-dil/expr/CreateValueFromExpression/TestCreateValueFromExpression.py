@@ -13,7 +13,7 @@ class TestCreateValueFromExpression(TestBase):
 
     def test_formatter(self):
         self.build()
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", lldb.SBFileSpec("main.cpp")
         )
 

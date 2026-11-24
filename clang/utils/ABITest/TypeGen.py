@@ -1,4 +1,5 @@
 """Flexible enumeration of C types."""
+
 from __future__ import division, print_function
 
 from Enumeration import *

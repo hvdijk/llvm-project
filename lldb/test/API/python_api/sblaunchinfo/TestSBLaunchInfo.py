@@ -2,7 +2,6 @@
 Test SBLaunchInfo
 """
 
-
 from lldbsuite.test.lldbtest import *
 
 

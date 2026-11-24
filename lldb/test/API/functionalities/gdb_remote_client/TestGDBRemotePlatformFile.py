@@ -178,7 +178,7 @@ class TestGDBRemotePlatformFile(GDBPlatformClientTestBase):
                 if packet.startswith("vFile:open:"):
                     return "F5"
                 elif packet.startswith("vFile:fstat:"):
-                    return "F40;" + 8 * "\0" + "\0\0\1\xA4" + 52 * "\0"
+                    return "F40;" + 8 * "\0" + "\0\0\1\xa4" + 52 * "\0"
                 if packet.startswith("vFile:close:"):
                     return "F0"
                 return ""

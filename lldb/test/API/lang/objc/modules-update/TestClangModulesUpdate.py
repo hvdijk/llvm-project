@@ -14,18 +14,14 @@ class TestClangModuleUpdate(TestBase):
     @skipIfDarwin  # rdar://76540904
     def test_expr(self):
         with open(self.getBuildArtifact("module.modulemap"), "w") as f:
-            f.write(
-                """
+            f.write("""
                     module Foo { header "f.h" }
-                    """
-            )
+                    """)
         with open(self.getBuildArtifact("f.h"), "w") as f:
-            f.write(
-                """
+            f.write("""
                     struct Q { int i; };
                     void f() {}
-                    """
-            )
+                    """)
 
         mod_cache = self.getBuildArtifact("private-module-cache")
         if os.path.isdir(mod_cache):
@@ -42,13 +38,11 @@ class TestClangModuleUpdate(TestBase):
 
         # Update the module.
         with open(self.getBuildArtifact("f.h"), "w") as f:
-            f.write(
-                """
+            f.write("""
                     struct S { int i; };
                     struct S getS() { struct S r = {1}; return r; }
                     void f() {}
-                    """
-            )
+                    """)
 
         # Rebuild.
         d = {"OBJC_SOURCES": "second.m"}

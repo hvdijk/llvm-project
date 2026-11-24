@@ -2,7 +2,6 @@
 Use lldb Python API to verify that expression evaluation for property references uses the correct getters and setters
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -4,7 +4,6 @@ import os
 
 from mlir._mlir_libs import get_include_dirs, get_lib_dirs
 
-
 header_file = os.path.join(get_include_dirs()[0], "mlir-c", "IR.h")
 assert os.path.isfile(header_file), f"Header does not exist: {header_file}"
 

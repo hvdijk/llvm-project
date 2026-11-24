@@ -18,8 +18,7 @@ def run(f):
 @run
 def testGPUToLLVMBin():
     with Context():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 module attributes {gpu.container_module} {
   gpu.module @kernel_module1 [#nvvm.target<chip = "sm_70">] {
     llvm.func @kernel(%arg0: i32, %arg1: !llvm.ptr,
@@ -29,8 +28,7 @@ module attributes {gpu.container_module} {
     }
   }
 }
-    """
-        )
+    """)
     pm = PassManager("any")
     pm.add("gpu-module-to-binary{format=llvm}")
     pm.run(module.operation)
@@ -54,8 +52,7 @@ module attributes {gpu.container_module} {
 @run
 def testGPUToASMBin():
     with Context():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 module attributes {gpu.container_module} {
   gpu.module @kernel_module2 [#nvvm.target<flags = {fast}>, #nvvm.target] {
     llvm.func @kernel(%arg0: i32, %arg1: !llvm.ptr,
@@ -65,8 +62,7 @@ module attributes {gpu.container_module} {
     }
   }
 }
-    """
-        )
+    """)
     pm = PassManager("any")
     pm.add("gpu-module-to-binary{format=isa}")
     pm.run(module.operation)

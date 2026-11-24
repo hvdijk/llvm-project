@@ -47,12 +47,10 @@ for header in public_headers:
 #endif
 """
 
-    print(
-        f"""\
+    print(f"""\
 //--- {header}.compile.pass.cpp
 {lit_header_undeprecations.get(header, '')}
 
 #include <{header}>
 {checks}
-"""
-    )
+""")

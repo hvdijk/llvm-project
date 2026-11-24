@@ -19,6 +19,7 @@ symbols only accessible via a remote service) without having to modify the
 script itself.
 
 """
+
 import argparse
 import bisect
 import errno
@@ -37,6 +38,7 @@ fix_filename_patterns = None
 logfile = sys.stdin
 allow_system_symbolizer = True
 force_system_symbolizer = False
+
 
 # FIXME: merge the code that calls fix_filename().
 def fix_filename(file_name):
@@ -620,6 +622,7 @@ class AsanSymbolizerPlugInProxy(object):
     def load_plugin_from_file(self, file_path):
         logging.info('Loading plugins from "{}"'.format(file_path))
         globals_space = dict(globals())
+
         # Provide function to register plugins
         def register_plugin(plugin):
             logging.info("Registering plugin %s", plugin.get_name())
@@ -796,9 +799,13 @@ class ModuleDesc(object):
             arch=self.arch,
             start_addr=self.start_addr,
             end_addr=self.end_addr,
-            module_path=self.module_path
-            if self.module_path == self.module_path_for_symbolization
-            else "{} ({})".format(self.module_path_for_symbolization, self.module_path),
+            module_path=(
+                self.module_path
+                if self.module_path == self.module_path_for_symbolization
+                else "{} ({})".format(
+                    self.module_path_for_symbolization, self.module_path
+                )
+            ),
             uuid=self.uuid,
         )
 

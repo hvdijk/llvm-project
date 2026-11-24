@@ -2,7 +2,6 @@
 
 import sys
 
-
 sys.stdout.write("a line on stdout\n")
 sys.stdout.flush()
 

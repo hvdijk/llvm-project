@@ -1,6 +1,5 @@
 """Test printing ObjC objects that use unbacked properties - so that the static ivar offsets are incorrect."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

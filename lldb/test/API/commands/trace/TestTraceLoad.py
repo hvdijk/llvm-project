@@ -288,8 +288,7 @@ class TestTraceLoad(TraceIntelPTTestCaseBase):
         trace_description_file_path = os.path.join(
             src_dir, "intelpt-trace", "trace_bad.json"
         )
-        expected_substrs = [
-            """error: expected object at traceBundle.processes[0]
+        expected_substrs = ["""error: expected object at traceBundle.processes[0]
 
 Context:
 {
@@ -311,8 +310,7 @@ Schema:
     "family": integer,
     "model": integer,
     "stepping": integer
-  },"""
-        ]
+  },"""]
         self.traceLoad(
             traceDescriptionFilePath=trace_description_file_path,
             error=True,

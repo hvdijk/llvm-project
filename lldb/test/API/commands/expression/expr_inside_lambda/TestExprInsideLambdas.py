@@ -1,9 +1,8 @@
-""" Test that evaluating expressions from within C++ lambdas works
-    Particularly, we test the case of capturing "this" and
-    using members of the captured object in expression evaluation
-    while we're on a breakpoint inside a lambda.
+"""Test that evaluating expressions from within C++ lambdas works
+Particularly, we test the case of capturing "this" and
+using members of the captured object in expression evaluation
+while we're on a breakpoint inside a lambda.
 """
-
 
 import lldb
 from lldbsuite.test.decorators import *
@@ -23,7 +22,7 @@ class ExprInsideLambdaTestCase(TestBase):
     def test_expr_inside_lambda(self):
         """Test that lldb evaluating expressions inside lambda expressions works correctly."""
         self.build()
-        (target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp")
         )
 

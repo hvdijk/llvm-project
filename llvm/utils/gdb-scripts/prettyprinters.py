@@ -517,7 +517,7 @@ class IlistNodePrinter:
 
         # Repeated cast becaue val.type's base_type is ambiguous when using tags.
         base = val.cast(impl_type).cast(base_type)
-        (prev, sentinel) = get_prev_and_sentinel(base)
+        prev, sentinel = get_prev_and_sentinel(base)
         prev = prev.cast(base_type.pointer())
         self.prev = cast_pointer(prev)
         self.next = cast_pointer(val["Next"])

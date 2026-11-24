@@ -53,7 +53,7 @@ class ThreadAPITestCase(TestBase):
         """Test SBThread.frame with negative indexes."""
         self.build()
         self.validate_negative_indexing()
- 
+
     @skipIfWasm  # the test calls a function with an expression
     def test_StepInstruction(self):
         """Test that StepInstruction preserves the plan stack."""

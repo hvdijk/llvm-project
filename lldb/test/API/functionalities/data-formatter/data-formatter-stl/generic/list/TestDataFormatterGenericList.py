@@ -2,7 +2,6 @@
 Test lldb data formatter subsystem.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -230,7 +229,7 @@ class GenericListDataFormatterTestCase(TestBase):
 
     def do_test_ptr_and_ref(self):
         """Test that ref and ptr to std::list is displayed correctly"""
-        (_, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        _, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Check ref and ptr", lldb.SBFileSpec("main.cpp", False)
         )
 

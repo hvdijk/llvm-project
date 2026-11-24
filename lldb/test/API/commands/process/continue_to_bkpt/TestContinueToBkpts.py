@@ -2,7 +2,6 @@
 Test the "process continue -b" option.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -75,7 +74,7 @@ class TestContinueToBkpts(TestBase):
 
     def do_test_continue_to_breakpoint(self):
         """Test the continue to breakpoint feature."""
-        (self.target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to get started", self.main_source_spec
         )
 

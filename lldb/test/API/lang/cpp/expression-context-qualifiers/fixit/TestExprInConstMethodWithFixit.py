@@ -7,7 +7,7 @@ from lldbsuite.test import lldbutil
 class TestCase(TestBase):
     def test(self):
         self.build()
-        (_, process, _, _) = lldbutil.run_to_source_breakpoint(
+        _, process, _, _ = lldbutil.run_to_source_breakpoint(
             self, "Break here", lldb.SBFileSpec("main.cpp")
         )
 

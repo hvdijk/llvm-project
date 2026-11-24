@@ -246,7 +246,7 @@ def process_file(
         while True:
             try:
                 prev_end = doc_start
-                (j, doc_start) = decoder.raw_decode(json_str[doc_start:])
+                j, doc_start = decoder.raw_decode(json_str[doc_start:])
                 doc_start += prev_end + 1
                 normalize(j, normalize_fields)
                 out_asts.append(j)

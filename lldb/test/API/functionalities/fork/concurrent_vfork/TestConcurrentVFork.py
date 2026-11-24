@@ -28,7 +28,7 @@ class TestConcurrentVFork(TestBase):
         )
 
     def follow_parent_helper(self, use_fork, call_exec):
-        (target, process, thread, bkpt) = self.build_run_to_breakpoint(
+        target, process, thread, bkpt = self.build_run_to_breakpoint(
             use_fork, call_exec
         )
 

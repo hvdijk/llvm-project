@@ -2,7 +2,6 @@
 Test that we can p *objcObject
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

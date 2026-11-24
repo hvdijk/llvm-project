@@ -95,25 +95,21 @@ load_nonatomic_func = Template(
 """
 )
 
-local_atomic_load_func = Template(
-    """define ${datatype} @${func_name}() {
+local_atomic_load_func = Template("""define ${datatype} @${func_name}() {
     %slot = alloca ${datatype}, align ${align}, addrspace(5)
     call void asm sideeffect "", "r"(ptr addrspace(5) %slot)
     %retval = load atomic ${volatile_kw}${datatype}, ptr addrspace(5) %slot syncscope("${llvm_scope}") ${ordering}, align ${align}
     ret ${datatype} %retval
 }
-"""
-)
+""")
 
-local_nonatomic_load_func = Template(
-    """define ${datatype} @${func_name}() {
+local_nonatomic_load_func = Template("""define ${datatype} @${func_name}() {
     %slot = alloca ${datatype}, addrspace(5)
     call void asm sideeffect "", "r"(ptr addrspace(5) %slot)
     %retval = load ${volatile_kw}${datatype}, ptr addrspace(5) %slot
     ret ${datatype} %retval
 }
-"""
-)
+""")
 
 
 def get_load_func(datatype, addrspace, scope, ordering, volatile):

@@ -49,7 +49,6 @@ class TestCase(PExpectTest):
         # Send EOF to quit the Python REPL.
         self.child.sendeof()
 
-
     # PExpect uses many timeouts internally and doesn't play well
     # under ASAN on a loaded machine..
     @skipIfAsan
@@ -69,4 +68,3 @@ class TestCase(PExpectTest):
         self.child.expect("KeyboardInterrupt")
         # Send EOF to quit the Python REPL.
         self.child.sendeof()
-

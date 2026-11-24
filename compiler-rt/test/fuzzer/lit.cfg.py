@@ -24,10 +24,7 @@ else:
     config.available_features.add("lsan")
 
 # MemorySanitizer is not supported on OSX or Windows right now
-if (
-    sys.platform.startswith("darwin")
-    or sys.platform.startswith("win")
-):
+if sys.platform.startswith("darwin") or sys.platform.startswith("win"):
     lit_config.note("msan feature unavailable")
     assert "msan" not in config.available_features
 elif config.target_arch == "i386":
@@ -80,7 +77,9 @@ def generate_compiler_cmd(is_cpp=True, fuzzer_enabled=True, msan_enabled=False):
     # Avoids linker error:
     #   /failifmismatch: mismatch detected for 'annotate_string'
     if "windows" in config.available_features:
-        extra_cmd = extra_cmd + " -D_DISABLE_VECTOR_ANNOTATION -D_DISABLE_STRING_ANNOTATION"
+        extra_cmd = (
+            extra_cmd + " -D_DISABLE_VECTOR_ANNOTATION -D_DISABLE_STRING_ANNOTATION"
+        )
 
     if "darwin" in config.available_features and getattr(
         config, "darwin_linker_version", None

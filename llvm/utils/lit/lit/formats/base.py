@@ -17,6 +17,7 @@ class TestFormat:
         """
         yield lit.Test.Test(testSuite, path_in_suite, localConfig)
 
+
 ###
 
 
@@ -41,11 +42,14 @@ class FileBasedTest(TestFormat):
         for filename in os.listdir(source_path):
             filepath = os.path.join(source_path, filename)
             if not os.path.isdir(filepath):
-                for t in self.getTestsForPath(testSuite, path_in_suite + (filename,), litConfig, localConfig):
+                for t in self.getTestsForPath(
+                    testSuite, path_in_suite + (filename,), litConfig, localConfig
+                ):
                     yield t
 
 
 ###
+
 
 # Check exit code of a simple executable with no input
 class ExecutableTest(FileBasedTest):

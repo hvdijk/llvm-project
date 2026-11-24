@@ -30,7 +30,7 @@ class ExprOptionsTestCase(TestBase):
         # Set debugger into synchronous mode
         self.dbg.SetAsync(False)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// breakpoint_in_main", self.main_source_spec
         )
 
@@ -65,7 +65,7 @@ class ExprOptionsTestCase(TestBase):
         # Set debugger into synchronous mode
         self.dbg.SetAsync(False)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// breakpoint_in_main", self.main_source_spec
         )
 

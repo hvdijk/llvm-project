@@ -2,7 +2,6 @@
 Test that we read the function starts section.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

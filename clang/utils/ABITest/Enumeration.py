@@ -1,9 +1,10 @@
-"""Utilities for enumeration of finite and countably infinite sets.
-"""
+"""Utilities for enumeration of finite and countably infinite sets."""
+
 from __future__ import absolute_import, division, print_function
 
 ###
 # Countable iteration
+
 
 # Simplifies some calculations
 class Aleph0(int):

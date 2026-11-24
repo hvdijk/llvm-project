@@ -52,15 +52,15 @@ SSA_RE = re.compile(SSA_RE_STR)
 SSA_OP_NAME_RE = re.compile(r"\b(?:\s=\s[a-z_]+)[.]([a-z_]+)\b")
 
 # Regex matching the left-hand side of an assignment
-SSA_RESULTS_STR = r'\s*(%' + SSA_RE_STR + r')(\s*,\s*(%' + SSA_RE_STR + r'))*\s*='
+SSA_RESULTS_STR = r"\s*(%" + SSA_RE_STR + r")(\s*,\s*(%" + SSA_RE_STR + r"))*\s*="
 SSA_RESULTS_RE = re.compile(SSA_RESULTS_STR)
 
 # Regex matching attributes
-ATTR_RE_STR = r'(#[a-zA-Z._-][a-zA-Z0-9._-]*)'
+ATTR_RE_STR = r"(#[a-zA-Z._-][a-zA-Z0-9._-]*)"
 ATTR_RE = re.compile(ATTR_RE_STR)
 
 # Regex matching the left-hand side of an attribute definition
-ATTR_DEF_RE_STR = r'\s*' + ATTR_RE_STR + r'\s*='
+ATTR_DEF_RE_STR = r"\s*" + ATTR_RE_STR + r"\s*="
 ATTR_DEF_RE = re.compile(ATTR_DEF_RE_STR)
 
 # Regex matching a FileCheck attribute variable reference produced by this script,
@@ -85,7 +85,7 @@ class VariableNamer:
         self.generate_in_parent_scope_left = 0
 
         # Parse variable names
-        self.variable_names = [name.upper() for name in variable_names.split(',')]
+        self.variable_names = [name.upper() for name in variable_names.split(",")]
         self.used_variable_names = set()
 
     # Generate the following 'n' variable names in the parent scope.
@@ -125,11 +125,11 @@ class VariableNamer:
         if self.generate_in_parent_scope_left > 0:
             self.generate_in_parent_scope_left -= 1
             scope = len(self.scopes) - 2
-        assert(scope >= 0)
+        assert scope >= 0
 
         # Save variable
         if variable_name in self.used_variable_names:
-            raise RuntimeError(variable_name + ': duplicate variable name')
+            raise RuntimeError(variable_name + ": duplicate variable name")
         self.scopes[scope][source_variable_name] = variable_name
         self.used_variable_names.add(variable_name)
 
@@ -153,11 +153,12 @@ class VariableNamer:
         self.used_variable_names = set()
         self.op_name_counter.clear()
 
+
 class AttributeNamer:
 
     def __init__(self, attribute_names):
         self.name_counter = 0
-        self.attribute_names = [name.upper() for name in attribute_names.split(',')]
+        self.attribute_names = [name.upper() for name in attribute_names.split(",")]
         self.map = {}
         self.used_attribute_names = set()
 
@@ -165,17 +166,19 @@ class AttributeNamer:
     def generate_name(self, source_attribute_name):
 
         # Compute FileCheck name
-        attribute_name = self.attribute_names.pop(0) if len(self.attribute_names) > 0 else ''
-        if attribute_name == '':
+        attribute_name = (
+            self.attribute_names.pop(0) if len(self.attribute_names) > 0 else ""
+        )
+        if attribute_name == "":
             attribute_name = "ATTR_" + str(self.name_counter)
             self.name_counter += 1
 
         # Prepend global symbol
-        attribute_name = '$' + attribute_name
+        attribute_name = "$" + attribute_name
 
         # Save attribute
         if attribute_name in self.used_attribute_names:
-            raise RuntimeError(attribute_name + ': duplicate attribute name')
+            raise RuntimeError(attribute_name + ": duplicate attribute name")
         self.map[source_attribute_name] = attribute_name
         self.used_attribute_names.add(attribute_name)
         return attribute_name
@@ -185,12 +188,13 @@ class AttributeNamer:
     def get_name(self, source_attribute_name):
         return self.map.get(source_attribute_name)
 
+
 # Return the number of SSA results in a line of type
 #   %0, %1, ... = ...
 # The function returns 0 if there are no results.
 def get_num_ssa_results(input_line):
     m = SSA_RESULTS_RE.match(input_line)
-    return m.group().count('%') if m else 0
+    return m.group().count("%") if m else 0
 
 
 # Process a line of input that has been split at each SSA identifier '%'.
@@ -266,9 +270,10 @@ def process_attribute_definition(line, attribute_namer):
         )
     return None
 
+
 def process_attribute_references(line, attribute_namer):
 
-    output_line = ''
+    output_line = ""
     components = ATTR_RE.split(line)
     for component in components:
         m = ATTR_RE.match(component)
@@ -278,6 +283,7 @@ def process_attribute_references(line, attribute_namer):
         else:
             output_line += component
     return output_line
+
 
 # Pre-process a line of input to remove any character sequences that will be
 # problematic with FileCheck.
@@ -330,17 +336,19 @@ def main():
     parser.add_argument(
         "--variable_names",
         type=str,
-        default='',
+        default="",
         help="Names to be used in FileCheck regular expression to represent SSA "
         "variables in the order they are encountered. Separate names with commas, "
-        "and leave empty entries for default names (e.g.: 'DIM,,SUM,RESULT')")
+        "and leave empty entries for default names (e.g.: 'DIM,,SUM,RESULT')",
+    )
     parser.add_argument(
         "--attribute_names",
         type=str,
-        default='',
+        default="",
         help="Names to be used in FileCheck regular expression to represent "
         "attributes in the order they are defined. Separate names with commas,"
-        "commas, and leave empty entries for default names (e.g.: 'MAP0,,,MAP1')")
+        "commas, and leave empty entries for default names (e.g.: 'MAP0,,,MAP1')",
+    )
     parser.add_argument(
         "--strict_name_re",
         type=bool,

@@ -10,7 +10,7 @@ class InvalidStdVariantDataFormatterTestCase(TestBase):
         """Test STL data formatters for std::variant with invalid index."""
         self.build()
 
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp", False)
         )
 

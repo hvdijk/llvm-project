@@ -2,7 +2,6 @@
 Test stepping out from a function in a multi-threaded program.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -138,7 +137,7 @@ class ThreadStepOutTestCase(TestBase):
         # that hit the breakpoint, and continue till the second thread hits
         # the breakpoint:
 
-        (breakpoint_threads, other_threads) = ([], [])
+        breakpoint_threads, other_threads = ([], [])
         lldbutil.sort_stopped_threads(
             self.process,
             breakpoint_threads=breakpoint_threads,

@@ -223,7 +223,7 @@ class ReverseTestBase(GDBProxyTestBase):
         while True:
             snapshot = self.capture_snapshot()
             reply = self.pass_through(step_packet)
-            (stop_signal, stop_pairs) = self.parse_stop_reply(reply)
+            stop_signal, stop_pairs = self.parse_stop_reply(reply)
             if stop_signal != 5:
                 raise ValueError("Unexpected stop signal: " + reply)
             is_swbreak = False

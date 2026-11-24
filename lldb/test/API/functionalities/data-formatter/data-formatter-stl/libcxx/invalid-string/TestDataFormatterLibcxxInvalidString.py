@@ -14,7 +14,7 @@ class LibcxxInvalidStringDataFormatterTestCase(TestBase):
     def test(self):
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set break point at this line.", lldb.SBFileSpec("main.cpp")
         )
         frame = thread.frames[0]

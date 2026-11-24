@@ -2,7 +2,7 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-""" This module parses and validates arguments for command-line interfaces.
+"""This module parses and validates arguments for command-line interfaces.
 
 It uses argparse module to create the command line parser. (This library is
 in the standard python library since 3.2 and backported to 2.7, but not
@@ -11,6 +11,7 @@ earlier.)
 It also implements basic validation methods, related to the command.
 Validations are mostly calling specific help methods, or mangling values.
 """
+
 from __future__ import absolute_import, division, print_function
 
 import os
@@ -148,10 +149,8 @@ def validate_args_for_analyze(parser, args, from_build_command):
             parser.error(message="missing CTU directory")
         # Check CTU capability via checking clang-extdef-mapping
         if not is_ctu_capable(args.extdef_map_cmd):
-            parser.error(
-                message="""This version of clang does not support CTU
-            functionality or clang-extdef-mapping command not found."""
-            )
+            parser.error(message="""This version of clang does not support CTU
+            functionality or clang-extdef-mapping command not found.""")
 
 
 def create_intercept_parser():

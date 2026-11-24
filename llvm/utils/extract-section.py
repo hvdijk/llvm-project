@@ -16,6 +16,7 @@ This is merely a wrapper around `llvm-readobj` that focuses on the binary
 content as well as providing more formatting options.
 """
 
+
 # Unfortunately reading binary from stdin is not so trivial in Python...
 def read_raw_stdin():
     import sys

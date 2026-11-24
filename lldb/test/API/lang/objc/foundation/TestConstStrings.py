@@ -3,7 +3,6 @@ Test that objective-c constant strings are generated correctly by the expression
 parser.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

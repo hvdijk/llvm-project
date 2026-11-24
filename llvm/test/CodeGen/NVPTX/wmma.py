@@ -18,6 +18,7 @@ def has_arch_accel_features():
 def has_family_specific_features():
     return ptx_version >= 88 if full_sm_version % 10 == 2 else has_arch_accel_features()
 
+
 class MMAType:
     def __init__(self, ptx_type):
         self.ptx_type = ptx_type
@@ -999,6 +1000,7 @@ define void @test_${function}_o(i8 ${as}* %dst, ${args}) {
 
     return generated_items
 
+
 def mma_signature(op):
     if op.a.mma_type.ptx_type in ["e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]:
         # FP8/F8F6F4 ops identified by inputs, accumulator & result types.
@@ -1766,8 +1768,7 @@ def gen_check_unsupported_ops(items):
         % (ptx_version, sm_version)
     )
     print("; INTRINSICS: {{^; INTRINSICS_LIST_BEGIN}}")
-    print(
-        """
+    print("""
 
 ; NOEXTGEOM-NOT: {{m8n32|m32n8}}
 ; NOINT-NOT: .{{s32|s8}}
@@ -1936,8 +1937,7 @@ def gen_check_unsupported_ops(items):
 ; PTX71MMA-DAG: mma.xor.popc.m16n8k256.row.col.b1
 ;
 
-"""
-    )
+""")
 
     print("; INTRINSICS_LIST_BEGIN")
     for intrinsic, instruction in sorted(items):

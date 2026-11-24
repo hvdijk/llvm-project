@@ -10,7 +10,7 @@ class NavigateHiddenFrameTestCase(TestBase):
     def test(self):
         """Test going up/down a backtrace but we started in a hidden frame."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Break here", lldb.SBFileSpec("main.cpp")
         )
         # up

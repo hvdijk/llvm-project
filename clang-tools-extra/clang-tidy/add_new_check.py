@@ -71,9 +71,7 @@ def write_header(
         override_supported = """
   bool isLanguageVersionSupported(const LangOptions &LangOpts) const override {
     return %s;
-  }""" % (
-            lang_restrict % {"lang": "LangOpts"}
-        )
+  }""" % (lang_restrict % {"lang": "LangOpts"})
     else:
         override_supported = ""
     filename = f"{os.path.join(module_path, check_name_camel)}.h"
@@ -135,8 +133,7 @@ def write_implementation(
     filename = f"{os.path.join(module_path, check_name_camel)}.cpp"
     print(f"Creating {filename}...")
     with open(filename, "w", encoding="utf8", newline="\n") as f:
-        f.write(
-            """\
+        f.write("""\
 //===----------------------------------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -169,9 +166,7 @@ void %(check_name)s::check(const MatchFinder::MatchResult &Result) {
 }
 
 } // namespace clang::tidy::%(namespace)s
-"""
-            % {"check_name": check_name_camel, "namespace": namespace}
-        )
+""" % {"check_name": check_name_camel, "namespace": namespace})
 
 
 # Returns the source filename that implements the module.
@@ -287,14 +282,12 @@ def add_release_notes(
                     continue
 
                 if header_found and add_note_here:
-                    f.write(
-                        f"""- New {{doc}}`{check_name_dashes}
+                    f.write(f"""- New {{doc}}`{check_name_dashes}
   <clang-tidy/checks/{module}/{check_name}>` check.
 
 {wrapped_desc}
 
-"""
-                    )
+""")
                     note_added = True
 
             f.write(line)
@@ -324,8 +317,7 @@ def write_test(
     )
     print(f"Creating {filename}...")
     with open(filename, "w", encoding="utf8", newline="\n") as f:
-        f.write(
-            """\
+        f.write("""\
 // RUN: %%check_clang_tidy %(standard)s%%s %(check_name_dashes)s %%t
 
 // FIXME: Add something that triggers the check here.
@@ -340,9 +332,7 @@ void f();
 
 // FIXME: Add something that doesn't trigger the check here.
 void awesome_f2();
-"""
-            % {"check_name_dashes": check_name_dashes, "standard": test_standard}
-        )
+""" % {"check_name_dashes": check_name_dashes, "standard": test_standard})
 
 
 def get_actual_filename(dirname: str, filename: str) -> str:
@@ -621,16 +611,13 @@ def write_docs(module_path: str, module: str, check_name: str) -> None:
     )
     print(f"Creating {filename}...")
     with open(filename, "w", encoding="utf8", newline="\n") as f:
-        f.write(
-            """```{title} clang-tidy - %(check_name_dashes)s
+        f.write("""```{title} clang-tidy - %(check_name_dashes)s
 ```
 
 # %(check_name_dashes)s
 
 FIXME: Describe what patterns does the check detect and why. Give examples.
-"""
-            % {"check_name_dashes": check_name_dashes}
-        )
+""" % {"check_name_dashes": check_name_dashes})
 
 
 def get_camel_name(check_name: str) -> str:

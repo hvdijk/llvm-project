@@ -6,6 +6,7 @@ import os
 from json import loads
 from subprocess import Popen, PIPE
 
+
 # Holds code regions statistics.
 class Summary:
     def __init__(
@@ -571,10 +572,10 @@ def Main():
                 matrix_of_code_regions
             )
             for j in range(len(matrix_of_code_regions)):
-                array_average_resource_pressure_per_file[
-                    j
-                ] = average_code_region_resource_pressure(
-                    matrix_of_code_regions[j], opts.file_names[j]
+                array_average_resource_pressure_per_file[j] = (
+                    average_code_region_resource_pressure(
+                        matrix_of_code_regions[j], opts.file_names[j]
+                    )
                 )
             draw_plot_resource_pressure(
                 array_average_resource_pressure_per_file,

@@ -3,7 +3,6 @@ Make sure if we have two classes with the same base name the
 dynamic value calculator doesn't confuse them
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -22,7 +21,7 @@ class DynamicValueSameBaseTestCase(TestBase):
         self.sample_test()
 
     def sample_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Break here to get started", self.main_source_file
         )
 

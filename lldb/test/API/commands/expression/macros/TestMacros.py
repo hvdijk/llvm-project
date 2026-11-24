@@ -28,7 +28,7 @@ class TestMacros(TestBase):
         src_file_spec = lldb.SBFileSpec(src_file)
         self.assertTrue(src_file_spec.IsValid(), "Main source file")
 
-        (target, process, thread, bp1) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bp1 = lldbutil.run_to_source_breakpoint(
             self, "Break here", src_file_spec
         )
 

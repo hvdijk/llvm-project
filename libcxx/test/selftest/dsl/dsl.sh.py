@@ -319,7 +319,7 @@ class TestCompilerMacros(SetupConfigs):
         macros = dsl.compilerMacros(self.config)
         self.assertIsInstance(macros, dict)
         self.assertGreater(len(macros), 0)
-        for (k, v) in macros.items():
+        for k, v in macros.items():
             self.assertIsInstance(k, str)
             self.assertIsInstance(v, str)
 
@@ -352,7 +352,7 @@ class TestFeatureTestMacros(SetupConfigs):
         macros = dsl.featureTestMacros(self.config)
         self.assertIsInstance(macros, dict)
         self.assertGreater(len(macros), 0)
-        for (k, v) in macros.items():
+        for k, v in macros.items():
             self.assertIsInstance(k, str)
             self.assertIsInstance(v, int)
 
@@ -574,9 +574,9 @@ class TestParameter(SetupConfigs):
             choices=[True, False],
             type=bool,
             help="",
-            actions=lambda exceptions: []
-            if exceptions
-            else [dsl.AddFeature("-fno-exceptions")],
+            actions=lambda exceptions: (
+                [] if exceptions else [dsl.AddFeature("-fno-exceptions")]
+            ),
         )
         for a in param.getActions(self.config, self.litConfig.params):
             a.applyTo(self.config)
@@ -589,9 +589,9 @@ class TestParameter(SetupConfigs):
             choices=[True, False],
             type=bool,
             help="",
-            actions=lambda exceptions: []
-            if exceptions
-            else [dsl.AddFeature("-fno-exceptions")],
+            actions=lambda exceptions: (
+                [] if exceptions else [dsl.AddFeature("-fno-exceptions")]
+            ),
         )
         for a in param.getActions(self.config, self.litConfig.params):
             a.applyTo(self.config)

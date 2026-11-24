@@ -25,6 +25,7 @@ Usage:
     diff = compare_results(resultsA, resultsB)
 
 """
+
 import json
 import os
 import plistlib
@@ -49,7 +50,6 @@ from typing import (
     Tuple,
     Union,
 )
-
 
 Number = Union[int, float]
 Stats = Dict[str, Dict[str, Number]]

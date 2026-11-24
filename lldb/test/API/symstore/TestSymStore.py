@@ -14,7 +14,6 @@ import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 
-
 """
 Test debug symbol acquisition from a local SymStore repository. This can work
 cross-platform and for arbitrary debug info formats. We only support PDB

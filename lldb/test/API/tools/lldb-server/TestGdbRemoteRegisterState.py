@@ -58,7 +58,7 @@ class TestGdbRemoteRegisterState(gdbremote_testcase.GdbRemoteTestCaseBase):
         context = self.expect_gdbremote_sequence()
         self.assertIsNotNone(context)
 
-        (success, state_id) = self.parse_QSaveRegisterState_response(context)
+        success, state_id = self.parse_QSaveRegisterState_response(context)
         self.assertTrue(success)
         self.assertIsNotNone(state_id)
         self.trace("saved register state id: {}".format(state_id))
@@ -70,7 +70,7 @@ class TestGdbRemoteRegisterState(gdbremote_testcase.GdbRemoteTestCaseBase):
         self.trace("initial_reg_values: {}".format(initial_reg_values))
 
         # Flip gpr register values.
-        (successful_writes, failed_writes) = self.flip_all_bits_in_each_register_value(
+        successful_writes, failed_writes = self.flip_all_bits_in_each_register_value(
             gpr_reg_infos, endian, thread_id=thread_id
         )
         self.trace(

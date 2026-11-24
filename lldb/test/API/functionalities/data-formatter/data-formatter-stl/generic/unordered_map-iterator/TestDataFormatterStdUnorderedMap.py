@@ -38,7 +38,7 @@ class StdUnorderedMapDataFormatterTestCase(TestBase):
         """Test that std::unordered_map related structures are formatted correctly when printed.
         Currently only tests format of std::unordered_map iterators.
         """
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Break here", lldb.SBFileSpec("main.cpp", False)
         )
 
@@ -115,7 +115,7 @@ class StdUnorderedMapDataFormatterTestCase(TestBase):
         Test that pointers to std::unordered_map are formatted correctly.
         """
 
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here", lldb.SBFileSpec("main.cpp", False)
         )
 

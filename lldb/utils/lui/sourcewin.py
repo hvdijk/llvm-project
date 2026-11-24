@@ -105,7 +105,7 @@ class SourceWin(cui.TitledWin):
             )
 
     def refreshSource(self, process=None):
-        (self.height, self.width) = self.win.getmaxyx()
+        self.height, self.width = self.win.getmaxyx()
 
         if process is not None:
             loc = process.GetSelectedThread().GetSelectedFrame().GetLineEntry()

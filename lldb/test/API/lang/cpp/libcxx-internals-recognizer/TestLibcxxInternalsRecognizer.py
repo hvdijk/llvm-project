@@ -5,6 +5,7 @@ from lldbsuite.test import lldbutil
 
 import re
 
+
 @skipIf(macos_version=[">=", "15.4"], asan=True)
 class LibCxxInternalsRecognizerTestCase(TestBase):
     NO_DEBUG_INFO_TESTCASE = True
@@ -14,7 +15,7 @@ class LibCxxInternalsRecognizerTestCase(TestBase):
     def test_frame_recognizer(self):
         """Test that implementation details of libc++ are hidden"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -65,7 +66,7 @@ class LibCxxInternalsRecognizerTestCase(TestBase):
                 if isinstance(expected_parent, re.Pattern):
                     self.assertTrue(
                         expected_parent.search(func_name) is not None,
-                        f"'{expected_parent}' not found in '{func_name}'"
+                        f"'{expected_parent}' not found in '{func_name}'",
                     )
                 else:
                     self.assertIn(expected_parent, func_name)

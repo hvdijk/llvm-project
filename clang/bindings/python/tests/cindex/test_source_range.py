@@ -20,12 +20,10 @@ def create_range(tu, line1, column1, line2, column2):
 
 class TestSourceRange(unittest.TestCase):
     def test_contains(self):
-        tu = get_tu(
-            """aaaaa
+        tu = get_tu("""aaaaa
 aaaaa
 aaaaa
-aaaaa"""
-        )
+aaaaa""")
         file = tu.get_file(tu.spelling)
 
         l13 = SourceLocation.from_position(tu, file, 1, 3)

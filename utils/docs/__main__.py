@@ -13,7 +13,6 @@ from typing import List
 
 from llvm_sphinx.ext import absolute_links, ghlinks
 
-
 TEST_COMPONENTS = {
     "absolute-links": absolute_links.run_tests,
     "ghlinks": ghlinks.run_tests,

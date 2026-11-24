@@ -184,23 +184,32 @@ def prepare(config, litConfig):
     if not os.path.exists(os.path.join(buildDir, "CMakeCache.txt")):
         litConfig.note("Configuring GoogleBenchmark in {}".format(buildDir))
         compiler = _expand(config, _getSubstitution("%{cxx}", config))
-        cmake_generator = _expand(config, _getSubstitution("%{cmake_generator}", config))
-        cmake_make_program = _expand(config, _getSubstitution("%{cmake_make_program}", config))
+        cmake_generator = _expand(
+            config, _getSubstitution("%{cmake_generator}", config)
+        )
+        cmake_make_program = _expand(
+            config, _getSubstitution("%{cmake_make_program}", config)
+        )
         _run(
             litConfig,
             "configure",
             [
                 cmake,
-                "-S", SOURCE_DIR,
-                "-B", buildDir,
-                "-G", cmake_generator,
+                "-S",
+                SOURCE_DIR,
+                "-B",
+                buildDir,
+                "-G",
+                cmake_generator,
                 "-DCMAKE_MAKE_PROGRAM={}".format(cmake_make_program),
                 "-DCMAKE_BUILD_TYPE=Release",
                 "-DCMAKE_CXX_COMPILER={}".format(compiler),
                 "-DCMAKE_CXX_FLAGS={}".format(" ".join(flags)),
                 # Set CMAKE_EXE_LINKER_FLAGS in addition to BENCHMARK_CXX_LIBRARIES since we
                 # need CMake's own probe executables to have the right linker flags.
-                "-DCMAKE_EXE_LINKER_FLAGS={}".format(" ".join("-l{}".format(lib) for lib in libraries)),
+                "-DCMAKE_EXE_LINKER_FLAGS={}".format(
+                    " ".join("-l{}".format(lib) for lib in libraries)
+                ),
                 "-DCMAKE_INSTALL_PREFIX={}".format(installDir),
                 "-DCMAKE_INSTALL_LIBDIR=lib",
                 "-DBENCHMARK_CXX_LIBRARIES={}".format(";".join(libraries)),
@@ -217,7 +226,15 @@ def prepare(config, litConfig):
     _run(
         litConfig,
         "build",
-        [cmake, "--build", buildDir, "--target", "install", "--parallel", str(os.cpu_count() or 1)],
+        [
+            cmake,
+            "--build",
+            buildDir,
+            "--target",
+            "install",
+            "--parallel",
+            str(os.cpu_count() or 1),
+        ],
         cwd=root,
     )
 

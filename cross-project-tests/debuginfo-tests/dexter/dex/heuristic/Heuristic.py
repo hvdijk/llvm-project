@@ -17,7 +17,6 @@ from itertools import groupby
 from dex.command.StepValueInfo import StepValueInfo
 from dex.command.commands.DexExpectWatchBase import format_address
 
-
 PenaltyCommand = namedtuple("PenaltyCommand", ["pen_dict", "max_penalty"])
 # 'meta' field used in different ways by different things
 PenaltyInstance = namedtuple("PenaltyInstance", ["meta", "the_penalty"])
@@ -194,9 +193,11 @@ class Heuristic(object):
                 p = 0 if success else self.penalty_incorrect_program_state
 
                 meta = "expected {}: {}".format(
-                    "{} times".format(expect_state.times)
-                    if expect_state.times >= 0
-                    else "at least once",
+                    (
+                        "{} times".format(expect_state.times)
+                        if expect_state.times >= 0
+                        else "at least once"
+                    ),
                     expect_state.program_state_text,
                 )
 

@@ -3,7 +3,6 @@ When a rebuild causes a location to be removed, make sure
 we still handle the remaining locations correctly.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -30,7 +29,7 @@ class TestLocationsAfterRebuild(TestBase):
 
         path_to_exe = self.getBuildArtifact()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(self, "main")
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(self, "main")
 
         # Let the process continue to exit:
         process.Continue()
@@ -41,7 +40,7 @@ class TestLocationsAfterRebuild(TestBase):
         # us to remove the first set of locations:
         self.build(dictionary={"C_SOURCES": "second_main.c", "EXE": "a.out"})
 
-        (target, process, thread, bkpt) = lldbutil.run_to_breakpoint_do_run(
+        target, process, thread, bkpt = lldbutil.run_to_breakpoint_do_run(
             self, target, bkpt
         )
 
@@ -53,7 +52,7 @@ class TestLocationsAfterRebuild(TestBase):
 
         self.build(dictionary={"C_SOURCES": "third_main.c", "EXE": "a.out"})
 
-        (target, process, thread, bkpt) = lldbutil.run_to_breakpoint_do_run(
+        target, process, thread, bkpt = lldbutil.run_to_breakpoint_do_run(
             self, target, bkpt
         )
 

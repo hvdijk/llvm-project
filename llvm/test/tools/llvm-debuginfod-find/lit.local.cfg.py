@@ -4,7 +4,6 @@ import urllib.request
 import time
 import sys
 
-
 captured_req = False
 
 

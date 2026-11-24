@@ -4,7 +4,6 @@ import os
 from enum import auto, Enum
 from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
-
 JSON = Dict[str, Any]
 
 

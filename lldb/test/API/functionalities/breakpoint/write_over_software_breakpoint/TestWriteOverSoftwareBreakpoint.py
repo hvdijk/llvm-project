@@ -10,6 +10,7 @@ import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbgdbproxy import GDBProxyTestBase
 
+
 class TestCases(object):
     NO_DEBUG_INFO_TESTCASE = True
 

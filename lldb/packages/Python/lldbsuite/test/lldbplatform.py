@@ -1,4 +1,4 @@
-""" This module represents an abstraction of an lldb target / host platform. """
+"""This module represents an abstraction of an lldb target / host platform."""
 
 # System modules
 import itertools

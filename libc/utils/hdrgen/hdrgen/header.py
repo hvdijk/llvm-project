@@ -10,7 +10,6 @@ import re
 from functools import reduce
 from pathlib import PurePosixPath
 
-
 STDINT_SIZES = [
     "16",
     "32",

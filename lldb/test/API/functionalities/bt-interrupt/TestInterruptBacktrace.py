@@ -22,7 +22,7 @@ class TestInterruptingBacktrace(TestBase):
         self.bt_interrupt_test()
 
     def bt_interrupt_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

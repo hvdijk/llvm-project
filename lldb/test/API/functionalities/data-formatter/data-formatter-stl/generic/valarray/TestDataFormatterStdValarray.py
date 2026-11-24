@@ -99,7 +99,7 @@ class StdValarrayDataFormatterTestCase(TestBase):
         )
 
     def do_test(self):
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp", False)
         )
         self.check_valarray(process, bkpt)
@@ -221,7 +221,7 @@ class StdValarrayDataFormatterTestCase(TestBase):
     @add_test_categories(["msvcstl"])
     def test_msvcstl(self):
         self.build()
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp", False)
         )
         self.check_valarray(process, bkpt)

@@ -14,7 +14,7 @@ class TestBreakpointIllegal(TestBase):
     @skipIf(archs=no_match(["rv64gc"]))
     def test_4(self):
         self.build()
-        (target, process, cur_thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, cur_thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "main", lldb.SBFileSpec("main.c")
         )
         self.runCmd("thread step-inst")
@@ -31,7 +31,7 @@ class TestBreakpointIllegal(TestBase):
     @skipIf(archs=no_match(["rv64gc"]))
     def test_2(self):
         self.build(dictionary={"C_SOURCES": "compressed.c", "EXE": "compressed.x"})
-        (target, process, cur_thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, cur_thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "main", lldb.SBFileSpec("compressed.c"), exe_name="compressed.x"
         )
         self.runCmd("thread step-inst")

@@ -18,7 +18,7 @@ class TestSMERegistersDarwin(TestBase):
     def test(self):
         """Test that we can read the contents of the SME/SVE registers on Darwin"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break before sme", lldb.SBFileSpec("main.c")
         )
         frame = thread.GetFrameAtIndex(0)

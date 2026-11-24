@@ -36,7 +36,6 @@ class TestCase(PExpectTest):
         # and not 123 (the one we initially typed).
         self.child.expect_exact("(int) $0 = 124")
 
-
     @skipIfAsan
     @skipIfEditlineSupportMissing
     @expectedFailureAll(oslist=["freebsd"], bugnumber="llvm.org/pr48316")
@@ -66,7 +65,6 @@ class TestCase(PExpectTest):
         # If the expression is '333' then arrow down failed to get
         # us back to the second line.
         self.child.expect_exact("(int) $0 = 334")
-
 
     @skipIfAsan
     @skipIfEditlineSupportMissing
@@ -98,4 +96,3 @@ class TestCase(PExpectTest):
         self.child.expect_exact("456")
         self.child.send("\n\n")
         self.expect_prompt()
-

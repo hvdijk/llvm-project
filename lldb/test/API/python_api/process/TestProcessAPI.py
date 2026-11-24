@@ -22,7 +22,7 @@ class ProcessAPITestCase(TestBase):
         self.build()
         exe = self.getBuildArtifact("a.out")
 
-        (target, process, _, _) = lldbutil.run_to_source_breakpoint(
+        target, process, _, _ = lldbutil.run_to_source_breakpoint(
             self, "Set break point", lldb.SBFileSpec("main.cpp")
         )
 
@@ -33,7 +33,7 @@ class ProcessAPITestCase(TestBase):
         """Test that a launched process reports as a live debug session."""
         self.build()
 
-        (target, process, _, _) = lldbutil.run_to_source_breakpoint(
+        target, process, _, _ = lldbutil.run_to_source_breakpoint(
             self, "Set break point", lldb.SBFileSpec("main.cpp")
         )
 

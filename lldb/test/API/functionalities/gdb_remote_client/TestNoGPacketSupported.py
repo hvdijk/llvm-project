@@ -4,7 +4,6 @@ from lldbsuite.test.decorators import *
 from lldbsuite.test.gdbclientutils import *
 from lldbsuite.test.lldbgdbclient import GDBRemoteTestBase
 
-
 # This test case is testing three things:
 #
 #  1. three register values will be provided in the ? stop packet (T11) -

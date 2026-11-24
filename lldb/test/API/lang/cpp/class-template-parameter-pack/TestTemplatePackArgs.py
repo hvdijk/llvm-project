@@ -2,6 +2,7 @@
 Test that the type of arguments to C++ template classes that have variadic
 parameters can be enumerated.
 """
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -12,7 +13,7 @@ class TemplatePackArgsTestCase(TestBase):
     @expectedFailureAll(debug_info=["pdb"], bugnumber="llvm.org/pr149498")
     def test_template_argument_pack(self):
         self.build()
-        (target, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "breakpoint here", lldb.SBFileSpec("main.cpp"), exe_name="a.out"
         )
         frame = thread.GetSelectedFrame()

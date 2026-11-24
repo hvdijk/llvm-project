@@ -2,7 +2,6 @@
 Test SBTarget APIs.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

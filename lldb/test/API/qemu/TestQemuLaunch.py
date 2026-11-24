@@ -29,8 +29,7 @@ class TestQemuLaunch(TestBase):
             os.open(emulator, os.O_WRONLY | os.O_CREAT, stat.S_IRWXU), "w"
         ) as e:
             e.write(
-                dedent(
-                    """\
+                dedent("""\
                     #! {exec!s}
 
                     import runpy
@@ -38,8 +37,7 @@ class TestQemuLaunch(TestBase):
 
                     sys.path = {path!r}
                     runpy.run_path({source!r}, run_name='__main__')
-                    """
-                ).format(
+                    """).format(
                     exec=sys.executable,
                     path=sys.path,
                     source=self.getSourcePath("qemu.py"),

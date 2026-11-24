@@ -193,7 +193,7 @@ class TestExpeditedStackMemory(TestBase):
 
         self.addTearDownHook(cleanup)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.c")
         )
 

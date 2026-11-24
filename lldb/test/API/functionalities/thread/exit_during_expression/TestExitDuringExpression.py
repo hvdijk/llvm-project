@@ -53,7 +53,7 @@ class TestExitDuringExpression(TestBase):
         This allows you to have the thread exit either before the one thread
         timeout is passed."""
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Break here and cause the thread to exit", self.main_source_file
         )
 

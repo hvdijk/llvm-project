@@ -71,10 +71,8 @@ class Checks(object):
 
 
 # Setup argument parsing
-parser = argparse.ArgumentParser(
-    description="""This script checks output of
-    a program against "CHECK" lines in filename"""
-)
+parser = argparse.ArgumentParser(description="""This script checks output of
+    a program against "CHECK" lines in filename""")
 parser.add_argument("filename", default=None, help="filename to check against")
 parser.add_argument(
     "-c",

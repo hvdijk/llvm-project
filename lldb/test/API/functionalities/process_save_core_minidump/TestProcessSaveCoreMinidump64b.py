@@ -1,5 +1,5 @@
 """
-Test that saved memory regions is byte-wise 1:1 with the live process. Specifically 
+Test that saved memory regions is byte-wise 1:1 with the live process. Specifically
 that the memory regions that will be populated in the Memory64List are the same byte for byte.
 """
 

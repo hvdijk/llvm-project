@@ -74,8 +74,7 @@ def classify_input_file(filename):
         ftype = IT_JSON
     else:
         err_msg = (
-            "'%s' does not name a valid benchmark executable or JSON file"
-            % filename
+            "'%s' does not name a valid benchmark executable or JSON file" % filename
         )
     return ftype, err_msg
 
@@ -164,9 +163,9 @@ def sort_benchmark_results(result):
     )
     benchmarks = sorted(
         benchmarks,
-        key=lambda benchmark: 1
-        if "run_type" in benchmark and benchmark["run_type"] == "aggregate"
-        else 0,
+        key=lambda benchmark: (
+            1 if "run_type" in benchmark and benchmark["run_type"] == "aggregate" else 0
+        ),
     )
     benchmarks = sorted(
         benchmarks,
@@ -220,9 +219,7 @@ def run_or_load_benchmark(filename, benchmark_flags):
     """
     ftype = check_input_file(filename)
     if ftype == IT_JSON:
-        benchmark_filter = find_benchmark_flag(
-            "--benchmark_filter=", benchmark_flags
-        )
+        benchmark_filter = find_benchmark_flag("--benchmark_filter=", benchmark_flags)
         return load_benchmark_results(filename, benchmark_filter)
     if ftype == IT_Executable:
         return run_benchmark(filename, benchmark_flags)

@@ -326,15 +326,13 @@ class BytecodeSection:
         self._build(builder)
 
         print(
-            textwrap.dedent(
-                """
+            textwrap.dedent("""
                 #ifdef __APPLE__
                 #define FORMATTER_SECTION "__DATA_CONST,__lldbformatters"
                 #else
                 #define FORMATTER_SECTION ".lldbformatters"
                 #endif
-                """
-            ),
+                """),
             file=output,
         )
         print(
@@ -356,16 +354,14 @@ class BytecodeSection:
         self._build(builder)
 
         print(
-            textwrap.dedent(
-                """\
+            textwrap.dedent("""\
                 #if swift(>=6.3) && !objectFormat(Wasm)
                 #if objectFormat(MachO)
                 @section("__DATA_CONST,__lldbformatters")
                 #else
                 @section(".lldbformatters")
                 #endif
-                @used"""
-            ),
+                @used"""),
             file=output,
         )
         print(
@@ -552,8 +548,7 @@ _FMT_TOKEN = re.compile(
     | (?: %s )  # replacement
     | \{        # invalid replacement
     | [^{]+     # literal text
-    """
-    % _FMT_REPLACEMENT,
+    """ % _FMT_REPLACEMENT,
     re.VERBOSE,
 )
 
@@ -1404,12 +1399,10 @@ def _to_byte(n: int) -> bytes:
 def _main():
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="""
+    parser = argparse.ArgumentParser(description="""
     Assembler, disassembler, and interpreter for LLDB dataformatter bytecode.
     See https://lldb.llvm.org/resources/formatterbytecode.html for more details.
-    """
-    )
+    """)
     parser.add_argument("input", help="input file")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument(
@@ -1701,8 +1694,7 @@ if __name__ == "__main__":
             return dict(section.signatures)
 
         def test_synthetic(self):
-            methods = self.compile_methods(
-                """
+            methods = self.compile_methods("""
                 import lldb
 
                 class Synthetic:
@@ -1723,8 +1715,7 @@ if __name__ == "__main__":
                         if idx < self.count:
                             return self.storage.GetChildAtIndex(idx)
                         return None
-                """
-            )
+                """)
 
             FakeValue = self.FakeValue
             a, b = FakeValue(10), FakeValue(20)
@@ -1748,8 +1739,7 @@ if __name__ == "__main__":
             )
 
         def test_init(self):
-            methods = self.compile_methods(
-                """
+            methods = self.compile_methods("""
                 class Synthetic:
                     def __init__(self, valobj, _):
                         self.storage = valobj.GetChildMemberWithName("_storage")
@@ -1761,8 +1751,7 @@ if __name__ == "__main__":
 
                     def num_children(self):
                         return self.size
-                """
-            )
+                """)
             storage = self.FakeValue(3)
             valobj = self.FakeValue(children={"_storage": storage})
             self_dict = {}
@@ -1772,30 +1761,26 @@ if __name__ == "__main__":
             self.assertEqual(interpret(methods["get_num_children"], [], [self_dict]), 3)
 
         def test_unary(self):
-            methods = self.compile_methods(
-                """
+            methods = self.compile_methods("""
                 class Synthetic:
                     def get_child_index(self, name):
                         return -1
 
                     def num_children(self):
                         return -(-5) + ~0 + +1
-                """
-            )
+                """)
             self.assertEqual(interpret(methods["get_child_index"], [], [{}, "x"]), -1)
             self.assertEqual(interpret(methods["get_num_children"], [], [{}]), 5)
 
         def test_byte_stride(self):
-            methods = self.compile_methods(
-                """
+            methods = self.compile_methods("""
                 class Synthetic:
                     def __init__(self, valobj, _):
                         self.valobj = valobj
 
                     def num_children(self):
                         return self.valobj.GetType().GetByteStride()
-                """
-            )
+                """)
 
             class FakeType:
                 def GetByteStride(self):
@@ -1811,13 +1796,11 @@ if __name__ == "__main__":
 
         def test_boolean(self):
             def run(expr, *args, valobj=None):
-                methods = self.compile_methods(
-                    f"""
+                methods = self.compile_methods(f"""
                     class Synthetic:
                         def get_child_index(self, a, b, c):
                             return {expr}
-                    """
-                )
+                    """)
                 data = [{"valobj": valobj}, *args]
                 return interpret(methods["get_child_index"], [], data)
 
@@ -1852,13 +1835,11 @@ if __name__ == "__main__":
 
         def test_fstring(self):
             def compile_fstring(expr):
-                methods = self.compile_methods(
-                    f"""
+                methods = self.compile_methods(f"""
                     class Synthetic:
                         def get_child_index(self, name):
                             return {expr}
-                    """
-                )
+                    """)
                 return methods["get_child_index"]
 
             def run(expr, name="x", valobj=None):
@@ -1908,29 +1889,23 @@ if __name__ == "__main__":
 
         def test_errors(self):
             with self.assertRaisesRegex(CompilerError, "unknown attribute: missing"):
-                self.compile_methods(
-                    """
+                self.compile_methods("""
                     class Synthetic:
                         def num_children(self):
                             return self.missing
-                    """
-                )
+                    """)
             with self.assertRaisesRegex(CompilerError, "only allowed in __init__"):
-                self.compile_methods(
-                    """
+                self.compile_methods("""
                     class Synthetic:
                         def num_children(self):
                             self.count = 1
                             return 1
-                    """
-                )
+                    """)
             with self.assertRaisesRegex(CompilerError, "unsupported binary operator"):
-                self.compile_methods(
-                    """
+                self.compile_methods("""
                     class Synthetic:
                         def num_children(self):
                             return 1 / 2
-                    """
-                )
+                    """)
 
     unittest.main(argv=[__file__])

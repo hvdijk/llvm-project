@@ -40,8 +40,7 @@ for header in public_headers:
         if header == "fstream" and version == 500:
             continue
 
-        print(
-            f"""\
+        print(f"""\
 //--- {header}.xopen_source_{version}.compile.pass.cpp
 {lit_header_undeprecations.get(header, '')}
 
@@ -53,5 +52,4 @@ for header in public_headers:
 // ADDITIONAL_COMPILE_FLAGS: -fno-modules
 
 #include <{header}>
-"""
-        )
+""")

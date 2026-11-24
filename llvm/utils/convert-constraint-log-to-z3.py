@@ -27,7 +27,6 @@ assert(s.check() == unsat)
 print('all checks passed')
 """
 
-
 import argparse
 import re
 

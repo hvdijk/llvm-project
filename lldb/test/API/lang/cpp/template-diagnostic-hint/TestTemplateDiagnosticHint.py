@@ -9,7 +9,7 @@ class TestCase(TestBase):
     @expectedFailureWindows
     def test(self):
         self.build()
-        (_, process, _, _) = lldbutil.run_to_source_breakpoint(
+        _, process, _, _ = lldbutil.run_to_source_breakpoint(
             self, "main", lldb.SBFileSpec("main.cpp")
         )
 

@@ -2,7 +2,6 @@
 Use lldb Python API to test dynamic values in C++
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

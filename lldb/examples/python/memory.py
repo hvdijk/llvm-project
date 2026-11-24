@@ -194,7 +194,7 @@ def memfind_command(debugger, command, exe_ctx, result, internal_dict):
     # shell would
     command_args = shlex.split(command)
     parser = create_memfind_options()
-    (options, args) = parser.parse_args(command_args)
+    options, args = parser.parse_args(command_args)
     # try:
     #     (options, args) = parser.parse_args(command_args)
     # except:

@@ -13,7 +13,7 @@ class AlwaysRunThreadNamesTestCase(TestBase):
         """Test that a thread named in always-run-thread-names continues
         running when another thread single-steps."""
         self.build()
-        (target, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -49,7 +49,7 @@ class AlwaysRunThreadNamesTestCase(TestBase):
         """Test that without the setting, the helper thread is suspended
         during single-stepping (baseline)."""
         self.build()
-        (target, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        target, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 

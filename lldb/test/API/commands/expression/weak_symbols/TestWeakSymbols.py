@@ -3,7 +3,6 @@ Test that we can compile expressions referring to
 absent weak symbols from a dylib.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *
@@ -56,7 +55,7 @@ class TestWeakSymbolsInExpressions(TestBase):
         launch_info.SetWorkingDirectory(self.getBuildDir())
         launch_info.SetLaunchFlags(lldb.eLaunchFlagInheritTCCFromParent)
 
-        (self.target, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        self.target, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self,
             "Set a breakpoint here",
             self.main_source_file,

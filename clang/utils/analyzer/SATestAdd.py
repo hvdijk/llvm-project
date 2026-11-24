@@ -42,6 +42,7 @@ the Repository Directory.
                                           diff -ur CachedSource PatchedSource \
                                               > changes_for_analyzer.patch
 """
+
 import SATestBuild
 from ProjectMap import ProjectMap, ProjectInfo
 

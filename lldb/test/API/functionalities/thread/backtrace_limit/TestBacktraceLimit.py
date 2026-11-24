@@ -15,7 +15,7 @@ class BacktraceLimitSettingTest(TestBase):
         """Test that the max-backtrace-depth setting limits backtraces."""
         self.build()
         self.main_source_file = lldb.SBFileSpec("main.cpp")
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
         interp = self.dbg.GetCommandInterpreter()

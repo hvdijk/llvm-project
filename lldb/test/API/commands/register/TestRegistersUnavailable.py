@@ -1,4 +1,4 @@
-""" Check that unavailable registers are reported when reading register sets."""
+"""Check that unavailable registers are reported when reading register sets."""
 
 from textwrap import dedent
 import lldb

@@ -38,24 +38,21 @@ def testRewritePattern():
         patterns.add("arith.constant", constant_1_to_2)
         frozen = patterns.freeze()
 
-        module = ModuleOp.parse(
-            r"""
+        module = ModuleOp.parse(r"""
             module {
               func.func @add(%a: i64, %b: i64) -> i64 {
                 %sum = arith.addi %a, %b : i64
                 return %sum : i64
               }
             }
-            """
-        )
+            """)
 
         apply_patterns_and_fold_greedily(module, frozen)
         # CHECK: %0 = arith.muli %arg0, %arg1 : i64
         # CHECK: return %0 : i64
         print(module)
 
-        module = ModuleOp.parse(
-            r"""
+        module = ModuleOp.parse(r"""
             module {
               func.func @const() -> (i64, i64) {
                 %0 = arith.constant 1 : i64
@@ -63,8 +60,7 @@ def testRewritePattern():
                 return %0, %1 : i64, i64
               }
             }
-            """
-        )
+            """)
 
         apply_patterns_and_fold_greedily(module, frozen)
         # CHECK: %c2_i64 = arith.constant 2 : i64
@@ -72,16 +68,14 @@ def testRewritePattern():
         # CHECK: return %c2_i64, %c3_i64 : i64, i64
         print(module)
 
-        module = ModuleOp.parse(
-            r"""
+        module = ModuleOp.parse(r"""
             module {
               func.func @add(%a: i64, %b: i64) -> i64 {
                 %sum = arith.addi %a, %b : i64
                 return %sum : i64
               }
             }
-            """
-        )
+            """)
 
         walk_and_apply_patterns(module, frozen)
         # CHECK: %0 = arith.muli %arg0, %arg1 : i64
@@ -200,8 +194,7 @@ def testRewriteWithGreedyRewriteConfig():
         patterns.add(arith.ConstantOp, constant_1_to_2)
         frozen = patterns.freeze()
 
-        module = ModuleOp.parse(
-            r"""
+        module = ModuleOp.parse(r"""
             module {
               func.func @const() -> (i64, i64) {
                 %0 = arith.constant 1 : i64
@@ -209,8 +202,7 @@ def testRewriteWithGreedyRewriteConfig():
                 return %0, %1 : i64, i64
               }
             }
-            """
-        )
+            """)
 
         config = GreedyRewriteConfig()
         config.enable_constant_cse = False
@@ -266,8 +258,7 @@ def testConversionPattern():
         patterns.add_conversion(arith.AddIOp, convert_addi, converter)
         patterns.add_conversion(arith.MulIOp, convert_muli, converter)
 
-        module = ModuleOp.parse(
-            r"""
+        module = ModuleOp.parse(r"""
             module {
                 func.func @f(%0: i64) -> i64 {
                     %1 = arith.constant 3 : i64
@@ -276,8 +267,7 @@ def testConversionPattern():
                     return %3 : i64
                 }
             }
-            """
-        )
+            """)
 
         target = ConversionTarget()
         target.add_legal_dialect(smt._Dialect)
@@ -300,8 +290,7 @@ def testConversionPattern():
         # CHECK: }
         print(module)
 
-        module = ModuleOp.parse(
-            r"""
+        module = ModuleOp.parse(r"""
             module {
                 func.func @f(%0: i64) -> i64 {
                     %1 = arith.constant 3 : i64
@@ -310,8 +299,7 @@ def testConversionPattern():
                     return %3 : i64
                 }
             }
-            """
-        )
+            """)
         try:
             apply_partial_conversion(module, target, frozen)
         except MLIRError as e:

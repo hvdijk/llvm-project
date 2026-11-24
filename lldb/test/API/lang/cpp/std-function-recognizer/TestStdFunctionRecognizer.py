@@ -11,7 +11,7 @@ class LibCxxStdFunctionRecognizerTestCase(TestBase):
     def test_frame_recognizer(self):
         """Test that std::function all implementation details are hidden in SBFrame"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
         self.assertIn("foo", thread.GetFrameAtIndex(0).GetFunctionName())
@@ -33,7 +33,7 @@ class LibCxxStdFunctionRecognizerTestCase(TestBase):
     def test_backtrace(self):
         """Test that std::function implementation details are hidden in bt"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
         # Filtered.
@@ -43,7 +43,9 @@ class LibCxxStdFunctionRecognizerTestCase(TestBase):
             substrs=["frame", "foo", "frame", "main"],
         )
         self.expect(
-            "thread backtrace", matching=False, patterns=["frame.*std::__.*::__function"]
+            "thread backtrace",
+            matching=False,
+            patterns=["frame.*std::__.*::__function"],
         )
         # Unfiltered.
         self.expect(
@@ -66,7 +68,7 @@ class LibCxxStdFunctionRecognizerTestCase(TestBase):
     def test_up_down(self):
         """Test that std::function implementation details are skipped"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
         frame = thread.selected_frame
@@ -96,7 +98,7 @@ class LibCxxStdFunctionRecognizerTestCase(TestBase):
     def test_api(self):
         """Test that std::function implementation details are skipped"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
         num_hidden = 0

@@ -3,7 +3,6 @@
 Test that C++ supports wchar_t correctly.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 import lldbsuite.test.lldbutil as lldbutil

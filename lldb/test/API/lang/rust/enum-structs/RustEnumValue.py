@@ -1,4 +1,5 @@
-"""Helper library to traverse data emitted for Rust enums """
+"""Helper library to traverse data emitted for Rust enums"""
+
 from lldbsuite.test.lldbtest import *
 
 DISCRIMINANT_MEMBER_NAME = "$discr$"

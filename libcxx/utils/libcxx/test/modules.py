@@ -107,8 +107,7 @@ class module_test_generator:
     module: str
 
     def write_lit_configuration(self):
-        print(
-            f"""\
+        print(f"""\
 // UNSUPPORTED: c++03, c++11, c++14, c++17
 
 // These tests check that we provide all declarations, so they currently don't work when
@@ -126,8 +125,7 @@ class module_test_generator:
 // MODULE_DEPENDENCIES: {self.module}
 
 // RUN: echo -n > {self.tmp_prefix}.all_partitions
-"""
-        )
+""")
 
     def process_module_partition(self, header, is_c_header):
         # Some headers cannot be included when a libc++ feature is disabled.
@@ -265,13 +263,11 @@ class module_test_generator:
     # exported names. This validates the clang-tidy script does not
     # accidentally add named declarations to the list that are not available.
     def test_module(self, module):
-        print(
-            f"""\
+        print(f"""\
 // RUN: echo 'import {module};' > {self.tmp_prefix}.compile.pass.cpp
 // RUN: cat {self.tmp_prefix}.all_partitions >> {self.tmp_prefix}.compile.pass.cpp
 // RUN: {self.compiler} {self.compiler_flags} -fsyntax-only {self.tmp_prefix}.compile.pass.cpp
-"""
-        )
+""")
 
     def write_test(self, module, c_headers=[]):
         self.write_lit_configuration()

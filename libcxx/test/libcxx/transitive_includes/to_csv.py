@@ -16,9 +16,12 @@ import pathlib
 import re
 import sys
 
-libcxx_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+libcxx_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
 sys.path.append(os.path.join(libcxx_root, "utils"))
 from libcxx.header_information import Header
+
 
 def parse_line(line: str) -> Tuple[int, str]:
     """
@@ -33,6 +36,7 @@ def parse_line(line: str) -> Tuple[int, str]:
     # The number of periods in front of the header name is the nesting level of
     # that header.
     return (len(match.group(1)), match.group(2))
+
 
 def make_cxx_v1_relative(header: str) -> Optional[str]:
     """
@@ -54,6 +58,7 @@ def make_cxx_v1_relative(header: str) -> Optional[str]:
     else:
         return match.group(1)
 
+
 def parse_file(file: io.TextIOBase) -> List[Tuple[Header, Header]]:
     """
     Parse a file containing --trace-includes output to generate a list of the
@@ -62,7 +67,7 @@ def parse_file(file: io.TextIOBase) -> List[Tuple[Header, Header]]:
     result = []
     includer = None
     for line in file.readlines():
-        (level, header) = parse_line(line)
+        level, header = parse_line(line)
         relative = make_cxx_v1_relative(header)
 
         # Not a libc++ header
@@ -81,6 +86,7 @@ def parse_file(file: io.TextIOBase) -> List[Tuple[Header, Header]]:
             result.append((includer, Header(relative)))
     return result
 
+
 def print_csv(includes: List[Tuple[Header, Header]]) -> None:
     """
     Print the transitive includes as space-delimited CSV.
@@ -91,15 +97,15 @@ def print_csv(includes: List[Tuple[Header, Header]]) -> None:
     by_includer = lambda t: t[0]
     includes = itertools.groupby(sorted(includes, key=by_includer), key=by_includer)
 
-    for (includer, includees) in includes:
+    for includer, includees in includes:
         includees = map(lambda t: t[1], includees)
         for h in sorted(set(includees)):
             if h.is_public() and not h.is_C_compatibility():
                 print(f"{includer} {h}")
 
+
 def main(argv):
-    parser = argparse.ArgumentParser(
-        description="""
+    parser = argparse.ArgumentParser(description="""
         Given a list of headers produced by --trace-includes, produce a list of libc++ headers in that output.
 
         Note that -fshow-skipped-includes must also be passed to the compiler in order to get sufficient
@@ -109,12 +115,18 @@ def main(argv):
 
             <header performing inclusion> <header being included>
         """)
-    parser.add_argument("inputs", type=argparse.FileType("r"), nargs='+', default=None,
-        help="One or more files containing the result of --trace-includes")
+    parser.add_argument(
+        "inputs",
+        type=argparse.FileType("r"),
+        nargs="+",
+        default=None,
+        help="One or more files containing the result of --trace-includes",
+    )
     args = parser.parse_args(argv)
 
     includes = [line for file in args.inputs for line in parse_file(file)]
     print_csv(includes)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

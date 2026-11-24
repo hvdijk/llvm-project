@@ -1682,7 +1682,7 @@ class GdbRemoteTestCaseBase(Base, metaclass=GdbRemoteTestCaseFactory):
         # Might need to work through function entry prologue code.
         args["expected_g_c1"] = "1"
         args["expected_g_c2"] = "1"
-        (state_reached, step_count) = self.count_single_steps_until_true(
+        state_reached, step_count = self.count_single_steps_until_true(
             main_thread_id,
             self.g_c1_c2_contents_are,
             args,
@@ -1695,7 +1695,7 @@ class GdbRemoteTestCaseBase(Base, metaclass=GdbRemoteTestCaseFactory):
         # Verify we hit the next state.
         args["expected_g_c1"] = "1"
         args["expected_g_c2"] = "0"
-        (state_reached, step_count) = self.count_single_steps_until_true(
+        state_reached, step_count = self.count_single_steps_until_true(
             main_thread_id,
             self.g_c1_c2_contents_are,
             args,
@@ -1733,7 +1733,7 @@ class GdbRemoteTestCaseBase(Base, metaclass=GdbRemoteTestCaseFactory):
         # Verify we hit the next state.
         args["expected_g_c1"] = "0"
         args["expected_g_c2"] = "0"
-        (state_reached, step_count) = self.count_single_steps_until_true(
+        state_reached, step_count = self.count_single_steps_until_true(
             main_thread_id,
             self.g_c1_c2_contents_are,
             args,
@@ -1747,7 +1747,7 @@ class GdbRemoteTestCaseBase(Base, metaclass=GdbRemoteTestCaseFactory):
         # Verify we hit the next state.
         args["expected_g_c1"] = "0"
         args["expected_g_c2"] = "1"
-        (state_reached, step_count) = self.count_single_steps_until_true(
+        state_reached, step_count = self.count_single_steps_until_true(
             main_thread_id,
             self.g_c1_c2_contents_are,
             args,

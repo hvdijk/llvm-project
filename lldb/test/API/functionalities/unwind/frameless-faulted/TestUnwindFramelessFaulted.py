@@ -19,11 +19,10 @@ class TestUnwindFramelessFaulted(TestBase):
     # to test for the linker version or Xcode version so  tie this to
     # macOS 15 which uses Xcode 16 and does not have the issues.
     @skipIf(macos_version=["<", "15.0"])
-
     def test_frameless_faulted_unwind(self):
         self.build()
 
-        (target, process, thread, bp) = lldbutil.run_to_name_breakpoint(
+        target, process, thread, bp = lldbutil.run_to_name_breakpoint(
             self, "main", only_one_thread=False
         )
 

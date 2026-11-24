@@ -246,7 +246,7 @@ def hasCompileFlag(config, flag):
     This is done by executing the %{cxx} substitution with the given flag and
     checking whether that succeeds.
     """
-    (exitCode, _, _) = tryCompileFlag(config, flag)
+    exitCode, _, _ = tryCompileFlag(config, flag)
     return exitCode == 0
 
 
@@ -412,19 +412,22 @@ def featureTestMacros(config, flags=""):
 
 
 def _getSubstitution(substitution, all_substitutions):
-  for (orig, replacement) in all_substitutions:
-    if orig == substitution:
-      return replacement
-  raise ValueError('Substitution {} is not in the config.'.format(substitution))
+    for orig, replacement in all_substitutions:
+        if orig == substitution:
+            return replacement
+    raise ValueError("Substitution {} is not in the config.".format(substitution))
+
 
 def _appendToSubstitution(substitutions, key, value):
     return [(k, v + " " + value) if k == key else (k, v) for (k, v) in substitutions]
 
+
 def _prependToSubstitution(substitutions, key, value):
     return [(k, value + " " + v) if k == key else (k, v) for (k, v) in substitutions]
 
+
 def _ensureFlagIsSupported(config, flag):
-    (exitCode, out, err) = tryCompileFlag(config, flag)
+    exitCode, out, err = tryCompileFlag(config, flag)
     assert (
         exitCode == 0
     ), f"Trying to enable compiler flag {flag}, which is not supported. stdout was:\n{out}\n\nstderr was:\n{err}"
@@ -511,6 +514,7 @@ class AddFlag(ConfigAction):
 
     def pretty(self, config, litParams):
         return "add {} to %{{flags}}".format(self._getFlag(config))
+
 
 class AddFlagIfSupported(ConfigAction):
     """
@@ -635,10 +639,8 @@ class AddSubstitution(ConfigAction):
 
     def __init__(self, key, substitution):
         self._key = key
-        self._getSub = (
-            lambda config: substitution(config)
-            if callable(substitution)
-            else substitution
+        self._getSub = lambda config: (
+            substitution(config) if callable(substitution) else substitution
         )
 
     def applyTo(self, config):
@@ -843,12 +845,12 @@ class Parameter(object):
                     self.name
                 )
             )
-        getDefault = (
-            lambda: self._default(config) if callable(self._default) else self._default
+        getDefault = lambda: (
+            self._default(config) if callable(self._default) else self._default
         )
 
         if param is not None:
-            (pretty, value) = (param, self._parse(param))
+            pretty, value = (param, self._parse(param))
         else:
             value = getDefault()
             pretty = "{} (default)".format(value)
@@ -875,12 +877,12 @@ class Parameter(object):
         """
         Return the list of actions associated to this value of the parameter.
         """
-        (_, parameterValue) = self._getValue(config, litParams)
+        _, parameterValue = self._getValue(config, litParams)
         return self._actions(parameterValue)
 
     def pretty(self, config, litParams):
         """
         Return a pretty representation of the parameter's name and value.
         """
-        (prettyParameterValue, _) = self._getValue(config, litParams)
+        prettyParameterValue, _ = self._getValue(config, litParams)
         return "{}={}".format(self.name, prettyParameterValue)

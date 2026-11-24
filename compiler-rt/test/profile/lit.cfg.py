@@ -94,7 +94,7 @@ def exclude_unsupported_files_for_aix(dirname):
         try:
             data = f.read()
             # rpath is not supported on AIX, exclude all tests with them.
-            if ( "-rpath" in data ):
+            if "-rpath" in data:
                 config.excludes += [filename]
         finally:
             f.close()

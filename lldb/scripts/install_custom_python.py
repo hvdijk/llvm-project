@@ -1,22 +1,22 @@
-""" Copies the build output of a custom python interpreter to a directory
-    structure that mirrors that of an official Python distribution.
+"""Copies the build output of a custom python interpreter to a directory
+structure that mirrors that of an official Python distribution.
 
-    --------------------------------------------------------------------------
-    File:           install_custom_python.py
+--------------------------------------------------------------------------
+File:           install_custom_python.py
 
-    Overview:       Most users build LLDB by linking against the standard
-                    Python distribution installed on their system.  Occasionally
-                    a user may want to build their own version of Python, and on
-                    platforms such as Windows this is a hard requirement.  This
-                    script will take the build output of a custom interpreter and
-                    install it into a canonical structure that mirrors that of an
-                    official Python distribution, thus allowing PYTHONHOME to be
-                    set appropriately.
+Overview:       Most users build LLDB by linking against the standard
+                Python distribution installed on their system.  Occasionally
+                a user may want to build their own version of Python, and on
+                platforms such as Windows this is a hard requirement.  This
+                script will take the build output of a custom interpreter and
+                install it into a canonical structure that mirrors that of an
+                official Python distribution, thus allowing PYTHONHOME to be
+                set appropriately.
 
-    Gotchas:        None.
+Gotchas:        None.
 
-    Copyright:      None.
-    --------------------------------------------------------------------------
+Copyright:      None.
+--------------------------------------------------------------------------
 
 """
 

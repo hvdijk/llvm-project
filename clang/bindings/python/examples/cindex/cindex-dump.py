@@ -86,7 +86,7 @@ def main():
         default=None,
     )
     parser.disable_interspersed_args()
-    (opts, args) = parser.parse_args()
+    opts, args = parser.parse_args()
 
     if len(args) == 0:
         parser.error("invalid number arguments")

@@ -42,6 +42,7 @@ The list of checkers tested are hardcoded in the Checkers variable.
 For testing additional checkers, use the SA_ADDITIONAL_CHECKERS environment
 variable. It should contain a comma separated list.
 """
+
 import CmpRuns
 import SATestUtils as utils
 from ProjectMap import DownloadType, ProjectInfo
@@ -62,10 +63,9 @@ from queue import Queue
 
 # mypy has problems finding InvalidFileException in the module
 # and this is we can shush that false positive
-from plistlib import InvalidFileException  # type:ignore
+from plistlib import InvalidFileException  # type: ignore
 from subprocess import CalledProcessError, check_call
 from typing import Dict, IO, List, NamedTuple, Optional, TYPE_CHECKING, Tuple
-
 
 ###############################################################################
 # Helper functions.
@@ -914,9 +914,11 @@ def normalize_reference_results(directory: str, output_dir: str, build_mode: int
                 path_prefix = os.path.join(directory, PATCHED_SOURCE_DIR_NAME)
 
             paths = [
-                source[len(path_prefix) + 1 :]
-                if source.startswith(path_prefix)
-                else source
+                (
+                    source[len(path_prefix) + 1 :]
+                    if source.startswith(path_prefix)
+                    else source
+                )
                 for source in data["files"]
             ]
             data["files"] = paths

@@ -1,7 +1,6 @@
 import sys
 import multiprocessing
 
-
 _current = None
 _total = None
 

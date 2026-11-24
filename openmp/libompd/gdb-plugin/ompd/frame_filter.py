@@ -149,7 +149,7 @@ class FrameFilter:
             else:
                 gdb_sp_next = int(str(x.inferior_frame().read_register("sp")), 16)
             while 1:
-                (ompd_enter_frame, ompd_exit_frame) = self.frames
+                ompd_enter_frame, ompd_exit_frame = self.frames
 
                 if ompd_enter_frame != 0 and gdb_sp_next_new < ompd_enter_frame:
                     break
@@ -215,7 +215,7 @@ class FrameFilter:
                 except:
                     break
                 self.frames = self.curr_task.get_task_frame()
-                (enter_frame, exit_frame) = self.frames
+                enter_frame, exit_frame = self.frames
                 if exit_frame == 0:
                     print("outermost generating task was reached")
                     break
@@ -254,7 +254,7 @@ class FrameFilter:
                             gdb_sp_next = int(str(frame.read_register("sp")), 16)
 
                         while 1:
-                            (ompd_enter_frame, ompd_exit_frame) = self.frames
+                            ompd_enter_frame, ompd_exit_frame = self.frames
 
                             if (
                                 ompd_enter_frame != 0

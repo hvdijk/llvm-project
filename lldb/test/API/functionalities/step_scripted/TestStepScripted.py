@@ -1,6 +1,7 @@
 """
 Tests stepping with scripted thread plans.
 """
+
 import threading
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
@@ -49,7 +50,7 @@ class StepScriptedTestCase(TestBase):
         """Stop at the first breakpoint, set a second one further on, run
         plan_name from there, and return the thread and the second breakpoint."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
         second = target.BreakpointCreateBySourceRegex(
@@ -104,7 +105,7 @@ class StepScriptedTestCase(TestBase):
         )
 
     def step_out_with_scripted_plan(self, name):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -121,7 +122,7 @@ class StepScriptedTestCase(TestBase):
 
     def run_until_branch_instruction(self):
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Break on branch instruction", self.main_source_file
         )
 
@@ -136,7 +137,7 @@ class StepScriptedTestCase(TestBase):
 
     @skipIf(archs=no_match(["x86_64"]))
     def test_step_single_instruction(self):
-        (target, process, thread, bkpt) = self.run_until_branch_instruction()
+        target, process, thread, bkpt = self.run_until_branch_instruction()
 
         err = thread.StepUsingScriptedThreadPlan("Steps.StepSingleInstruction")
         self.assertSuccess(err)
@@ -147,7 +148,7 @@ class StepScriptedTestCase(TestBase):
 
     @skipIf(archs=no_match(["x86_64"]))
     def test_step_single_instruction_with_step_over(self):
-        (target, process, thread, bkpt) = self.run_until_branch_instruction()
+        target, process, thread, bkpt = self.run_until_branch_instruction()
 
         frame = thread.GetFrameAtIndex(0)
         next_instruction = target.ReadInstructions(frame.GetPCAddress(), 2)[1]
@@ -166,7 +167,7 @@ class StepScriptedTestCase(TestBase):
     def test_misspelled_plan_name(self):
         """Test that we get a useful error if we misspell the plan class name"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
         stop_id = process.GetStopID()
@@ -191,7 +192,7 @@ class StepScriptedTestCase(TestBase):
 
     def do_test_checking_variable(self, use_cli):
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 
@@ -260,7 +261,7 @@ class StepScriptedTestCase(TestBase):
 
     def do_test_stop_others(self):
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
         # First run with stop others false and see that we got that.

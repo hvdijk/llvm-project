@@ -11,6 +11,7 @@ import os
 import shutil
 import time
 
+
 class TestFrameVarDILMemberOfAnonymousMember(TestBase):
     # If your test case doesn't stress debug info, then
     # set this to true.  That way it won't be run once for
@@ -19,8 +20,9 @@ class TestFrameVarDILMemberOfAnonymousMember(TestBase):
 
     def test_frame_var(self):
         self.build()
-        lldbutil.run_to_source_breakpoint(self, "Set a breakpoint here",
-                                          lldb.SBFileSpec("main.cpp"))
+        lldbutil.run_to_source_breakpoint(
+            self, "Set a breakpoint here", lldb.SBFileSpec("main.cpp")
+        )
 
         self.expect_var_path("a.x", value="1")
         self.expect_var_path("a.y", value="2")
@@ -30,7 +32,7 @@ class TestFrameVarDILMemberOfAnonymousMember(TestBase):
             error=True,
             substrs=['"x" is not a member of "(B) b"'],
         )
-        #self.expect_var_path("b.y", value="0")
+        # self.expect_var_path("b.y", value="0")
         self.expect_var_path("b.z", value="3")
         self.expect_var_path("b.w", value="4")
         self.expect_var_path("b.a.x", value="1")

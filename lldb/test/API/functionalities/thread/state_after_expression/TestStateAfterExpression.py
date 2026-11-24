@@ -3,7 +3,6 @@ Make sure the stop reason of a thread that did not run
 during an expression is not changed by running the expression
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -21,7 +20,7 @@ class TestStopReasonAfterExpression(TestBase):
         self.do_test()
 
     def do_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

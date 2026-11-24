@@ -1,6 +1,5 @@
 """Look up type information for typedefs of same name at different lexical scope and check for correct display."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

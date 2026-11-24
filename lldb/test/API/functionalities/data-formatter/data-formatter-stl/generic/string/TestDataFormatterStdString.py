@@ -3,7 +3,6 @@
 Test lldb data formatter subsystem.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -33,7 +32,7 @@ class StdStringDataFormatterTestCase(TestBase):
 
     def do_test(self):
         """Test that that file and class static variables display correctly."""
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set break point at this line.", self.main_spec
         )
         frame = thread.frames[0]
@@ -195,7 +194,7 @@ class StdStringDataFormatterTestCase(TestBase):
         self.do_test_multibyte()
 
     def do_test_uncapped_summary(self):
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "Set break point at this line.", self.main_spec
         )
 
@@ -233,7 +232,7 @@ class StdStringDataFormatterTestCase(TestBase):
         """
         Make sure that if the string is not readable, we give an error.
         """
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "Break here to look at bad string", self.main_spec
         )
 

@@ -1,11 +1,10 @@
 """
 When using C++11 in place member initialization, show that we
 can set and hit breakpoints on initialization lines.  This is a
-little bit tricky because we try not to move file and line breakpoints 
+little bit tricky because we try not to move file and line breakpoints
 across function boundaries but these lines are outside the source range
 of the constructor.
 """
-
 
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
@@ -26,7 +25,7 @@ class TestCase(TestBase):
             "main.cpp", "Set the after constructor breakpoint here"
         )
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, " Set a breakpoint here to get started", self.main_source_file
         )
 

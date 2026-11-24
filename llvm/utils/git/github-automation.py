@@ -89,11 +89,9 @@ class IssueSubscriber:
 
     def run(self) -> bool:
         if self.team_name.endswith("miscompilation:undef"):
-            comment = textwrap.dedent(
-                """
+            comment = textwrap.dedent("""
                 Undef values are deprecated. Unless this miscompilation is observable in real-world programs, we don't want to fix it.
-            """
-            )
+            """)
             self.issue.create_comment(comment)
             return True
 
@@ -105,8 +103,7 @@ class IssueSubscriber:
                 for existing_comment in self.issue.get_comments():
                     if self.COMMENT_TAG in existing_comment.body:
                         return True
-                comment = textwrap.dedent(
-                    f"""
+                comment = textwrap.dedent(f"""
                     {self.COMMENT_TAG}
                     This issue has been tagged as a missed optimization in InstCombine.
                     
@@ -115,8 +112,7 @@ class IssueSubscriber:
                     For contributors:
                     * Check that the issue has a real-world motivation. If it does *not* have one, do *not* create a PR without prior explicit approval from InstCombine maintainers.
                     * Follow the [InstCombine contributor guide](https://llvm.org/docs/InstCombineContributorGuide.html).
-                """
-                )
+                """)
                 self.issue.create_comment(comment)
                 return True
 
@@ -368,11 +364,9 @@ class CommitRequestGreeter:
 
     def run(self) -> bool:
         # Post greeter comment:
-        comment = textwrap.dedent(
-            f"""
+        comment = textwrap.dedent(f"""
             @{self.issue.user.login} thank you for applying for commit access.  Please  review the project's [code review policy](https://llvm.org/docs/CodeReview.html).
-        """
-        )
+        """)
         self.issue.create_comment(comment)
 
         # Post activity summary:

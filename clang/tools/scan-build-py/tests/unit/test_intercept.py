@@ -43,9 +43,7 @@ class InterceptUtilTest(unittest.TestCase):
                          echo '{0}'
                          echo 'sa-la-la-la'
                          echo 'la-la-la'
-                      """.format(
-                message
-            )
+                      """.format(message)
             lines = [line.strip() for line in content.split("\n")]
             with open(filename, "w") as handle:
                 handle.write("\n".join(lines))

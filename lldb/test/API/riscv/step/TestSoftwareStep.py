@@ -17,7 +17,7 @@ class TestSoftwareStep(TestBase):
         exe_file = filename + ".x"
 
         self.build(dictionary={"C_SOURCES": source_file, "EXE": exe_file})
-        (target, process, cur_thread, bkpt) = lldbutil.run_to_name_breakpoint(
+        target, process, cur_thread, bkpt = lldbutil.run_to_name_breakpoint(
             self, bkpt_name, exe_name=exe_file
         )
         entry_pc = cur_thread.GetFrameAtIndex(0).GetPC()

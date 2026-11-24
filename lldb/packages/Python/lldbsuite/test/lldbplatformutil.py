@@ -1,5 +1,5 @@
-""" This module contains functions used by the test cases to hide the
-architecture and/or the platform dependent nature of the tests. """
+"""This module contains functions used by the test cases to hide the
+architecture and/or the platform dependent nature of the tests."""
 
 # System modules
 import itertools

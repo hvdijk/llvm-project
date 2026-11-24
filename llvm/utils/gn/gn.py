@@ -10,7 +10,6 @@ import os
 import subprocess
 import sys
 
-
 THIS_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.join(THIS_DIR, "..", "..", "..")
 

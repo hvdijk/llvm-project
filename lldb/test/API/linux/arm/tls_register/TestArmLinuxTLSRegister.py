@@ -15,7 +15,7 @@ class ArmLinuxTLSRegister(TestBase):
 
     def test_tls_reg_access(self):
         self.build()
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set breakpoint here.", lldb.SBFileSpec("main.c")
         )
         frame = thread.GetFrameAtIndex(0)

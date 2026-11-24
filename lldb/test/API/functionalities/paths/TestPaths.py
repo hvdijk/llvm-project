@@ -2,7 +2,6 @@
 Test some lldb command abbreviations.
 """
 
-
 import lldb
 import os
 import sys

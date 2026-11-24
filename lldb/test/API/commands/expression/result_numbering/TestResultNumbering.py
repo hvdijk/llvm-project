@@ -3,7 +3,6 @@ Make sure running internal expressions doesn't
 influence the result variable numbering.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *
@@ -20,7 +19,7 @@ class TestExpressionResultNumbering(TestBase):
         self.do_numbering_test()
 
     def do_numbering_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

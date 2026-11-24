@@ -11,7 +11,7 @@ class ScopedEnumType(TestBase):
 
         self.main_source = "main.cpp"
         self.main_source_spec = lldb.SBFileSpec(self.main_source)
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Set break point at this line.", self.main_source_spec
         )
         frame = thread.GetFrameAtIndex(0)

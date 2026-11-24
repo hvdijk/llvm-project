@@ -1,6 +1,5 @@
 """Test that corefiles with LC_NOTE "addrable bits" load command, creating and reading."""
 
-
 import os
 import re
 import subprocess
@@ -26,7 +25,7 @@ class TestAddrableBitsCorefile(TestBase):
 
         self.target = self.dbg.CreateTarget(self.exe)
         err = lldb.SBError()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.c")
         )
         self.assertTrue(process.IsValid())

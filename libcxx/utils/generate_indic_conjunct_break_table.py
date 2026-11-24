@@ -39,6 +39,7 @@ LINE_REGEX = re.compile(
     r"^(?P<lower>[0-9A-F]{4,5})(?:\.\.(?P<upper>[0-9A-F]{4,5}))?\s*;\s*InCB;\s*(?P<prop>\w+)"
 )
 
+
 def parsePropertyLine(inputLine: str) -> Optional[PropertyRange]:
     result = PropertyRange()
     if m := LINE_REGEX.match(inputLine):
@@ -51,7 +52,6 @@ def parsePropertyLine(inputLine: str) -> Optional[PropertyRange]:
 
     else:
         return None
-
 
 
 def compactPropertyRanges(input: list[PropertyRange]) -> list[PropertyRange]:
@@ -296,7 +296,9 @@ def generate_data_tables() -> str:
             [x for line in f if (x := parsePropertyLine(line))]
         )
 
-    indic_conjunct_break_data = generate_cpp_data("Grapheme_Break", indic_conjunct_break_ranges)
+    indic_conjunct_break_data = generate_cpp_data(
+        "Grapheme_Break", indic_conjunct_break_ranges
+    )
     return "\n".join([indic_conjunct_break_data])
 
 

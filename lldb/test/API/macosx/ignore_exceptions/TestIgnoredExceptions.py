@@ -46,7 +46,7 @@ class TestDarwinSignalHandlers(TestBase):
         self.runCmd(
             "settings set platform.plugin.darwin.ignored-exceptions EXC_BAD_ACCESS|EXC_BAD_INSTRUCTION|EXC_ARITHMETIC|EXC_RESOURCE|EXC_GUARD|EXC_SYSCALL"
         )
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to get things going", self.main_source_file
         )
 

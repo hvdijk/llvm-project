@@ -2,11 +2,11 @@
 Test lookup unnamed symbols.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 from lldbsuite.test import lldbutil
+
 
 # --keep-symbol causes error on Windows: llvm-strip.exe: error: option is not supported for COFF
 @skipIfWindows
@@ -19,7 +19,7 @@ class TestUnnamedSymbolLookup(TestBase):
     def test_unnamed_symbol_lookup(self):
         """Test looking up unnamed symbol synthetic name"""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_name_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_name_breakpoint(
             self, "main", exe_name="a.out.stripped"
         )
 

@@ -11,18 +11,14 @@ class TestClangModuleHashMismatch(TestBase):
     @add_test_categories(["gmodules"])
     def test_expr(self):
         with open(self.getBuildArtifact("module.modulemap"), "w") as f:
-            f.write(
-                """
+            f.write("""
                     module Foo { header "f.h" }
-                    """
-            )
+                    """)
         with open(self.getBuildArtifact("f.h"), "w") as f:
-            f.write(
-                """
+            f.write("""
                     typedef int my_int;
                     void f() {}
-                    """
-            )
+                    """)
 
         mod_cache = self.getBuildArtifact("private-module-cache")
         if os.path.isdir(mod_cache):

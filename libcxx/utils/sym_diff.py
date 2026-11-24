@@ -81,7 +81,7 @@ def main():
         new_syms_list, _ = util.filter_stdlib_symbols(new_syms_list)
 
     for symbol in new_syms_list:
-        if symbol["is_defined"] and 'B' in symbol["name"]:
+        if symbol["is_defined"] and "B" in symbol["name"]:
             print(f"Symbol {symbol['name']} contains an ABI tag!")
             sys.exit(1)
 

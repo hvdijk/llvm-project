@@ -7,7 +7,6 @@ which should be eStopReasonBreakpoint in general,
 and eStopReasonPlanComplete when breakpoint's condition fails or it is disabled.
 """
 
-
 import unittest
 import lldb
 from lldbsuite.test.decorators import *
@@ -22,7 +21,7 @@ class ThreadPlanUserBreakpointsTestCase(TestBase):
         # Build and run to starting breakpoint
         self.build()
         src = lldb.SBFileSpec("main.cpp")
-        (self.target, self.process, self.thread, _) = lldbutil.run_to_source_breakpoint(
+        self.target, self.process, self.thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Start from here", src
         )
 

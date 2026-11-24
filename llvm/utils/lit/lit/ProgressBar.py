@@ -141,7 +141,7 @@ class _PosixTerminalController(TerminalController):
 
         # Look up string capabilities.
         for capability in self._STRING_CAPABILITIES:
-            (attrib, cap_name) = capability.split("=")
+            attrib, cap_name = capability.split("=")
             setattr(self, attrib, self._tigetstr(cap_name) or "")
 
         # Colors

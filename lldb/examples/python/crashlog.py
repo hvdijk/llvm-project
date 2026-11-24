@@ -789,13 +789,9 @@ class JSONCrashLogParser(CrashLogParser):
                 print("error: can't parse application specific backtrace.")
                 return False
 
-            frame_id = (
-                frame_img_name
-            ) = (
-                frame_addr
-            ) = (
-                frame_symbol
-            ) = frame_offset = frame_file = frame_line = frame_column = None
+            frame_id = frame_img_name = frame_addr = frame_symbol = frame_offset = (
+                frame_file
+            ) = frame_line = frame_column = None
 
             if len(frame_match.groups()) == 4:
                 # Get the image UUID from the frame image name.
@@ -1065,9 +1061,9 @@ class TextCrashLogParser(CrashLogParser):
         elif line.startswith("Exception Subtype:"):
             self.crashlog.thread_exception_subtype = line[18:].strip()
             if "type" in self.crashlog.exception:
-                self.crashlog.exception[
-                    "subtype"
-                ] = self.crashlog.thread_exception_subtype
+                self.crashlog.exception["subtype"] = (
+                    self.crashlog.thread_exception_subtype
+                )
         elif line.startswith("Exception Codes:"):
             self.crashlog.thread_exception_data = line[16:].strip()
             if "type" not in self.crashlog.exception:
@@ -1090,9 +1086,7 @@ class TextCrashLogParser(CrashLogParser):
 
     def parse_normal(self, line):
         if line.startswith("Process:"):
-            (self.crashlog.process_name, pid_with_brackets) = (
-                line[8:].strip().split(" [")
-            )
+            self.crashlog.process_name, pid_with_brackets = line[8:].strip().split(" [")
             self.crashlog.process_id = pid_with_brackets.strip("[]")
         elif line.startswith("Path:"):
             self.crashlog.process_path = line[5:].strip()
@@ -1208,11 +1202,9 @@ class TextCrashLogParser(CrashLogParser):
             print('error: frame regex failed for line: "%s"' % line)
             return False
 
-        frame_id = (
-            frame_img_name
-        ) = (
-            frame_addr
-        ) = frame_symbol = frame_offset = frame_file = frame_line = frame_column = None
+        frame_id = frame_img_name = frame_addr = frame_symbol = frame_offset = (
+            frame_file
+        ) = frame_line = frame_column = None
 
         if len(frame_match.groups()) == 4:
             # Get the image UUID from the frame image name.

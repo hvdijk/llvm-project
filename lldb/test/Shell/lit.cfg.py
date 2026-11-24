@@ -89,6 +89,7 @@ if config.targets_to_build:
         if arch:
             config.available_features.add(arch.lower() + "-registered-target")
 
+
 def calculate_arch_features(arch_string):
     # This will add a feature such as x86, arm, mips, etc for each built
     # target

@@ -806,7 +806,7 @@ def main():
         metavar="N",
     )
     parser.add_option_group(group)
-    (opts, args) = parser.parse_args()
+    opts, args = parser.parse_args()
 
     if not opts.useRandomSeed:
         random.seed(opts.seed)

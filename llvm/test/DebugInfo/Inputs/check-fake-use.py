@@ -99,9 +99,7 @@ if EpilogueBegin is None:
 if len(LocationRanges) == 2 and (
     LocationRanges[0] > PrologueEnd or LocationRanges[1] < EpilogueBegin
 ):
-    raise RuntimeError(
-        f"""Location list for 'b' does not cover the whole function:")
+    raise RuntimeError(f"""Location list for 'b' does not cover the whole function:")
     Prologue to Epilogue = [0x{PrologueEnd:x}, 0x{EpilogueBegin:x})
     Location range = [0x{LocationRanges[0]:x}, 0x{LocationRanges[1]:x})
-"""
-    )
+""")

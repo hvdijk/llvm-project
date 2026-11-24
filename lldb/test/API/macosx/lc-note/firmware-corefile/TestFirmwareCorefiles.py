@@ -1,6 +1,5 @@
 """Test that corefiles with LC_NOTE "kern ver str" and "main bin spec" load commands works."""
 
-
 import os
 import re
 import subprocess

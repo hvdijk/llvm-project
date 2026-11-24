@@ -1,6 +1,5 @@
 """Test the SBEnvironment APIs."""
 
-
 from math import fabs
 import lldb
 from lldbsuite.test.decorators import *
@@ -24,7 +23,7 @@ class SBEnvironmentAPICase(TestBase):
         entries = env.GetEntries()
         self.assertEqual(entries.GetSize(), len(entries))
         for i in range(entries.GetSize()):
-            (name, value) = entries.GetStringAtIndex(i).split("=")
+            name, value = entries.GetStringAtIndex(i).split("=")
             self.assertIn(name + "=" + value, entries)
 
     @skipIfRemote  # Remote environment not supported.

@@ -65,12 +65,12 @@ def main():
     if args.fixed_bit_width is not None:
         if args.fixed_bit_width == 128:
             width_map = {"i64": 2, "i32": 4, "i16": 8, "i8": 16, "f64": 2, "f32": 4}
-            (width, element_type) = random.choice(
+            width, element_type = random.choice(
                 [(width_map[t], t) for t in element_types]
             )
         elif args.fixed_bit_width == 256:
             width_map = {"i64": 4, "i32": 8, "i16": 16, "i8": 32, "f64": 4, "f32": 8}
-            (width, element_type) = random.choice(
+            width, element_type = random.choice(
                 [(width_map[t], t) for t in element_types]
             )
         else:
@@ -131,9 +131,11 @@ def main():
     shuffle_tree = [
         [
             [
-                -1
-                if random.random() <= undef_prob
-                else random.choice(range(shuffle_range))
+                (
+                    -1
+                    if random.random() <= undef_prob
+                    else random.choice(range(shuffle_range))
+                )
                 for _ in itertools.repeat(None, width)
             ]
             for _ in itertools.repeat(None, args.max_shuffle_height - i)
@@ -217,9 +219,7 @@ entry:"""
             print(
                 """
   %%s.%(next_i)d.%(j)d = shufflevector <%(N)d x %(T)s> %%s.%(i)d.%(j)d, <%(N)d x %(T)s> %%s.%(i)d.%(next_j)d, <%(N)d x i32> <%(S)s>
-""".strip(
-                    "\n"
-                )
+""".strip("\n")
                 % dict(
                     subst,
                     i=i,
@@ -232,13 +232,10 @@ entry:"""
                 )
             )
 
-    print(
-        """
+    print("""
   ret <%(N)d x %(T)s> %%s.%(i)d.0
 }
-"""
-        % dict(subst, i=len(shuffle_tree))
-    )
+""" % dict(subst, i=len(shuffle_tree)))
 
     # Generate some string constants that we can use to report errors.
     for i, r in enumerate(result):
@@ -248,12 +245,9 @@ entry:"""
                 % {"seed": args.seed, "lane": i, "result": r}
             )
             s += "".join(["\\00" for _ in itertools.repeat(None, 128 - len(s) + 2)])
-            print(
-                """
+            print("""
 @error.%(i)d = private unnamed_addr global [128 x i8] c"%(s)s"
-""".strip()
-                % {"i": i, "s": s}
-            )
+""".strip() % {"i": i, "s": s})
 
     # Define a wrapper function which is marked 'optnone' to prevent
     # interprocedural optimizations from deleting the test.
@@ -315,17 +309,13 @@ entry:
     # Test that each non-undef result lane contains the expected value.
     for i, r in enumerate(result):
         if r == -1:
-            print(
-                """
+            print("""
 test.%(i)d:
   ; Skip this lane, its value is undef.
   br label %%test.%(next_i)d
-"""
-                % dict(subst, i=i, next_i=i + 1)
-            )
+""" % dict(subst, i=i, next_i=i + 1))
         else:
-            print(
-                """
+            print("""
 test.%(i)d:
   %%v.%(i)d = extractelement <%(N)d x %(IT)s> %%v.cast, i32 %(i)d
   %%cmp.%(i)d = icmp ne %(IT)s %%v.%(i)d, %(r)d
@@ -340,12 +330,9 @@ die.%(i)d:
   call i32 @write(i32 2, i8* %%str.ptr, i32 %%length.%(i)d)
   call void @llvm.trap()
   unreachable
-"""
-                % dict(subst, i=i, next_i=i + 1, r=r)
-            )
+""" % dict(subst, i=i, next_i=i + 1, r=r))
 
-    print(
-        """
+    print("""
 test.%d:
   ret i32 0
 }
@@ -354,9 +341,7 @@ declare i32 @strlen(i8*)
 declare i32 @write(i32, i8*, i32)
 declare i32 @sprintf(i8*, i8*, ...)
 declare void @llvm.trap() noreturn nounwind
-"""
-        % (len(result),)
-    )
+""" % (len(result),))
 
 
 if __name__ == "__main__":

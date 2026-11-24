@@ -2,7 +2,6 @@
 Test that Objective-C methods from the runtime work correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

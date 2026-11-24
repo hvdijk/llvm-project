@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 """DexExpectWatch base class, holds logic for how to build and process expected
- watch commands.
+watch commands.
 """
 
 import abc

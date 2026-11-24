@@ -2,7 +2,6 @@
 Test handling of cases when a single instruction triggers multiple watchpoints
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

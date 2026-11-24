@@ -1,6 +1,5 @@
 """Test that the clang modules cache directory can be controlled."""
 
-
 import os
 import shutil
 
@@ -25,7 +24,7 @@ class ObjCModulesTestCase(TestBase):
         self.runCmd(
             'settings set target.clang-module-search-paths "%s"' % self.getSourceDir()
         )
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set breakpoint here", self.main_source_file
         )
         self.runCmd("expr @import Foo")

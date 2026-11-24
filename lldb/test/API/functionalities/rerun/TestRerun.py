@@ -2,7 +2,6 @@
 Test that argdumper is a viable launching strategy.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

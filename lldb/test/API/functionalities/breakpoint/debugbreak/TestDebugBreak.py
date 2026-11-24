@@ -2,7 +2,6 @@
 Test embedded breakpoints, like `asm int 3;` in x86 or or `__debugbreak` on Windows.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

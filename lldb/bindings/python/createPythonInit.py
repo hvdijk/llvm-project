@@ -18,9 +18,7 @@ def __lldb_init_module(debugger, internal_dict):
     lldb_init = getattr(submodule, '__lldb_init_module', None)
     if lldb_init:
       lldb_init(debugger, internal_dict)
-""".format(
-    import_names=importNames, pkg_name=pkgRelDir.replace("/", ".")
-)
+""".format(import_names=importNames, pkg_name=pkgRelDir.replace("/", "."))
 
 pkgIniFile = os.path.normpath(os.path.join(pkgRelDir, "__init__.py"))
 with open(pkgIniFile, "w") as f:

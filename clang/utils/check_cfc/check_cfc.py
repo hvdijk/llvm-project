@@ -262,7 +262,7 @@ def run_step(command, my_env, error_on_failure):
         env=my_env,
         shell=is_windows(),
     )
-    (stdout, stderr) = p.communicate()
+    stdout, stderr = p.communicate()
     if p.returncode != 0:
         raise WrapperStepException(error_on_failure, stdout, stderr)
 

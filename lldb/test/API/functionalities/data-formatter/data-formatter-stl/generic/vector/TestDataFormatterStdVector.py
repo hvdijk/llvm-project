@@ -55,7 +55,7 @@ class StdVectorDataFormatterTestCase(TestBase):
 
     def do_test(self):
         """Test that that file and class static variables display correctly."""
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.cpp", False)
         )
 
@@ -204,7 +204,7 @@ class StdVectorDataFormatterTestCase(TestBase):
 
     def do_test_ref_and_ptr(self):
         """Test that that file and class static variables display correctly."""
-        (self.target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to check by ref", lldb.SBFileSpec("main.cpp", False)
         )
 

@@ -4,8 +4,7 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-"""A Command that specifies the command line with which to run the test.
-"""
+"""A Command that specifies the command line with which to run the test."""
 
 from dex.command.CommandBase import CommandBase
 

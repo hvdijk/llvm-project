@@ -23,7 +23,7 @@ class StdVariantDataFormatterTestCase(TestBase):
         # Execute the cleanup function during test case tear down.
         self.addTearDownHook(cleanup)
 
-        (self.target, self.process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, self.process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp", False)
         )
 

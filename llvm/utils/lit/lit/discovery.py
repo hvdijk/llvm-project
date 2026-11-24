@@ -146,9 +146,7 @@ def getTests(path, litConfig, testSuiteCache, localConfigCache):
     )
 
 
-def getTestsInSuite(
-    ts, path_in_suite, litConfig, testSuiteCache, localConfigCache
-):
+def getTestsInSuite(ts, path_in_suite, litConfig, testSuiteCache, localConfigCache):
     # Check that the source path exists (errors here are reported by the
     # caller).
     source_path = ts.getSourcePath(path_in_suite)
@@ -164,8 +162,11 @@ def getTestsInSuite(
         # always "find" the test itself. Otherwise, we might find no tests at
         # all, which is considered an error but isn't an error with standalone
         # tests.
-        tests = [Test.Test(ts, path_in_suite, lc)] if lc.test_format is None or lc.standalone_tests else \
-                lc.test_format.getTestsForPath(ts, path_in_suite, litConfig, lc)
+        tests = (
+            [Test.Test(ts, path_in_suite, lc)]
+            if lc.test_format is None or lc.standalone_tests
+            else lc.test_format.getTestsForPath(ts, path_in_suite, litConfig, lc)
+        )
 
         for test in tests:
             yield test

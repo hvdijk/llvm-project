@@ -4,8 +4,7 @@ import textwrap
 
 
 def venv_help(err) -> str:
-    return textwrap.dedent(
-        f"""
+    return textwrap.dedent(f"""
         Missing LLVM documentation build dependencies.
 
         Import failed with:
@@ -23,5 +22,4 @@ def venv_help(err) -> str:
         With uv, a typical one-shot command is:
           uv run --with-requirements llvm/docs/requirements.txt \\
             python utils/docs --test
-        """
-    ).strip()
+        """).strip()

@@ -1,6 +1,7 @@
 """This file contains functions related to interpreting measurement results
 of benchmarks.
 """
+
 import configparser
 import numpy as np
 import os

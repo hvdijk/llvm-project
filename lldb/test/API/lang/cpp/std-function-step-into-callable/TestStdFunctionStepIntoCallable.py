@@ -2,7 +2,6 @@
 Test stepping into std::function
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -36,7 +35,7 @@ class LibCxxFunctionSteppingIntoCallableTestCase(TestBase):
             self.main_source, "// Source main invoking f1"
         )
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Set break point at this line.", self.main_source_spec
         )
 

@@ -2,7 +2,6 @@
 Tests calling builtin functions using expression evaluation.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

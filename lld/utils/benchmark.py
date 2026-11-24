@@ -16,7 +16,6 @@ import argparse
 from urllib.parse import urlencode
 from urllib.request import urlopen, Request
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument("benchmark_directory")
 parser.add_argument("--runs", type=int, default=10)

@@ -29,7 +29,7 @@ class ExprCommandWithFixits(TestBase):
     def test_with_target(self):
         """Test calling expressions with errors that can be fixed by the FixIts."""
         self.build()
-        (target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to evaluate expressions", lldb.SBFileSpec("main.cpp")
         )
 
@@ -90,7 +90,7 @@ class ExprCommandWithFixits(TestBase):
         """Check that applying a Fix-it which fails to execute correctly still
         prints that the Fix-it was applied."""
         self.build()
-        (target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to evaluate expressions", lldb.SBFileSpec("main.cpp")
         )
         # Enable fix-its as they were intentionally disabled by TestBase.setUp.
@@ -112,7 +112,7 @@ class ExprCommandWithFixits(TestBase):
     def test_with_multiple_retries(self):
         """Test calling expressions with errors that can be fixed by the FixIts."""
         self.build()
-        (target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to evaluate expressions", lldb.SBFileSpec("main.cpp")
         )
 

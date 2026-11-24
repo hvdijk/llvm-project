@@ -13,7 +13,7 @@ exectime = [
 ]
 comptime = ["llc", "jit-comptime", "compile"]
 
-(tp, exp) = ("compileTime_", "executeTime_")
+tp, exp = ("compileTime_", "executeTime_")
 
 
 def parse(file):

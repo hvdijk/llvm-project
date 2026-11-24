@@ -7,7 +7,6 @@ from ompd_handles import ompd_thread, ompd_task, ompd_parallel
 from frame_filter import FrameFilter
 from enum import Enum
 
-
 addr_space = None
 ff = None
 icv_map = None
@@ -536,7 +535,7 @@ class ompd_bt(gdb.Command):
                 tup = ompdModule.call_ompd_enumerate_icvs(
                     addr_space.addr_space, current
                 )
-                (current, next_icv, next_scope, more) = tup
+                current, next_icv, next_scope, more = tup
                 icv_map[next_icv] = (current, next_scope, ompd_scope_map[next_scope])
             print('Initialized ICV map successfully for filtering "bt".')
 
@@ -596,7 +595,7 @@ class ompd_taskframes(gdb.Command):
                     break
                 if not isinstance(frames, tuple):
                     break
-                (ompd_enter_frame, ompd_exit_frame) = frames
+                ompd_enter_frame, ompd_exit_frame = frames
                 print(hex(ompd_enter_frame), hex(ompd_exit_frame))
                 curr_task_handle = ompdModule.call_ompd_get_scheduling_task_handle(
                     curr_task_handle

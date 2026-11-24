@@ -8,6 +8,7 @@
 Test that LLDB auto-loads compilation-prefix-map.json to resolve remapped
 source paths without requiring manual `settings set target.source-map`.
 """
+
 import os
 
 import lldb

@@ -1,6 +1,5 @@
 """Test that we can debug inferiors that handle SIGSEGV by themselves"""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

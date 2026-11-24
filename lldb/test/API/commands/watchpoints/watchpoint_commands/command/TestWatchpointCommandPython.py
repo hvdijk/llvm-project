@@ -2,7 +2,6 @@
 Test 'watchpoint command'.
 """
 
-
 import os
 import lldb
 from lldbsuite.test.decorators import *

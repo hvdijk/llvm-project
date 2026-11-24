@@ -36,7 +36,6 @@ import github
 import sys
 from textwrap import dedent
 
-
 # This is a tuple of sections of download links. Each section then contains
 # an entry for each line in that section. Each line entry contains:
 # * A unique tag to go in "<!-- <tag>" so we can find it later in the release
@@ -194,8 +193,7 @@ def create_release(repo, release, tag=None, name=None, message=None):
         # assumes that should be how it is laid out on the page. We want GitHub to
         # do the reflowing for us instead.
         download_links = generate_download_links(release)
-        message = dedent(
-            f"""\
+        message = dedent(f"""\
 ## LLVM {release} Release
 
 {download_links}
@@ -229,8 +227,7 @@ $ gh attestation verify --repo llvm/llvm-project <package file name>
 (if you are able to connect to GitHub)
 $ gh attestation verify --repo llvm/llvm-project <package file name> --bundle <package file name>.jsonl
 (using attestation file on disk)
-```"""
-        )
+```""")
 
     prerelease = True if "rc" in release else False
 

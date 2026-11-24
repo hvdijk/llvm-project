@@ -9,6 +9,5 @@ class ValueObjectErrorsTestCase(TestBase):
         """Test that the error message for a missing type
         is visible when printing an object"""
         self.build()
-        lldbutil.run_to_source_breakpoint(self, "break here",
-                                          lldb.SBFileSpec('main.c'))
-        self.expect('v -ptr-depth 1 x', substrs=['<incomplete type "Opaque">'])
+        lldbutil.run_to_source_breakpoint(self, "break here", lldb.SBFileSpec("main.c"))
+        self.expect("v -ptr-depth 1 x", substrs=['<incomplete type "Opaque">'])

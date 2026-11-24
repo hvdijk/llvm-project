@@ -23,7 +23,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_fork(self):
         """Test that expression evaluation succeeds when the expression calls fork()."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -36,7 +36,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_vfork(self):
         """Test that expression evaluation succeeds when the expression calls vfork()."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -49,7 +49,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_fork_trap(self):
         """Test that expression evaluation handles a child process that triggers a SIGTRAP."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -71,7 +71,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_fork_follow_child(self):
         """Test that expression evaluation succeeds with follow-fork-mode child."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -92,7 +92,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_vfork_follow_child(self):
         """Test that expression evaluation succeeds with vfork and follow-fork-mode child."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -112,7 +112,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_fork_stop_on_fork(self):
         """Test that stop-on-fork interrupts expression evaluation on fork."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -131,7 +131,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_fork_stop_on_fork_process_state(self):
         """Test that process state is valid after stop-on-fork interrupts on fork."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -155,7 +155,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_vfork_stop_on_fork(self):
         """Test that stop-on-fork with vfork defers to vforkdone and interrupts."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -180,7 +180,7 @@ class ExprWithForkTestCase(TestBase):
         breakpoints and decremented m_vfork_in_progress_count, so the process
         should be in a fully functional state."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -206,7 +206,7 @@ class ExprWithForkTestCase(TestBase):
         should have re-enabled software breakpoints. Verify by evaluating
         another expression that would require functional breakpoints."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -231,7 +231,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_fork_stop_on_fork_false(self):
         """Test that stop-on-fork=false allows fork expression to complete."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -251,7 +251,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_vfork_stop_on_fork_false(self):
         """Test that stop-on-fork=false allows vfork expression to complete."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -290,7 +290,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_fork_stop_on_fork_follow_child(self):
         """Test stop-on-fork + follow-child: expression interrupted, still on parent."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -314,7 +314,7 @@ class ExprWithForkTestCase(TestBase):
     def test_expr_with_vfork_stop_on_fork_follow_child(self):
         """Test stop-on-fork + vfork + follow-child: interrupted at vforkdone, still on parent."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -346,7 +346,7 @@ class ExprWithForkTestCase(TestBase):
         The fork must be handled as a normal (non-expression) fork so
         follow-fork-mode is respected."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 
@@ -384,7 +384,7 @@ class ExprWithForkTestCase(TestBase):
         expression thread.  The expression should complete successfully and
         the process should remain the original parent."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
 

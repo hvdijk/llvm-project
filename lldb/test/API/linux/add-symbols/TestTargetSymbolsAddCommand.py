@@ -1,4 +1,5 @@
-""" Testing explicit symbol loading via target symbols add. """
+"""Testing explicit symbol loading via target symbols add."""
+
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -2,7 +2,6 @@
 Test lldb data formatter subsystem.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -38,7 +37,7 @@ class GenericSetDataFormatterTestCase(TestBase):
 
     def do_test_with_run_command(self):
         """Test that that file and class static variables display correctly."""
-        (self.target, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set break point at this line.", lldb.SBFileSpec("main.cpp", False)
         )
 
@@ -144,7 +143,7 @@ class GenericSetDataFormatterTestCase(TestBase):
 
     def do_test_ref_and_ptr(self):
         """Test that the data formatters work on ref and ptr."""
-        (self.target, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self,
             "Stop here to check by ref and ptr.",
             lldb.SBFileSpec("main.cpp", False),

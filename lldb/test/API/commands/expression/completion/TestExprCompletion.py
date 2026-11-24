@@ -2,7 +2,6 @@
 Test the lldb command line completion mechanism for the 'expr' command.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -24,7 +23,7 @@ class CommandLineExprCompletionTestCase(TestBase):
         self.assume_no_completions("expr ")
         self.assume_no_completions("expr f")
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
 
@@ -257,7 +256,7 @@ class CommandLineExprCompletionTestCase(TestBase):
         self.main_source_spec = lldb.SBFileSpec(self.main_source)
         self.createTestTarget()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
 
@@ -303,7 +302,7 @@ class CommandLineExprCompletionTestCase(TestBase):
         self.main_source_spec = lldb.SBFileSpec(self.main_source)
         self.createTestTarget()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// Break here", self.main_source_spec
         )
 

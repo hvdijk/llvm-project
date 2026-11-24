@@ -42,7 +42,7 @@ class TestOSPluginStepping(TestBase):
         """Test that the Python operating system plugin works correctly"""
 
         python_os_plugin_path = os.path.join(self.getSourceDir(), "operating_system.py")
-        (target, self.process, thread, thread_bkpt) = lldbutil.run_to_source_breakpoint(
+        target, self.process, thread, thread_bkpt = lldbutil.run_to_source_breakpoint(
             self, "first stop in thread - do a step out", self.main_file
         )
 

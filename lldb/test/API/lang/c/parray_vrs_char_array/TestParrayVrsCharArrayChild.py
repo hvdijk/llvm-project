@@ -1,11 +1,10 @@
 """
 Test that parray of a struct with an embedded char array works.
 This was failing because the "live address" of the child elements
-was calculated incorrectly - as a offset from the pointer live 
+was calculated incorrectly - as a offset from the pointer live
 address.  It only happened for char[] children because they used
 GetAddressOf which relies on the live address.
 """
-
 
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
@@ -22,7 +21,7 @@ class TestParrayVrsCharArrayChild(TestBase):
         self.do_array_test()
 
     def do_array_test(self):
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
 

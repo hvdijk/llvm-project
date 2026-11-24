@@ -2,7 +2,6 @@
 Test that step-inst over a crash behaves correctly.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

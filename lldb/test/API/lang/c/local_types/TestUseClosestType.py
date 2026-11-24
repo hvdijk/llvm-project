@@ -5,7 +5,6 @@ even if there are other definitions of the type in other
 CU's.  Assert that that is true.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *
@@ -46,7 +45,7 @@ class TestUseClosestType(TestBase):
         local three int version.  Then run to a breakpoint in other.c and check that an
         expression referring to Foo gets the two char* version."""
 
-        (target, process, self.thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint in main", self.main_source_file
         )
 

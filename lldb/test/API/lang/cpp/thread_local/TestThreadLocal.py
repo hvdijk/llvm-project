@@ -17,7 +17,7 @@ class PlatformProcessCrashInfoTestCase(TestBase):
         self.build()
         exe = self.getBuildArtifact("a.out")
 
-        (target, process, _, _) = lldbutil.run_to_source_breakpoint(
+        target, process, _, _ = lldbutil.run_to_source_breakpoint(
             self, "Set breakpoint here", lldb.SBFileSpec("main.cpp")
         )
         self.expect_expr("tl_local_int + 1", result_type="int", result_value="323")

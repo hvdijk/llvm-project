@@ -20,13 +20,14 @@
 # END.
 
 import sys
+
 sys.path.append(sys.argv[1])
 from libcxx.header_information import lit_header_undeprecations, public_headers
 
 # FIXME: Enable -Wweak-vtables again
 
 for header in public_headers:
-  print(f"""\
+    print(f"""\
 //--- {header}.sh.cpp
 {lit_header_undeprecations.get(header, '')}
 

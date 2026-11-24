@@ -41,7 +41,7 @@ class NestedExpressions(TestBase):
         Test expressions that references a static variable in nested structs.
         """
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to evaluate expressions", lldb.SBFileSpec("main.cpp")
         )
         self.expect_expr(
@@ -68,7 +68,7 @@ class NestedExpressions(TestBase):
         Test expressions that references an enumeration in nested namespaces.
         """
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to evaluate expressions", lldb.SBFileSpec("main.cpp")
         )
         self.expect_expr("a::b::c::d", result_type="int", result_value="12")

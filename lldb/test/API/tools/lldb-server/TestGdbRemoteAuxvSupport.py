@@ -82,7 +82,7 @@ class TestGdbRemoteAuxvSupport(gdbremote_testcase.GdbRemoteTestCaseBase):
         self.build()
         self.set_inferior_startup_launch()
 
-        (word_size, auxv_data) = self.get_raw_auxv_data()
+        word_size, auxv_data = self.get_raw_auxv_data()
         self.assertIsNotNone(auxv_data)
 
         # Ensure auxv data is a multiple of 2*word_size (there should be two
@@ -96,7 +96,7 @@ class TestGdbRemoteAuxvSupport(gdbremote_testcase.GdbRemoteTestCaseBase):
         self.build()
         self.set_inferior_startup_launch()
 
-        (word_size, auxv_data) = self.get_raw_auxv_data()
+        word_size, auxv_data = self.get_raw_auxv_data()
         self.assertIsNotNone(auxv_data)
 
         # Grab endian.
@@ -130,7 +130,7 @@ class TestGdbRemoteAuxvSupport(gdbremote_testcase.GdbRemoteTestCaseBase):
         # return the same data as a single larger read.
 
         # Grab the auxv data with a single large read here.
-        (word_size, auxv_data) = self.get_raw_auxv_data()
+        word_size, auxv_data = self.get_raw_auxv_data()
         self.assertIsNotNone(auxv_data)
 
         # Grab endian.

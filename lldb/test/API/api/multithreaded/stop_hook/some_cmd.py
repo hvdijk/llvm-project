@@ -1,4 +1,5 @@
-""" Test command for checking the Python commands can run in a stop-hook """
+"""Test command for checking the Python commands can run in a stop-hook"""
+
 import lldb
 
 did_run = False

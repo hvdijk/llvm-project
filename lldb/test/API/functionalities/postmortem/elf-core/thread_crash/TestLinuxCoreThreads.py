@@ -2,7 +2,6 @@
 Test signal reporting when debugging with linux core files.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

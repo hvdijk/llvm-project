@@ -2,7 +2,6 @@
 Test loading of a kext binary.
 """
 
-
 import os
 
 import lldb

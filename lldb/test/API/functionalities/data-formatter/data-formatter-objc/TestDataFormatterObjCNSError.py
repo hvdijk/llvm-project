@@ -3,7 +3,6 @@
 Test lldb data formatter subsystem.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -33,12 +32,12 @@ class ObjCDataFormatterNSError(ObjCDataFormatterTestCase):
         # https://github.com/llvm/llvm-project/pull/138209
         # "Add --pointer-match-depth option to type summary add command."
         #
-        # Decide if we'll update the objc formatters to 
+        # Decide if we'll update the objc formatters to
         # dereference an additional depth level to keep this
         # test working, or if we should drop the behavior.
-        #self.expect(
+        # self.expect(
         #    "frame variable nserrorptr", substrs=['domain: @"Foobar" - code: -1234']
-        #)
+        # )
 
         self.expect("frame variable nserror->_userInfo", substrs=["2 key/value pairs"])
 

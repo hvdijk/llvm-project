@@ -4,6 +4,7 @@
 The purpose is to produce object-file test inputs to lld with a
 variety of compact unwind encodings.
 """
+
 from __future__ import print_function
 import random
 import argparse
@@ -30,54 +31,39 @@ def print_function(name):
     if func_size_high % 0x10 == 0:
         func_size_low += 1
 
-    print(
-        """\
+    print("""\
 ### %s frame=%d lsda=%s size=%d
     .section __TEXT,__text,regular,pure_instructions
     .p2align 4, 0x90
     .globl %s
 %s:
-    .cfi_startproc"""
-        % (name, frame_size, have_lsda, func_size, name, name)
-    )
+    .cfi_startproc""" % (name, frame_size, have_lsda, func_size, name, name))
     if have_lsda:
         global lsda_n
         lsda_n += 1
-        print(
-            """\
+        print("""\
     .cfi_personality 155, ___gxx_personality_v0
-    .cfi_lsda 16, Lexception%d"""
-            % lsda_n
-        )
-    print(
-        """\
+    .cfi_lsda 16, Lexception%d""" % lsda_n)
+    print("""\
     pushq %%rbp
     .cfi_def_cfa_offset %d
     .cfi_offset %%rbp, %d
     movq %%rsp, %%rbp
-    .cfi_def_cfa_register %%rbp"""
-        % (frame_size, frame_offset + 6 * 8)
-    )
-    print(
-        """\
+    .cfi_def_cfa_register %%rbp""" % (frame_size, frame_offset + 6 * 8))
+    print("""\
     .fill %d
     popq %%rbp
     retq
     .cfi_endproc
-"""
-        % (func_size - 6)
-    )
+""" % (func_size - 6))
 
     if have_lsda:
-        print(
-            """\
+        print("""\
     .section __TEXT,__gcc_except_tab
     .p2align 2
 Lexception%d:
     .space 0x10
-"""
-            % lsda_n
-        )
+""" % lsda_n)
     return func_size
 
 
@@ -131,14 +117,11 @@ compact unwind entries, plus some more. The calculation is sloppy.
     global lsda_odds
     lsda_odds = args.lsda / 100.0
 
-    print(
-        """\
+    print("""\
 ### seed=%s lsda=%f p2align=%d
     .section __TEXT,__text,regular,pure_instructions
     .p2align %d, 0x90
-"""
-        % (args.seed, lsda_odds, p2align, p2align)
-    )
+""" % (args.seed, lsda_odds, p2align, p2align))
 
     size = 0
     base = 1 << p2align
@@ -149,8 +132,7 @@ compact unwind entries, plus some more. The calculation is sloppy.
         while size < (args.pages << 24):
             size += print_function("x%08x" % (size + base))
 
-    print(
-        """\
+    print("""\
     .section __TEXT,__text,regular,pure_instructions
     .globl _main
     .p2align 4, 0x90
@@ -160,8 +142,7 @@ _main:
     .p2align 4, 0x90
 ___gxx_personality_v0:
     retq
-"""
-    )
+""")
 
 
 if __name__ == "__main__":

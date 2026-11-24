@@ -1,6 +1,7 @@
 """This file contains functions for discovering benchmark functions. It works
 in a similar way to python's unittest library.
 """
+
 import configparser
 import importlib
 import os

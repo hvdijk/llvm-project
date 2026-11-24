@@ -10,7 +10,7 @@ class TestNamespaceLocalVarSameNameCppAndC(TestBase):
     def test_namespace_local_var_same_name_cpp_and_c(self):
         self.build()
 
-        (self.target, self.process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, self.process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp", False)
         )
 

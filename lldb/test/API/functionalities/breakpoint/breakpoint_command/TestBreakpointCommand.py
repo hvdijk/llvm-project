@@ -2,7 +2,6 @@
 Test lldb breakpoint command add/list/delete.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

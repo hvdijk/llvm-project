@@ -2,7 +2,6 @@
 Test handling of Anonymous Structs, especially that they don't crash lldb.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.decorators import *

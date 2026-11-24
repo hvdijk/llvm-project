@@ -4,6 +4,7 @@
 large address space to induce lld to create branch-islands for arm64.
 
 """
+
 from __future__ import print_function
 import random
 import argparse
@@ -1294,26 +1295,20 @@ def print_here_head(name):
 
 
 def print_here_tail():
-    print(
-        """\
+    print("""\
 END_OF_FILE
-"""
-    )
+""")
 
 
 def print_function_head(p2align, name):
     if args.os == "macos":
-        print(
-            """\
+        print("""\
     .section __TEXT,__text,regular,pure_instructions
     .p2align %d, 0x90
     .globl _%s
-_%s:"""
-            % (p2align, name, name)
-        )
+_%s:""" % (p2align, name, name))
     elif args.os == "windows":
-        print(
-            """\
+        print("""\
     .text
     .def %s;
     .scl 2;
@@ -1321,29 +1316,21 @@ _%s:"""
     .endef
     .globl %s
     .p2align %d
-%s:"""
-            % (name, name, p2align, name)
-        )
+%s:""" % (name, name, p2align, name))
     elif args.os == "linux":
-        print(
-            """\
+        print("""\
     .text
     .p2align %d
     .globl %s
-%s:"""
-            % (p2align, name, name)
-        )
+%s:""" % (p2align, name, name))
 
 
 def print_function(addr, size, addrs):
     name = "x%08x" % addr
     calls = random.randint(0, size >> 12)
     print_here_head(name)
-    print(
-        """\
-### %s size=%x calls=%x"""
-        % (name, size, calls)
-    )
+    print("""\
+### %s size=%x calls=%x""" % (name, size, calls))
     print_function_head(4, name)
     for i in range(calls):
         print(
@@ -1360,12 +1347,9 @@ def print_function(addr, size, addrs):
             )
     fill = size - 4 * (calls + 1)
     assert fill > 0
-    print(
-        """\
+    print("""\
     .fill 0x%x
-    ret"""
-        % (fill)
-    )
+    ret""" % (fill))
     print_here_tail()
 
 
@@ -1422,12 +1406,9 @@ WRITEME
     global triple
     triple = triples.get(args.os)
 
-    print(
-        """\
+    print("""\
 ### seed=%s triple=%s
-"""
-        % (args.seed, triple)
-    )
+""" % (args.seed, triple))
 
     random.seed(args.seed)
 
@@ -1440,12 +1421,9 @@ WRITEME
         print_function(addrs[i], sizes[i], addrs)
 
     print_here_head("main")
-    print(
-        """\
+    print("""\
 ### _x%08x
-"""
-        % (addrs[-1] + sizes[-1])
-    )
+""" % (addrs[-1] + sizes[-1]))
     print_function_head(14 if args.os == "macos" else 4, "main")
     print("    ret")
     print_here_tail()

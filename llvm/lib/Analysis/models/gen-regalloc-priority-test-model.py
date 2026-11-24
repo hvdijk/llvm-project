@@ -1,7 +1,8 @@
 """Generate a mock model for LLVM tests for Register Allocation.
 The generated model is not a neural net - it is just a tf.function with the
-correct input and output parameters. 
+correct input and output parameters.
 """
+
 ## By construction, the mock model will always output the first liverange that can be evicted.
 
 import os

@@ -79,7 +79,7 @@ p.add_option(
     default=False,
 )
 
-(options, args) = p.parse_args()
+options, args = p.parse_args()
 
 libs = options.lib_file
 if not libs:

@@ -33,14 +33,12 @@ Usage:
        python3 gen_std.py -cppreference cppreference/reference -symbols=c > CSymbolMap.inc
 """
 
-
 import cppreference_parser
 import argparse
 import datetime
 import os
 import sys
 import re
-
 
 CODE_PREFIX = """\
 //===-- gen_std.py generated file -------------------------------*- C++ -*-===//
@@ -242,11 +240,9 @@ def main():
             (symbol_index_root, "filesystem.html", "std::filesystem::"),
             (symbol_index_root, "pmr.html", "std::pmr::"),
             (symbol_index_root, "ranges.html", "std::ranges::"),
-
             (symbol_index_root, "views.html", "std::ranges::views::"),
             # std::ranges::views can be accessed as std::views.
             (symbol_index_root, "views.html", "std::views::"),
-
             (symbol_index_root, "regex_constants.html", "std::regex_constants::"),
             (symbol_index_root, "this_thread.html", "std::this_thread::"),
             # Zombie symbols that were available from the Standard Library, but are

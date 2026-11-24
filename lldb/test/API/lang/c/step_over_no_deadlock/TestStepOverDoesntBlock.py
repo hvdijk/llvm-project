@@ -13,7 +13,7 @@ class StepOverDoesntDeadlockTestCase(TestBase):
     def test_step_over(self):
         """Test that when step over steps over a function it lets other threads run."""
         self.build()
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self,
             "without running the first thread at least somewhat",
             lldb.SBFileSpec("locking.cpp"),

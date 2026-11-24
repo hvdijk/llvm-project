@@ -1,5 +1,5 @@
 """
-Test that single thread step over deadlock issue can be resolved 
+Test that single thread step over deadlock issue can be resolved
 after timeout.
 """
 
@@ -30,7 +30,7 @@ class SingleThreadStepTimeoutTestCase(TestBase):
         )
 
     def step_over_deadlock_helper(self):
-        (target, _, self.thread, _) = lldbutil.run_to_source_breakpoint(
+        target, _, self.thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set breakpoint1 here", lldb.SBFileSpec(self.main_source)
         )
 
@@ -81,7 +81,7 @@ class SingleThreadStepTimeoutTestCase(TestBase):
         self.step_over_deadlock_helper()
 
     def step_over_multi_calls_helper(self):
-        (target, _, self.thread, _) = lldbutil.run_to_source_breakpoint(
+        target, _, self.thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set breakpoint2 here", lldb.SBFileSpec(self.main_source)
         )
         self.thread.StepOver(lldb.eOnlyThisThread)
@@ -131,7 +131,7 @@ class SingleThreadStepTimeoutTestCase(TestBase):
         self.dbg.HandleCommand(
             "settings set target.process.thread.single-thread-plan-timeout 2000"
         )
-        (target, process, self.thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set breakpoint1 here", lldb.SBFileSpec(self.main_source)
         )
 
@@ -178,7 +178,7 @@ class SingleThreadStepTimeoutTestCase(TestBase):
         self.dbg.HandleCommand(
             "settings set target.process.thread.single-thread-plan-timeout 2000"
         )
-        (target, process, self.thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set breakpoint1 here", lldb.SBFileSpec(self.main_source)
         )
 
@@ -227,7 +227,7 @@ class SingleThreadStepTimeoutTestCase(TestBase):
             "settings set target.process.thread.single-thread-plan-timeout 2000000"
         )
 
-        (target, process, self.thread, _) = lldbutil.run_to_source_breakpoint(
+        target, process, self.thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set breakpoint1 here", lldb.SBFileSpec(self.main_source)
         )
 

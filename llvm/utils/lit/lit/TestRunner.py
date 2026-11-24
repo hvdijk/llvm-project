@@ -867,7 +867,7 @@ def _executeShCmd(cmd, shenv, results, timeoutHelper):
     # need to release any handles we may have on the temporary files (important
     # on Win32, for example). Since we have already spawned the subprocess, our
     # handles have already been transferred so we do not need them anymore.
-    for (name, mode, f, path) in opened_files:
+    for name, mode, f, path in opened_files:
         f.close()
 
     # FIXME: There is probably still deadlock potential here. Yawn.
@@ -924,7 +924,7 @@ def _executeShCmd(cmd, shenv, results, timeoutHelper):
         # Gather the redirected output files for failed commands.
         output_files = []
         if res != 0:
-            for (name, mode, f, path) in sorted(opened_files):
+            for name, mode, f, path in sorted(opened_files):
                 if path is not None and mode in ("w", "a"):
                     try:
                         with open(path, "rb") as f:
@@ -1135,7 +1135,7 @@ def executeScriptInternal(
 
         # Add the command output, if redirected.
         outputLimit = int(litConfig.params.get("output_limit", 10240))
-        for (name, path, data) in result.outputFiles:
+        for name, path, data in result.outputFiles:
             data = data.decode("utf-8", errors="replace")
             out += formatOutput(
                 f"redirected output from '{name}'", data, limit=outputLimit
@@ -1388,15 +1388,19 @@ def getDefaultSubstitutions(test, tmpDir, tmpBase, normalize_slashes=False):
         [
             (
                 "%{fs-src-root}",
-                pathlib.Path(sourcedir).anchor.replace("\\", "/")
-                if normalize_slashes
-                else pathlib.Path(sourcedir).anchor,
+                (
+                    pathlib.Path(sourcedir).anchor.replace("\\", "/")
+                    if normalize_slashes
+                    else pathlib.Path(sourcedir).anchor
+                ),
             ),
             (
                 "%{fs-tmp-root}",
-                pathlib.Path(tmpBase).anchor.replace("\\", "/")
-                if normalize_slashes
-                else pathlib.Path(tmpBase).anchor,
+                (
+                    pathlib.Path(tmpBase).anchor.replace("\\", "/")
+                    if normalize_slashes
+                    else pathlib.Path(tmpBase).anchor
+                ),
             ),
             ("%{fs-sep}", fs_sep),
         ]
@@ -1431,15 +1435,17 @@ def getDefaultSubstitutions(test, tmpDir, tmpBase, normalize_slashes=False):
         # need the fully expanded path.
         real_path = os.path.realpath(path)
         substitutions.append(("%{" + letter + ":real}", real_path))
-        substitutions.append(("%{/" + letter + ":real}",
-            real_path.replace("\\", "/")))
+        substitutions.append(("%{/" + letter + ":real}", real_path.replace("\\", "/")))
 
         # "%{/[STpst]:regex_replacement}" should be normalized like
         # "%/[STpst]" but we're also in a regex replacement context
         # of a s@@@ regex.
         substitutions.append(
-            ("%{/" + letter + ":regex_replacement}",
-            regex_escape(path.replace("\\", "/"))))
+            (
+                "%{/" + letter + ":regex_replacement}",
+                regex_escape(path.replace("\\", "/")),
+            )
+        )
 
         # "%:[STpst]" are normalized paths without colons and without
         # a leading slash.
@@ -1451,6 +1457,7 @@ def getDefaultSubstitutions(test, tmpDir, tmpBase, normalize_slashes=False):
 @functools.lru_cache(maxsize=None)  # Intentionally unbounded: see applySubstitutions
 def _caching_re_compile(r):
     return re.compile(r)
+
 
 class ExpandableScriptDirective:
     """
@@ -2280,6 +2287,7 @@ def _expandLateSubstitutionsExternal(commandLine):
     for filePath in filePaths:
         commandLine = "%s && test -e %s" % (commandLine, filePath)
     return commandLine
+
 
 def executeShTest(
     test, litConfig, useExternalSh, extra_substitutions=[], preamble_commands=[]

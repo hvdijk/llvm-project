@@ -20,10 +20,10 @@ class TestProcessHandle(TestBase):
         )
 
         # First, I need a reference value so I can see whether changes actually took:
-        (target, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
-        (default_pass, default_stop, default_notify) = lldbutil.get_actions_for_signal(
+        default_pass, default_stop, default_notify = lldbutil.get_actions_for_signal(
             self, "SIGSEGV"
         )
 
@@ -46,7 +46,7 @@ class TestProcessHandle(TestBase):
         self.assertEqual(process.GetExitStatus(), 0)
 
         # Check that we preserved the setting:
-        (curr_pass, curr_stop, curr_notify) = lldbutil.get_actions_for_signal(
+        curr_pass, curr_stop, curr_notify = lldbutil.get_actions_for_signal(
             self, "SIGSEGV", from_target=True
         )
         self.assertEqual(curr_pass, new_value, "Pass was set correctly")
@@ -57,7 +57,7 @@ class TestProcessHandle(TestBase):
         process = lldbutil.run_to_breakpoint_do_run(self, target, bkpt)
 
         # We check the process settings now, to see what got copied into the process:
-        (curr_pass, curr_stop, curr_notify) = lldbutil.get_actions_for_signal(
+        curr_pass, curr_stop, curr_notify = lldbutil.get_actions_for_signal(
             self, "SIGSEGV"
         )
         self.assertEqual(curr_pass, new_value, "Pass was set correctly")
@@ -91,7 +91,7 @@ class TestProcessHandle(TestBase):
 
         self.dbg.SetErrorFileHandle(f, False)
         # Now make a new process and make sure the right values got copied into the new target
-        (target, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
         f.write("TESTPATTERN\n")
@@ -115,7 +115,7 @@ class TestProcessHandle(TestBase):
         )
 
         # Check that they went into the target:
-        (curr_pass, curr_stop, curr_notify) = lldbutil.get_actions_for_signal(
+        curr_pass, curr_stop, curr_notify = lldbutil.get_actions_for_signal(
             self, "SIGSEGV", from_target=True
         )
         self.assertEqual(curr_pass, new_value, "Pass was set correctly")
@@ -124,7 +124,7 @@ class TestProcessHandle(TestBase):
 
         # And the process:
         # Check that they went into the target:
-        (curr_pass, curr_stop, curr_notify) = lldbutil.get_actions_for_signal(
+        curr_pass, curr_stop, curr_notify = lldbutil.get_actions_for_signal(
             self, "SIGSEGV"
         )
         self.assertEqual(curr_pass, new_value, "Pass was set correctly")
@@ -138,10 +138,10 @@ class TestProcessHandle(TestBase):
             self, "SIGSEGV", from_target=True, expected_absent=True
         )
         # Make a new process, to make sure we did indeed reset the values:
-        (target, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
-        (curr_pass, curr_stop, curr_notify) = lldbutil.get_actions_for_signal(
+        curr_pass, curr_stop, curr_notify = lldbutil.get_actions_for_signal(
             self, "SIGSEGV"
         )
         self.assertEqual(curr_pass, new_value, "Pass was set correctly")
@@ -155,10 +155,10 @@ class TestProcessHandle(TestBase):
         success = self.dbg.DeleteTarget(target)
         self.assertTrue(success, "Destroyed the target.")
 
-        (target, process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp")
         )
-        (curr_pass, curr_stop, curr_notify) = lldbutil.get_actions_for_signal(
+        curr_pass, curr_stop, curr_notify = lldbutil.get_actions_for_signal(
             self, "SIGSEGV"
         )
         self.assertEqual(curr_pass, default_pass, "Pass was set correctly")

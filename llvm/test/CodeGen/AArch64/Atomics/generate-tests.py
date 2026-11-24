@@ -225,41 +225,29 @@ def all_atomicrmw(f, datatype, atomicrmw_ops, featname):
                 alignval = align(val, aligned)
                 for ordering in ATOMICRMW_ORDERS:
                     name = f"atomicrmw_{op}_{ty}_{aligned}_{ordering}"
-                    tests.append(
-                        textwrap.dedent(
-                            f"""
+                    tests.append(textwrap.dedent(f"""
                         define dso_local {ty} @{name}(ptr %ptr, {ty} %value){attrs} {{
                             %r = {instr} {op} ptr %ptr, {ty} %value {ordering}, align {alignval}
                             ret {ty} %r
                         }}
-                    """
-                        )
-                    )
+                    """))
                     if generate_unused_res_test(featname, ordering, op, alignval):
                         generate_unused = True
                         name = f"atomicrmw_{op}_{ty}_{aligned}_{ordering}_unused"
-                        tests.append(
-                            textwrap.dedent(
-                                f"""
+                        tests.append(textwrap.dedent(f"""
                            define dso_local void @{name}(ptr %ptr, {ty} %value){attrs} {{
                                %r = {instr} {op} ptr %ptr, {ty} %value {ordering}, align {alignval}
                                ret void
                            }}
-                        """
-                            )
-                        )
+                        """))
 
     if featname == "lsfe":
-        tests.append(
-            textwrap.dedent(
-                f"""
+        tests.append(textwrap.dedent(f"""
                 define dso_local fp128 @atomicrmw_fadd_fp128_aligned_monotonic(ptr %ptr, fp128 %value){attrs} {{
                     %r = {instr} fadd ptr %ptr, fp128 %value monotonic, align 16
                     ret fp128 %r
                 }}
-            """
-            )
-        )
+            """))
 
     if generate_unused:
         f.write(
@@ -272,9 +260,7 @@ def all_atomicrmw(f, datatype, atomicrmw_ops, featname):
         f.write(test)
 
     if featname == "lsfe":
-        f.write(
-            textwrap.dedent(
-                """
+        f.write(textwrap.dedent("""
                 define dso_local float @atomicrmw_fadd_float_aligned_seq_cst_trapping(ptr %ptr, float %value) {
                     %r = atomicrmw fadd ptr %ptr, float %value seq_cst, align 4
                     ret float %r
@@ -297,9 +283,7 @@ def all_atomicrmw(f, datatype, atomicrmw_ops, featname):
 
                 attributes #0 = { "no-trapping-math"="true" }
                 attributes #1 = { strictfp "no-trapping-math"="true" }
-                """
-            )
-        )
+                """))
 
 
 def emit_load_tests(f, datatypes, alignments, orderings):
@@ -313,16 +297,12 @@ def emit_load_tests(f, datatypes, alignments, orderings):
                     if const:
                         name += "_const"
                     arg = "ptr readonly %ptr" if const else "ptr %ptr"
-                    f.write(
-                        textwrap.dedent(
-                            f"""
+                    f.write(textwrap.dedent(f"""
                         define dso_local {ty} @{name}({arg}) {{
                             %r = {instr} {ty}, ptr %ptr {ordering}, align {alignval}
                             ret {ty} %r
                         }}
-                    """
-                        )
-                    )
+                    """))
 
 
 def all_load(f, feature):
@@ -338,16 +318,12 @@ def all_store(f):
             for ordering in ATOMIC_STORE_ORDERS:  # FIXME stores
                 name = f"store_atomic_{ty}_{aligned}_{ordering}"
                 instr = "store atomic"
-                f.write(
-                    textwrap.dedent(
-                        f"""
+                f.write(textwrap.dedent(f"""
                     define dso_local void @{name}({ty} %value, ptr %ptr) {{
                         {instr} {ty} %value, ptr %ptr {ordering}, align {alignval}
                         ret void
                     }}
-                """
-                    )
-                )
+                """))
 
 
 def all_cmpxchg(f):
@@ -362,32 +338,24 @@ def all_cmpxchg(f):
                         if weak:
                             name += "_weak"
                             instr += " weak"
-                        f.write(
-                            textwrap.dedent(
-                                f"""
+                        f.write(textwrap.dedent(f"""
                             define dso_local {ty} @{name}({ty} %expected, {ty} %new, ptr %ptr) {{
                                 %pair = {instr} ptr %ptr, {ty} %expected, {ty} %new {success_ordering} {failure_ordering}, align {alignval}
                                 %r = extractvalue {{ {ty}, i1 }} %pair, 0
                                 ret {ty} %r
                             }}
-                        """
-                            )
-                        )
+                        """))
 
 
 def all_fence(f):
     for ordering in FENCE_ORDERS:
         name = f"fence_{ordering}"
-        f.write(
-            textwrap.dedent(
-                f"""
+        f.write(textwrap.dedent(f"""
             define dso_local void @{name}() {{
                 fence {ordering}
                 ret void
             }}
-        """
-            )
-        )
+        """))
 
 
 def header(f, triple, features, filter_args: str):
@@ -464,14 +432,10 @@ if __name__ == "__main__":
     write_lit_tests(Feature, Type, ATOMICRMW_OPS)
     write_lit_tests(FPFeature, FPType, FP_ATOMICRMW_OPS)
 
-    print(
-        textwrap.dedent(
-            """
+    print(textwrap.dedent("""
         Testcases written. To update checks run:
             $ ./llvm/utils/update_llc_test_checks.py -u llvm/test/CodeGen/AArch64/Atomics/*.ll
 
         Or in parallel:
             $ parallel ./llvm/utils/update_llc_test_checks.py -u ::: llvm/test/CodeGen/AArch64/Atomics/*.ll
-    """
-        )
-    )
+    """))

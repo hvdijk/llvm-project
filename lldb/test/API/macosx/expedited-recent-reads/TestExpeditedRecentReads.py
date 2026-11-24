@@ -42,7 +42,7 @@ class TestExpeditedRecentReads(TestBase):
         self.build()
         logfile = self.packet_log("stack-reads-packets")
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.c")
         )
         self.runCmd("settings set target.process.disable-memory-cache false")
@@ -112,7 +112,7 @@ class TestExpeditedRecentReads(TestBase):
         suffix = "nocache" if disable_memory_cache else "cached"
         logfile = self.packet_log("heap-reads-%s-packets" % suffix)
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "break here", lldb.SBFileSpec("main.c")
         )
         self.runCmd(

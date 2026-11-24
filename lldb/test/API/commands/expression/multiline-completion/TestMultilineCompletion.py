@@ -63,4 +63,3 @@ class MultilineCompletionTest(PExpectTest):
         # trailing space to signal a final completion.
         self.child.expect_exact("only_local ")
         self.exit_expression_editor()
-

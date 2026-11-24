@@ -3,7 +3,6 @@
 Test that the expression parser returns proper Unicode strings.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

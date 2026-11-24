@@ -41,16 +41,14 @@ def testJITCallbackInGlobalCtor():
         init_cnt += 1
 
     with Context():
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
 llvm.mlir.global_ctors ctors = [@ctor], priorities = [0 : i32], data = [#llvm.zero]
 llvm.func @ctor() {
   func.call @init_callback() : () -> ()
   llvm.return
 }
 func.func private @init_callback() attributes { llvm.emit_c_interface }
-        """
-        )
+        """)
 
         # Setup execution engine
         execution_engine = ExecutionEngine(lowerToLLVM(module))

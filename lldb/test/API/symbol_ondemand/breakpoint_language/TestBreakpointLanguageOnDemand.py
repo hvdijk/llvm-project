@@ -3,7 +3,6 @@ Test that the language option for breakpoints works correctly
 with symbol load on-demand.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

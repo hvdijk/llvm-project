@@ -12,6 +12,7 @@ from json import loads
 from collections import defaultdict
 from collections import OrderedDict
 
+
 class DILocBug:
     def __init__(self, origin, action, bb_name, fn_name, instr):
         self.origin = origin
@@ -106,6 +107,7 @@ def print_bugs_yaml(name, bugs_dict, indent=2):
                         print(get_bug_line(3, f"{key}: {val}", first_line))
                     first_line = False
 
+
 # Report the bugs in form of html.
 def generate_html_report(
     di_location_bugs,
@@ -139,9 +141,7 @@ def generate_html_report(
     table_di_loc = """<table>
   <caption><b>{}</b></caption>
   <tr>
-  """.format(
-        table_title_di_loc
-    )
+  """.format(table_title_di_loc)
 
     # If any DILocation bug has an origin stack trace, we emit an extra column in the table, which we must therefore
     # determine up-front.
@@ -216,9 +216,7 @@ def generate_html_report(
     table_di_loc_sum = """<table>
   <caption><b>{}</b></caption>
   <tr>
-  """.format(
-        table_title_di_loc_sum
-    )
+  """.format(table_title_di_loc_sum)
 
     header_di_loc_sum = ["LLVM Pass Name", "Number of bugs"]
 
@@ -252,9 +250,7 @@ def generate_html_report(
     table_di_sp = """<table>
   <caption><b>{}</b></caption>
   <tr>
-  """.format(
-        table_title_di_sp
-    )
+  """.format(table_title_di_sp)
 
     header_di_sp = ["File", "LLVM Pass Name", "Function Name", "Action"]
 
@@ -302,9 +298,7 @@ def generate_html_report(
     table_di_sp_sum = """<table>
   <caption><b>{}</b></caption>
   <tr>
-  """.format(
-        table_title_di_sp_sum
-    )
+  """.format(table_title_di_sp_sum)
 
     header_di_sp_sum = ["LLVM Pass Name", "Number of bugs"]
 
@@ -338,9 +332,7 @@ def generate_html_report(
     table_di_var = """<table>
   <caption><b>{}</b></caption>
   <tr>
-  """.format(
-        table_title_di_var
-    )
+  """.format(table_title_di_var)
 
     header_di_var = ["File", "LLVM Pass Name", "Variable", "Function", "Action"]
 
@@ -389,9 +381,7 @@ def generate_html_report(
     table_di_var_sum = """<table>
   <caption><b>{}</b></caption>
   <tr>
-  """.format(
-        table_title_di_var_sum
-    )
+  """.format(table_title_di_var_sum)
 
     header_di_var_sum = ["LLVM Pass Name", "Number of bugs"]
 
@@ -556,7 +546,7 @@ def Main():
     while True:
         if start_line > end_line:
             break
-        (debug_info_bugs, skipped, end_line) = get_json_chunk(
+        debug_info_bugs, skipped, end_line = get_json_chunk(
             opts.file_name, start_line, chunk_size
         )
         start_line += chunk_size

@@ -187,7 +187,7 @@ def UnpackOneRawFile(path, map_path):
             if pc == 0:
                 continue
             map_idx = bisect.bisect(mem_map_keys, pc) - 1
-            (start, end, base, module_path) = mem_map[map_idx]
+            start, end, base, module_path = mem_map[map_idx]
             assert pc >= start
             if pc >= end:
                 sys.stderr.write(
@@ -197,7 +197,7 @@ def UnpackOneRawFile(path, map_path):
                 continue
             mem_map_pcs[map_idx].append(pc - base)
 
-        for ((start, end, base, module_path), pc_list) in zip(mem_map, mem_map_pcs):
+        for (start, end, base, module_path), pc_list in zip(mem_map, mem_map_pcs):
             if len(pc_list) == 0:
                 continue
             assert path.endswith(".sancov.raw")

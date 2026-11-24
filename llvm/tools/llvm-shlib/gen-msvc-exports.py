@@ -27,7 +27,6 @@ from subprocess import check_output
 import argparse
 import re
 
-
 _UNDERSCORE_REGEX = {
     False: re.compile(r"^\w+\s+T\s+(LLVM.*)$"),
     True: re.compile(r"^\w+\s+T\s+_(LLVM.*)$"),

@@ -21,18 +21,14 @@ class TestXMLRegisterUnion(GDBRemoteTestBase):
 
     def setup_register_test(self, definitions, register_data):
         return self.setup_multidoc_test(
-            {
-                "target.xml": dedent(
-                    """\
+            {"target.xml": dedent("""\
                 <?xml version="1.0"?>
                 <target version="1.0">
                   <architecture>aarch64</architecture>
                   <feature name="test.register.unions">
                     {}
                   </feature>
-                </target>"""
-                ).format(definitions)
-            },
+                </target>""").format(definitions)},
             register_data,
         )
 
@@ -229,44 +225,36 @@ class TestXMLRegisterUnion(GDBRemoteTestBase):
     def test_union_ids_are_scoped_to_included_feature(self):
         self.setup_multidoc_test(
             {
-                "target.xml": dedent(
-                    """\
+                "target.xml": dedent("""\
                 <?xml version="1.0"?>
                 <target version="1.0">
                   <architecture>aarch64</architecture>
                   <xi:include href="first.xml"/>
                   <xi:include href="second.xml"/>
                   <xi:include href="third.xml"/>
-                </target>"""
-                ),
-                "first.xml": dedent(
-                    """\
+                </target>"""),
+                "first.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="feature.first">
                   <union id="shared">
                     <field name="first" type="uint64"/>
                   </union>
                   <reg name="first" regnum="0" bitsize="64" type="shared"/>
-                </feature>"""
-                ),
-                "second.xml": dedent(
-                    """\
+                </feature>"""),
+                "second.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="feature.second">
                   <union id="shared">
                     <field name="second" type="uint32"/>
                   </union>
                   <reg name="second" regnum="1" bitsize="32" type="shared"/>
-                </feature>"""
-                ),
-                "third.xml": dedent(
-                    """\
+                </feature>"""),
+                "third.xml": dedent("""\
                 <?xml version="1.0"?>
                 <feature name="feature.third">
                   <reg name="unresolved" regnum="2" bitsize="64" type="shared"/>
                   <reg name="pc" bitsize="64"/>
-                </feature>"""
-                ),
+                </feature>"""),
             },
             "00" * 28,
         )
@@ -428,9 +416,7 @@ class TestXMLRegisterUnion(GDBRemoteTestBase):
     @skipIfLLVMTargetMissing("SystemZ")
     def test_big_endian_union_sb_api(self):
         process = self.setup_multidoc_test(
-            {
-                "target.xml": dedent(
-                    """\
+            {"target.xml": dedent("""\
                 <?xml version="1.0"?>
                 <target version="1.0">
                   <architecture>s390x</architecture>
@@ -447,9 +433,7 @@ class TestXMLRegisterUnion(GDBRemoteTestBase):
                     <reg name="small" regnum="1" bitsize="128" type="small"/>
                     <reg name="pswa" regnum="2" bitsize="64"/>
                   </feature>
-                </target>"""
-                )
-            },
+                </target>""")},
             "3fc0000040200000" + "0000002a" + "00" * 20,
         )
 
@@ -711,9 +695,7 @@ class TestXMLRegisterUnion(GDBRemoteTestBase):
     @skipIfLLVMTargetMissing("SystemZ")
     def test_big_endian_union_cli(self):
         self.setup_multidoc_test(
-            {
-                "target.xml": dedent(
-                    """\
+            {"target.xml": dedent("""\
                 <?xml version="1.0"?>
                 <target version="1.0">
                   <architecture>s390x</architecture>
@@ -726,9 +708,7 @@ class TestXMLRegisterUnion(GDBRemoteTestBase):
                     <reg name="u0" regnum="0" bitsize="64" type="views"/>
                     <reg name="pswa" regnum="1" bitsize="64"/>
                   </feature>
-                </target>"""
-                )
-            },
+                </target>""")},
             "3fc0000040200000" + "00" * 8,
         )
 

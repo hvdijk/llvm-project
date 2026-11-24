@@ -2,7 +2,6 @@
 Test that backticks without a target should work (not infinite looping).
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

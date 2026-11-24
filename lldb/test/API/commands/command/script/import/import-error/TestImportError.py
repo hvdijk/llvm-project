@@ -1,6 +1,5 @@
 """Check that we handle an ImportError in a special way when command script importing files."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

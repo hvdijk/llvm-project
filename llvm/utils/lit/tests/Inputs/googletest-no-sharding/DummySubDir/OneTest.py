@@ -6,8 +6,7 @@ import sys
 if len(sys.argv) == 3 and sys.argv[1] == "--gtest_list_tests":
     if sys.argv[2] != "--gtest_filter=-*DISABLED_*":
         raise ValueError(f"unexpected argument: {sys.argv[2]}")
-    print(
-        """\
+    print("""\
 FirstTest.
   subTestA
   subTestB
@@ -16,8 +15,7 @@ FirstTest.
 ParameterizedTest/0.
   subTest
 ParameterizedTest/1.
-  subTest"""
-    )
+  subTest""")
     sys.exit(0)
 elif len(sys.argv) != 1:
     # sharding and json output are specified using environment variables

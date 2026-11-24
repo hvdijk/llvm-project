@@ -2,7 +2,6 @@
 Test some expressions involving STL data types.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -38,7 +37,7 @@ class STLTestCase(TestBase):
     def test_SBType_template_aspects(self):
         """Test APIs for getting template arguments from an SBType."""
         self.build()
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "// Set break point at this line", lldb.SBFileSpec("main.cpp")
         )
         frame0 = thread.GetFrameAtIndex(0)

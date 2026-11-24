@@ -202,14 +202,12 @@ def testIntrinsics():
 @constructAndPrintInModule
 def testTranslateToLLVMIR():
     with Context(), Location.unknown():
-        module = Module.parse(
-            """\
+        module = Module.parse("""\
             llvm.func @add(%arg0: i64, %arg1: i64) -> i64 { 
                %0 = llvm.add %arg0, %arg1  : i64 
                llvm.return %0 : i64 
             }
-        """
-        )
+        """)
         # CHECK: define i64 @add(i64 %0, i64 %1) {
         # CHECK:   %3 = add i64 %0, %1
         # CHECK:   ret i64 %3

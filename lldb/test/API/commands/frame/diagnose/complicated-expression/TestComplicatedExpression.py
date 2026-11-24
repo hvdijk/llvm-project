@@ -2,7 +2,6 @@
 Test the output of `frame diagnose` for a subexpression of a complicated expression
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

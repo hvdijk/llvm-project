@@ -53,4 +53,3 @@ class TestGuiSpawnThreadsTest(PExpectTest):
         # Exit GUI.
         self.child.send(escape_key)
         self.expect_prompt()
-

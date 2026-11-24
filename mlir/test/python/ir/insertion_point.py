@@ -16,13 +16,11 @@ def test_insert_at_block_end():
     ctx = Context()
     ctx.allow_unregistered_dialects = True
     with Location.unknown(ctx):
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         "custom.op1"() : () -> ()
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         ip = InsertionPoint(entry_block)
         assert ip.block == entry_block
@@ -41,14 +39,12 @@ def test_insert_before_operation():
     ctx = Context()
     ctx.allow_unregistered_dialects = True
     with Location.unknown(ctx):
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         "custom.op1"() : () -> ()
         "custom.op2"() : () -> ()
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         ip = InsertionPoint(entry_block.operations[1])
         assert ip.block == entry_block
@@ -68,14 +64,12 @@ def test_insert_after_operation():
     ctx = Context()
     ctx.allow_unregistered_dialects = True
     with Location.unknown(ctx):
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         "custom.op1"() : () -> ()
         "custom.op2"() : () -> ()
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         custom_op1 = entry_block.operations[0]
         custom_op2 = entry_block.operations[1]
@@ -96,13 +90,11 @@ def test_insert_at_block_begin():
     ctx = Context()
     ctx.allow_unregistered_dialects = True
     with Location.unknown(ctx):
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         "custom.op2"() : () -> ()
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         ip = InsertionPoint.at_block_begin(entry_block)
         assert ip.block == entry_block
@@ -130,14 +122,12 @@ def test_insert_at_terminator():
     ctx = Context()
     ctx.allow_unregistered_dialects = True
     with Location.unknown(ctx):
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         "custom.op1"() : () -> ()
         return
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         return_op = entry_block.operations[1]
         ip = InsertionPoint.at_block_terminator(entry_block)
@@ -166,13 +156,11 @@ def test_insert_at_block_terminator_missing():
     ctx = Context()
     ctx.allow_unregistered_dialects = True
     with ctx:
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         "custom.op1"() : () -> ()
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         try:
             ip = InsertionPoint.at_block_terminator(entry_block)
@@ -190,13 +178,11 @@ run(test_insert_at_block_terminator_missing)
 def test_insert_at_end_with_terminator_errors():
     with Context() as ctx, Location.unknown():
         ctx.allow_unregistered_dialects = True
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         return
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         with InsertionPoint(entry_block):
             try:
@@ -214,13 +200,11 @@ def test_insertion_point_context():
     ctx = Context()
     ctx.allow_unregistered_dialects = True
     with Location.unknown(ctx):
-        module = Module.parse(
-            r"""
+        module = Module.parse(r"""
       func.func @foo() -> () {
         "custom.op1"() : () -> ()
       }
-    """
-        )
+    """)
         entry_block = module.body.operations[0].regions[0].blocks[0]
         with InsertionPoint(entry_block):
             Operation.create("custom.op2")

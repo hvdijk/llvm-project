@@ -21,7 +21,7 @@ class TestObjCDirectDispatchStepping(TestBase):
         """Test stepping through the 'direct dispatch' optimized method calls."""
         self.build()
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here to start stepping", self.main_source
         )
         stop_bkpt = target.BreakpointCreateBySourceRegex(

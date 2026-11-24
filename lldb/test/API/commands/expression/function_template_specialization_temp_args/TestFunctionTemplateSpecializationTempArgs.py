@@ -9,7 +9,7 @@ class TestFunctionTemplateSpecializationTempArgs(TestBase):
     def test_function_template_specialization_temp_args(self):
         self.build()
 
-        (self.target, self.process, _, bkpt) = lldbutil.run_to_source_breakpoint(
+        self.target, self.process, _, bkpt = lldbutil.run_to_source_breakpoint(
             self, "// break here", lldb.SBFileSpec("main.cpp", False)
         )
 

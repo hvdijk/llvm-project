@@ -13,7 +13,6 @@ llvmsrcroot = os.path.normpath(f"{__file__}/../../..")
 sys.path.insert(0, os.path.join(llvmsrcroot, ".ci/buildbot"))
 import worker
 
-
 llvmbuilddir = "llvm.build"
 testsuitebuilddir = "TS-build"
 

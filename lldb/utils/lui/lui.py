@@ -40,7 +40,7 @@ def handle_args(driver, argv):
         "-c", "--core", dest="core", help="Load specified core file", type="string"
     )
 
-    (options, args) = parser.parse_args(argv)
+    options, args = parser.parse_args(argv)
 
     if options.pid is not None:
         try:

@@ -10,7 +10,6 @@ import subprocess
 import shlex
 import re
 
-
 polly_src_dir = """@POLLY_SOURCE_DIR@"""
 polly_lib_dir = """@POLLY_LIB_DIR@"""
 shlibext = """@LLVM_SHLIBEXT@"""

@@ -4,8 +4,7 @@
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-"""Interface for communicating with a debugger via the DAP.
-"""
+"""Interface for communicating with a debugger via the DAP."""
 
 import abc
 from collections import defaultdict
@@ -372,9 +371,9 @@ class DAP(DebuggerBase, metaclass=abc.ABCMeta):
                 # some information is only passed via event, however, which we store here.
                 breakpoint_details = event_details["breakpoint"]
                 if "instructionReference" in breakpoint_details:
-                    debugger_state.bp_addr_map[
-                        breakpoint_details["id"]
-                    ] = breakpoint_details["instructionReference"]
+                    debugger_state.bp_addr_map[breakpoint_details["id"]] = (
+                        breakpoint_details["instructionReference"]
+                    )
             elif event_type == "exited" or event_type == "terminated":
                 debugger_state.stopped_reason = event_type
                 debugger_state.is_running = False

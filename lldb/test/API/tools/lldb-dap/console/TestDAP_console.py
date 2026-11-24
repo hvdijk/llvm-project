@@ -12,7 +12,6 @@ from lldbsuite.test.tools.lldb_dap.types import LaunchArgs
 from lldbsuite.test.tools.lldb_dap import DAPTestCaseBase, DAPTestSession
 from lldbsuite.test.skip_reason import UnsupportedReason
 
-
 requirePsutil = unittest.skipUnless(
     importlib.util.find_spec("psutil") is not None,
     UnsupportedReason(

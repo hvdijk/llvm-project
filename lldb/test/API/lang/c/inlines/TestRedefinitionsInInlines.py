@@ -14,7 +14,7 @@ class TestRedefinitionsInInlines(TestBase):
     def test(self):
         self.source = "main.c"
         self.build()
-        (target, process, thread, bp1) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bp1 = lldbutil.run_to_source_breakpoint(
             self, "first breakpoint", lldb.SBFileSpec(self.source, False)
         )
 

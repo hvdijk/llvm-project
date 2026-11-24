@@ -33,7 +33,7 @@ class TestObjCRecognizer(TestBase):
         else:
             bkpt_string = "Set a breakpoint here for plain exception"
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, bkpt_string, self.main_source_file
         )
 

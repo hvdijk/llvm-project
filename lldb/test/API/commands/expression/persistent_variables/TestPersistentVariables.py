@@ -2,7 +2,6 @@
 Test that lldb persistent variables works correctly.
 """
 
-
 import lldb
 from lldbsuite.test.lldbtest import *
 

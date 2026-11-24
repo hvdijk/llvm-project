@@ -449,7 +449,7 @@ class CommandLineCompletionTestCase(TestBase):
 
     def test_thread_plan_discard(self):
         self.build()
-        (_, _, thread, _) = lldbutil.run_to_source_breakpoint(
+        _, _, thread, _ = lldbutil.run_to_source_breakpoint(
             self, "ptr_foo", lldb.SBFileSpec("main.cpp")
         )
         self.assertTrue(thread)

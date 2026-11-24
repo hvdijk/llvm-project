@@ -132,7 +132,7 @@ class ExecTestCase(TestBase):
 
         lldbutil.install_to_target(self, self.getBuildArtifact("secondprog"))
 
-        (target, process, thread, breakpoint1) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, breakpoint1 = lldbutil.run_to_source_breakpoint(
             self, "Set breakpoint 1 here", lldb.SBFileSpec("main.c", False)
         )
 

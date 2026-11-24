@@ -1,5 +1,4 @@
-"""This file contains the main function that's called by the CLI of the library.
-"""
+"""This file contains the main function that's called by the CLI of the library."""
 
 import os
 import sys

@@ -2,7 +2,6 @@
 Test we can understand various layouts of the libc++'s std::optional
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

@@ -40,11 +40,9 @@ class TestReports(unittest.TestCase):
             failures[0],
             (
                 "touch test/4.stamp",
-                dedent(
-                    """\
+                dedent("""\
                     FAILED: touch test/4.stamp
-                    Wow! This system is really broken!"""
-                ),
+                    Wow! This system is really broken!"""),
             ),
         )
 
@@ -78,11 +76,9 @@ class TestReports(unittest.TestCase):
             failures[0],
             (
                 "touch test/3.stamp",
-                dedent(
-                    """\
+                dedent("""\
                     FAILED: touch test/3.stamp
-                    Wow! This system is really broken!"""
-                ),
+                    Wow! This system is really broken!"""),
             ),
         )
 
@@ -107,22 +103,18 @@ class TestReports(unittest.TestCase):
             failures[0],
             (
                 "touch test/2.stamp",
-                dedent(
-                    """\
+                dedent("""\
                     FAILED: touch test/2.stamp
-                    Wow! This system is really broken!"""
-                ),
+                    Wow! This system is really broken!"""),
             ),
         )
         self.assertEqual(
             failures[1],
             (
                 "touch test/4.stamp",
-                dedent(
-                    """\
+                dedent("""\
                     FAILED: touch test/4.stamp
-                    Wow! This system is maybe broken!"""
-                ),
+                    Wow! This system is maybe broken!"""),
             ),
         )
 
@@ -151,11 +143,9 @@ class TestReports(unittest.TestCase):
             failures[0],
             (
                 "touch test/2.stamp",
-                dedent(
-                    """\
+                dedent("""\
                     FAILED: touch test/2.stamp
-                    Wow! This system is really broken!"""
-                ),
+                    Wow! This system is really broken!"""),
             ),
         )
 
@@ -179,12 +169,10 @@ class TestReports(unittest.TestCase):
             failures[0],
             (
                 "tools/check-langley",
-                dedent(
-                    """\
+                dedent("""\
                     ModuleNotFoundError: No module named 'mount_langley'
                     FAILED: tools/check-langley
-                    Wow! This system is really broken!"""
-                ),
+                    Wow! This system is really broken!"""),
             ),
         )
 
@@ -267,18 +255,12 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.00">
           <testsuite name="Empty" tests="0" failures="0" skipped="0" time="0.00">
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
             ),
             (
@@ -301,30 +283,22 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 0,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.00">
           <testsuite name="Passed" tests="1" failures="0" skipped="0" time="0.00">
           <testcase classname="Bar/test_1" name="test_1" time="0.00"/>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
             ),
             (
-                dedent(
-                    """\
+                dedent("""\
               # Foo
 
               * 1 test passed
               
-              :white_check_mark: The build succeeded and all tests passed."""
-                ),
+              :white_check_mark: The build succeeded and all tests passed."""),
                 True,
             ),
         )
@@ -334,19 +308,13 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.00">
           <testsuite name="Passed" tests="1" failures="0" skipped="0" time="0.00">
           <testcase classname="Bar/test_1" name="test_1" time="0.00"/>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
             ),
             (
@@ -371,19 +339,13 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.00">
           <testsuite name="Passed" tests="1" failures="0" skipped="0" time="0.00">
           <testcase classname="Bar/test_1" name="test_1" time="0.00"/>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [
                     [
                         "[1/5] test/1.stamp",
@@ -427,19 +389,13 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.00">
           <testsuite name="Passed" tests="1" failures="0" skipped="0" time="0.00">
           <testcase classname="Bar/test_1" name="test_1" time="0.00"/>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [
                     [
                         "[1/5] test/1.stamp",
@@ -491,10 +447,7 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="8.89">
           <testsuite name="Bar" tests="4" failures="2" skipped="1" time="410.63">
@@ -509,10 +462,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[Other output goes here]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
             ),
             (
@@ -586,10 +536,7 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "ABC and DEF",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="8.89">
           <testsuite name="ABC" tests="2" failures="1" skipped="0" time="410.63">
@@ -606,10 +553,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[DEF/test_2 output goes here]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
             ),
             (self.MULTI_SUITE_OUTPUT, False),
@@ -621,9 +565,7 @@ class TestReports(unittest.TestCase):
                 "ABC and DEF",
                 1,
                 [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                    junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="8.89">
           <testsuite name="ABC" tests="2" failures="1" skipped="0" time="410.63">
@@ -632,12 +574,8 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[ABC/test_2 output goes here]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    ),
-                    junit_from_xml(
-                        dedent(
-                            """\
+          </testsuites>""")),
+                    junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="8.89">
           <testsuite name="DEF" tests="2" failures="1" skipped="1" time="410.63">
@@ -648,9 +586,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[DEF/test_2 output goes here]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    ),
+          </testsuites>""")),
                 ],
                 [],
             ),
@@ -662,10 +598,7 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.02">
           <testsuite name="Bar" tests="1" failures="1" skipped="0" time="0.02">
@@ -673,10 +606,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[Output goes here]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
                 list_failures=False,
             ),
@@ -700,10 +630,7 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.02">
           <testsuite name="Bar" tests="1" failures="1" skipped="0" time="0.02">
@@ -711,10 +638,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[Output goes here]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
                 list_failures=False,
             ),
@@ -739,10 +663,7 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="0.02">
           <testsuite name="Bar" tests="1" failures="1" skipped="0" time="0.02">
@@ -750,12 +671,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[{output}]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>""".format(
-                                output=test_output
-                            )
-                        )
-                    )
-                ],
+          </testsuites>""".format(output=test_output)))],
                 [],
                 size_limit=512,
             ),
@@ -829,10 +745,7 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="8.89">
           <testsuite name="Bar" tests="1" failures="1" skipped="0" time="410.63">
@@ -840,10 +753,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[Error! Expected Big Sur to be next to the ocean.]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
                 failure_explanations_list=[
                     {
@@ -884,10 +794,7 @@ class TestReports(unittest.TestCase):
             generate_test_report_lib.generate_report(
                 "Foo",
                 1,
-                [
-                    junit_from_xml(
-                        dedent(
-                            """\
+                [junit_from_xml(dedent("""\
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites time="8.89">
           <testsuite name="Bar" tests="1" failures="1" skipped="0" time="410.63">
@@ -895,10 +802,7 @@ class TestReports(unittest.TestCase):
             <failure><![CDATA[Error! Expected Mt. Shasta to be next in the Eastern Sierras.]]></failure>
           </testcase>
           </testsuite>
-          </testsuites>"""
-                        )
-                    )
-                ],
+          </testsuites>"""))],
                 [],
                 failure_explanations_list=[
                     {
@@ -937,22 +841,16 @@ class TestReports(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             junit_xml_file = os.path.join(temp_dir, "junit.xml")
             with open(junit_xml_file, "w") as junit_xml_handle:
-                junit_xml_handle.write(
-                    dedent(
-                        """\
+                junit_xml_handle.write(dedent("""\
                         <?xml version="1.0" encoding="UTF-8"?>
                         <testsuites time="0.00">
                         <testsuite name="Passed" tests="1" failures="0" skipped="0" time="0.00">
                         <testcase classname="Bar/test_1" name="test_1" time="0.00"/>
                         </testsuite>
-                        </testsuites>"""
-                    )
-                )
+                        </testsuites>"""))
             ninja_log_file = os.path.join(temp_dir, "ninja.log")
             with open(ninja_log_file, "w") as ninja_log_handle:
-                ninja_log_handle.write(
-                    dedent(
-                        """\
+                ninja_log_handle.write(dedent("""\
                         [1/5] test/1.stamp
                         [2/5] test/2.stamp
                         [3/5] test/3.stamp
@@ -960,9 +858,7 @@ class TestReports(unittest.TestCase):
                         FAILED: test/4.stamp
                         touch test/4.stamp
                         Wow! That's so True!
-                        [5/5] test/5.stamp"""
-                    )
-                )
+                        [5/5] test/5.stamp"""))
             self.assertEqual(
                 generate_test_report_lib.generate_report_from_files(
                     "Foo", 1, [junit_xml_file, ninja_log_file]

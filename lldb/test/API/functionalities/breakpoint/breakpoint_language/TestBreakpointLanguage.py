@@ -3,7 +3,6 @@ Test that the language option for breakpoints works correctly
 parser.
 """
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *

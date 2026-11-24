@@ -2,7 +2,6 @@
 Make sure that the fork child keeps running.
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *

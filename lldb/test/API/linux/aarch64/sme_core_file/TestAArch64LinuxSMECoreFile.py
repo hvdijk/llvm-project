@@ -2,7 +2,6 @@
 Check that LLDB can read Scalable Matrix Extension (SME) data from core files.
 """
 
-
 import lldb
 import itertools
 from enum import IntEnum

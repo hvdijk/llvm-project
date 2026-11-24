@@ -2,7 +2,6 @@
 Test stop hook functionality
 """
 
-
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
 from lldbsuite.test.lldbtest import *
@@ -54,7 +53,7 @@ class TestStopHooks(TestBase):
         # Run to the first breakpoint before setting the stop hook
         # so we don't have to figure out where it showed up in the new
         # target.
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here first", self.main_source_file
         )
 
@@ -142,7 +141,7 @@ class TestStopHooks(TestBase):
         # First run to main.  If we go straight to the first stop hook hit,
         # run_to_source_breakpoint will fail because we aren't at original breakpoint
 
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Stop here first", self.main_source_file
         )
 
@@ -194,7 +193,7 @@ class TestStopHooks(TestBase):
 
         self.interp.HandleCommand(command, result)
         self.assertTrue(result.Succeeded(), "Set the target stop hook")
-        (target, process, thread, bkpt) = lldbutil.run_to_source_breakpoint(
+        target, process, thread, bkpt = lldbutil.run_to_source_breakpoint(
             self, "Set a breakpoint here", self.main_source_file
         )
         # At this point we've hit our stop hook so we should have run our expression,

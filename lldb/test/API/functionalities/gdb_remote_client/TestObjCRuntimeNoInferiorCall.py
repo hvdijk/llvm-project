@@ -19,9 +19,7 @@ TARGET_XML = """<?xml version="1.0"?>
 %s
     <reg name="cpsr" bitsize="32"/>
   </feature>
-</target>""" % "\n".join(
-    '    <reg name="%s" bitsize="64"/>' % r for r in GPRS
-)
+</target>""" % "\n".join('    <reg name="%s" bitsize="64"/>' % r for r in GPRS)
 
 
 class MyResponder(MockGDBServerResponder):

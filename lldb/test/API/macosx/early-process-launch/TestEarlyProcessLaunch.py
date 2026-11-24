@@ -33,7 +33,7 @@ class TestEarlyProcessLaunch(TestBase):
         self.assertTrue(target.IsValid())
         bkpt = target.BreakpointCreateByRegex("alloc", None)
         self.assertTrue(bkpt.IsValid())
-        (target, process, thread, bkpt) = lldbutil.run_to_breakpoint_do_run(
+        target, process, thread, bkpt = lldbutil.run_to_breakpoint_do_run(
             self, target, bkpt
         )
 
